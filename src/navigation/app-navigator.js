@@ -8,7 +8,7 @@ const AppNavigator = createDrawerNavigator({
   home: HomeScreen
 },
 {
-  menu: Menu
+  contentComponent: Menu
 })
 
 export default AppNavigator;

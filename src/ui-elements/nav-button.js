@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import * as Colors from '../theme/colors';
 
 const NavigationButton = (props) => (
   <View>
@@ -20,8 +21,9 @@ const styles = StyleSheet.create({
     height: 64,
     width: 64,
     borderRadius: 100,
-    backgroundColor: 'coral',
-    justifyContent: 'center', alignItems: 'center'
+    backgroundColor: Colors.PRIMARY,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   icon: {
     justifyContent: 'center',
