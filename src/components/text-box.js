@@ -4,13 +4,14 @@ import * as Colors from '../theme/colors';
 import PropTypes from 'prop-types';
 
 const TextBox = (props) => (
-  <View>
+
     <View style={styles.container}>
-      <Text
-        style={styles.font}> {props.title}
-      </Text>
-    </View>
-  </View>
+          <Text
+            style={styles.font}> {props.title}
+          </Text>
+      </View>
+
+
 )
 export default TextBox;
 
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.5,
     shadowOffset:{width: 0, height: 5},
     justifyContent:'center',
+    margin:5,
   },
   font:{
     margin: 10,

@@ -43,8 +43,10 @@ class HomeScreen extends Component {
 
         <ScrollView style={styles.view}>
 
-            
-            <TextBox/>
+          {(this.state.titles.map((title, index) => (
+            <TextBox title={title} key={index}
+             />
+          )))}
 
         </ScrollView>
 
