@@ -1,18 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+
 import * as Colors from '../theme/colors';
 
 const TabBar = (props) => (
   <View style={styles.container}>
     <View style={styles.tabBar}>
-      <Text style={styles.font}>Home</Text>
+      <Text style={styles.font}>{props.text}</Text>
     </View>
-
-
   </View>
 )
 
 export default TabBar;
+
+
 
 const styles = StyleSheet.create({
   container: {

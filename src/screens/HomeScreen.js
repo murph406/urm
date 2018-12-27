@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView} from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import * as UserActions from '../action-types/user-action-types';
 
@@ -13,14 +13,16 @@ class HomeScreen extends Component {
       super(props);
 
   this.state = {
-    titles: [
-      'Lol', 'Last Name', 'Email', 'Password'
+    screens: [
+      { title: 'Store', screenToSend: 'store'},
+      { title: 'Corporate News', screenToSend: 'news'},
+      { title: 'Tasks', screenToSend: 'task'}
     ],
   }
 }
 
   componentDidMount() {
-    this.props.navigation.openDrawer();
+
   }
 
   doSomethin() {
@@ -32,23 +34,36 @@ class HomeScreen extends Component {
     });
   }
 
+  openDrawer = (text) => {
+    this.props.navigation.openDrawer();
+  }
+
+  navigate = (screen) => {
+    this.props.navigation.navigate(screen);
+  }
 
   render() {
     return(
       <View style={styles.container} >
-        <TabBar/>
-        <View style={styles.navIcon}>
-          <NavigationButton/>
-        </View>
+        <TabBar text="Home"/>
 
-        <ScrollView style={styles.view}>
+        <ScrollView style={styles.scrollView}>
 
-          {(this.state.titles.map((title, index) => (
-            <TextBox title={title} key={index}
+          {(this.state.screens.map((model, index) => (
+            <TextBox
+              title={model.title}
+              onPress={() => this.navigate(model.screenToSend)}
+              key={index}
              />
           )))}
 
         </ScrollView>
+
+        <View >
+          <NavigationButton
+            onPress={() => this.openDrawer()}
+          />
+        </View>
 
       </View>
     )
@@ -60,18 +75,10 @@ const styles = StyleSheet.create({
    flex: 1,
    backgroundColor: '#f5f5f5',
   },
-  navIcon: {
-    alignItems: 'center',
-    position: 'absolute',
-    right: 20,
-    paddingTop: 730,
-    shadowOpacity: 0.25,
-    shadowRadius: 1.5,
-    shadowOffset:{width: 0, height: 5},
-  },
-  view: {
+  scrollView: {
     paddingTop: 10,
     paddingHorizontal:5,
+
   },
   textBox:{
     margin: 5,
