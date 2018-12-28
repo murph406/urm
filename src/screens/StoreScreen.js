@@ -28,6 +28,10 @@ class StoreScreen extends Component {
     this.props.navigation.openDrawer();
   }
 
+  goItems = () => {
+    this.props.navigation.navigate('items')
+  }
+
   render() {
     return(
       <View style={styles.container}>
@@ -38,6 +42,7 @@ class StoreScreen extends Component {
             {(this.state.stores.map((model, index) => (
             <TextBox
                 title={model.name}
+                onPress= {this.goItems}
                 text= "Store ID:"
                 id={model.store_id}
                 key={index}
