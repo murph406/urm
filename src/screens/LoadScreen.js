@@ -19,7 +19,7 @@ class LoadScreen extends Component {
         { name: 'Albertsons', store_id: '7960' },
         { name: 'Walmart', store_id: '7970' },
         { name: 'Safeway', store_id: '7975' },
-        { name: 'Rosaurs': store_id: '970' },
+        { name: 'Rosaurs', store_id: '970' },
         { name: 'Penis Butt', store_id: '550' }
       ]
     }
