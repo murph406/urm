@@ -5,20 +5,18 @@ import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import NavigationButton from '../ui-elements/nav-button';
 
-class TaskScreen extends Component {
+class NewItem extends Component {
 
   render() {
     return(
       <View style={styles.container}>
-        <TabBar text="Tasks"/>
-        <NavigationButton/>
-
+          <TabBar text="New Item"/>
+          <NavigationButton/>
       </View>
     )
   }
 }
-
-export default TaskScreen;
+export default NewItem;
 
 const styles = StyleSheet.create({
   container: {

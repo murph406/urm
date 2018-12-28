@@ -9,7 +9,7 @@ const TextBox = (props) => (
       <TouchableOpacity onPress={() => {props.onPress()}} style={{flex: 1}}>
         <View style={styles.textContainer} >
           <Text style={styles.bigText}>{props.title}</Text>
-          <Text style={styles.smallText}>abc 123 Street</Text>
+        <Text style={styles.smallText}>{props.text}{props.id}</Text>
         </View>
 
       </TouchableOpacity>
@@ -19,13 +19,11 @@ export default TextBox;
 
 TextBox.propTypes = {
   title: PropTypes.string,
+  id: PropTypes.string,
   onPress: PropTypes.func
 }
 
-TextBox.defaultProps = {
-  title: 'blank',
-  onPress: () => console.log('bruh')
-}
+
 
 const styles = StyleSheet.create({
   container: {

@@ -32,6 +32,20 @@ class StoreScreen extends Component {
     return(
       <View style={styles.container}>
         <TabBar text= "Store"/>
+
+        <ScrollView style={styles.scrollView}>
+
+            {(this.state.stores.map((model, index) => (
+            <TextBox
+                title={model.name}
+                text= "Store ID:"
+                id={model.store_id}
+                key={index}
+               />
+            )))}
+
+          </ScrollView>
+
         <NavigationButton
           onPress={() => this.openDrawer()}/>
       </View>

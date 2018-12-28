@@ -18,7 +18,8 @@ class HomeScreen extends Component {
     screens: [
       { title: 'Store', screenToSend: 'store'},
       { title: 'Corporate News', screenToSend: 'news'},
-      { title: 'Tasks', screenToSend: 'task'}
+      { title: 'Tasks', screenToSend: 'task'},
+      {title: 'New Items', screenToSend: 'newItem'},
     ],
   }
 }
@@ -41,8 +42,8 @@ class HomeScreen extends Component {
   }
 
   navigate = (screen) => {
-    debugger
-    this.props.navigation.push(screen);
+
+    this.props.navigation.navigate(screen);
   }
 
   render() {
@@ -55,6 +56,7 @@ class HomeScreen extends Component {
           {(this.state.screens.map((model, index) => (
             <TextBox
               title={model.title}
+              text="ABC"
               onPress={() => this.navigate(model.screenToSend)}
               key={index}
              />
