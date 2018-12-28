@@ -1,5 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from 'react-navigation';
+import { Dimensions } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import Menu from '../components/menu';
@@ -14,7 +15,9 @@ const AppNavigator = createDrawerNavigator({
   task: TaskScreen,
 },
 {
-  contentComponent: Menu
+  contentComponent: Menu,
+  drawerWidth: Dimensions.get('window').width * 0.7,
+  drawerType: 'front'
 })
 
 export default AppNavigator;

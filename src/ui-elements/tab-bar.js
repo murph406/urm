@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     shadowOffset:{width: 0, height: 5},
   },
   font: {
-    fontFamily: 'Arial',
-    fontSize: 34,
+    fontFamily: 'regular',
+    fontSize: 32,
     color: 'white',
   },
   tabBar: {

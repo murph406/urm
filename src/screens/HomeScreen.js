@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
+
 import * as UserActions from '../action-types/user-action-types';
+import * as Colors from '../theme/colors';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
@@ -39,13 +41,14 @@ class HomeScreen extends Component {
   }
 
   navigate = (screen) => {
-    this.props.navigation.navigate(screen);
+    debugger
+    this.props.navigation.push(screen);
   }
 
   render() {
     return(
       <View style={styles.container} >
-        <TabBar text="Home"/>
+        <TabBar text="Home" />
 
         <ScrollView style={styles.scrollView}>
 
@@ -64,7 +67,6 @@ class HomeScreen extends Component {
             onPress={() => this.openDrawer()}
           />
         </View>
-
       </View>
     )
   }
@@ -73,29 +75,10 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   backgroundColor: '#f5f5f5',
+   backgroundColor: Colors.BACKGROUND_GREY,
   },
   scrollView: {
-    paddingTop: 10,
-    paddingHorizontal:5,
-
-  },
-  textBox:{
-    margin: 5,
-    width: 356,
-    height: 100,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    shadowOpacity: 0.25,
-    shadowRadius: 1.5,
-    shadowOffset:{width: 0, height: 5},
-    justifyContent:'center',
-  },
-  font:{
-    margin: 10,
-    fontFamily: 'Arial',
-    fontSize: 34,
-    color: 'black',
+    flex: 1, marginTop: 8
   }
 })
 

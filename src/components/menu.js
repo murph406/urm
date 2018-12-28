@@ -16,7 +16,7 @@ class Menu extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.PRIMARY,
+    backgroundColor: Colors.BACKGROUND_GREY,
   }
 })
 
