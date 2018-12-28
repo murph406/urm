@@ -5,18 +5,18 @@ import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import NavigationButton from '../ui-elements/nav-button';
 
-class NewsScreen extends Component {
+class ItemScreen extends Component {
 
   render() {
     return(
       <View style={styles.container}>
-        <TabBar text="Corporate News"/>
-        <NavigationButton/>
+          <TabBar text="Items"/>
+          <NavigationButton/>
       </View>
     )
   }
 }
-export default NewsScreen;
+export default ItemScreen;
 
 const styles = StyleSheet.create({
   container: {
