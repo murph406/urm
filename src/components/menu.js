@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import * as Colors from '../theme/colors';
 
 class Menu extends Component {
@@ -8,17 +8,51 @@ class Menu extends Component {
     this.props.navigation.navigate('home');
     this.props.navigation.closeDrawer();
   }
+  goNews = () => {
+    this.props.navigation.navigate('news');
+    this.props.navigation.closeDrawer();
+  }
+  goTasks= () => {
+    this.props.navigation.navigate('task');
+    this.props.navigation.closeDrawer();
+  }
+
+  goItem= () => {
+    this.props.navigation.navigate('items');
+    this.props.navigation.closeDrawer();
+  }
 
 
 
   render() {
     return(
       <View style={styles.container} >
+
+    
+
         <TouchableOpacity
           onPress={this.goHome}
           >
           <Text style={styles.Text}>Home</Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={this.goNews}
+          >
+          <Text style={styles.Text}>Corporate News</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={this.goTasks}
+          >
+          <Text style={styles.Text}>Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={this.goItem}
+          >
+          <Text style={styles.Text}>New Item</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -28,14 +62,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.BACKGROUND_GREY,
-    paddingHorizontal:20,
     paddingTop: 60
   },
   Text: {
     fontFamily: 'bold',
     fontSize: 34,
     color: 'black',
-  }
+    margin: 10,
+  },
 })
 
 export default Menu;

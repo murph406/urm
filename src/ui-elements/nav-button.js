@@ -7,8 +7,9 @@ import * as Colors from '../theme/colors';
 
 
 const NavigationButton = (props) => (
-    <View style={styles.button} >
+    <View style={styles.buttonView} >
       <TouchableOpacity
+         style={styles.button}
          onPress={() => {props.onPress()}}>
         <Image
           style={styles.icon}
@@ -25,6 +26,11 @@ NavigationButton.propTypes = {
 
 
 const styles = StyleSheet.create({
+  buttonView: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+  },
   button: {
     height: 64,
     width: 64,
@@ -32,9 +38,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.PRIMARY,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    right: 20,
-    bottom: 20,
     shadowOpacity: 0.25,
     shadowRadius: 1.5,
     shadowOffset:{width: 0, height: 5}
