@@ -10,3 +10,5 @@ const MainReducer = combineReducers({
   user,
   storeDetail
 })
+
+export default MainReducer;

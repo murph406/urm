@@ -4,14 +4,21 @@ import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-
 import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import NavigationButton from '../ui-elements/nav-button';
+import ItemInput from '../screens/ItemInputScreen.js';
 
 class ItemScreen extends Component {
 
+  openDrawer = (text) => {
+    this.props.navigation.openDrawer();
+  }
+  
   render() {
     return(
       <View style={styles.container}>
-          <TabBar text="Items"/>
-          <NavigationButton/>
+        <TabBar text="Items"/>
+        <ItemInput/>
+        <NavigationButton
+          onPress={() => this.openDrawer()}/>
       </View>
     )
   }

@@ -7,11 +7,16 @@ import NavigationButton from '../ui-elements/nav-button';
 
 class NewItem extends Component {
 
+  openDrawer = (text) => {
+    this.props.navigation.openDrawer();
+  }
+
   render() {
     return(
       <View style={styles.container}>
           <TabBar text="New Item"/>
-          <NavigationButton/>
+          <NavigationButton
+            onPress={() => this.openDrawer()}/>
       </View>
     )
   }

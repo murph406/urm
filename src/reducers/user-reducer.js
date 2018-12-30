@@ -2,7 +2,6 @@ import * as UserActions from '../action-types/user-action-types';
 
 const initialState = {
   user: null,
-  stores: null,
   isLoggedIn: false
 }
 

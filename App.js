@@ -20,7 +20,7 @@ export default class App extends React.Component {
     }
   }
 
-  store = createStore(applyMiddleware(thunk), MainReducer);
+  store = createStore(MainReducer, applyMiddleware(thunk));
 
   async componentDidMount() {
     await Font.loadAsync({

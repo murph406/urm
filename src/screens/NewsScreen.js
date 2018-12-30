@@ -7,11 +7,16 @@ import NavigationButton from '../ui-elements/nav-button';
 
 class NewsScreen extends Component {
 
+  openDrawer = (text) => {
+    this.props.navigation.openDrawer();
+  }
+  
   render() {
     return(
       <View style={styles.container}>
         <TabBar text="Corporate News"/>
-        <NavigationButton/>
+        <NavigationButton
+          onPress={() => this.openDrawer()}/>
       </View>
     )
   }

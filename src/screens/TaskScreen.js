@@ -7,11 +7,16 @@ import NavigationButton from '../ui-elements/nav-button';
 
 class TaskScreen extends Component {
 
+  openDrawer = (text) => {
+    this.props.navigation.openDrawer();
+  }
+
   render() {
     return(
       <View style={styles.container}>
         <TabBar text="Tasks"/>
-        <NavigationButton/>
+        <NavigationButton
+          onPress={() => this.openDrawer()}/>
 
       </View>
     )

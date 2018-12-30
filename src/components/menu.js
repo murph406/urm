@@ -6,6 +6,7 @@ class Menu extends Component {
 
   goHome = () => {
     this.props.navigation.navigate('home');
+    this.props.navigation.closeDrawer();
   }
 
 

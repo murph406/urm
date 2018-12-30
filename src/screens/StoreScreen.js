@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
+import { connect } from 'react-redux';
+
+import * as STORE_ACTIONS from '../action-types/store-detail-action-types';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
@@ -28,8 +31,13 @@ class StoreScreen extends Component {
     this.props.navigation.openDrawer();
   }
 
-  goItems = () => {
+  navigateStoreDetail = (store) => {
     this.props.navigation.navigate('items')
+
+    this.props.dispatch({
+      type: STORE_ACTIONS.SET_STORE,
+      store: store
+    })
   }
 
   render() {
@@ -39,10 +47,10 @@ class StoreScreen extends Component {
 
         <ScrollView style={styles.scrollView}>
 
-            {(this.state.stores.map((model, index) => (
+            {(this.props.stores.map((model, index) => (
             <TextBox
                 title={model.name}
-                onPress= {this.goItems}
+                onPress= {() => this.navigateStoreDetail(model)}
                 text= "Store ID:"
                 id={model.store_id}
                 key={index}
@@ -58,7 +66,6 @@ class StoreScreen extends Component {
     )
   }
 }
-export default StoreScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -66,3 +73,11 @@ const styles = StyleSheet.create({
    backgroundColor: '#f5f5f5',
   },
 });
+
+var mapStateToProps = state => {
+  return {
+    stores: state.user.user.stores
+  }
+}
+
+export default connect(mapStateToProps)(StoreScreen);
