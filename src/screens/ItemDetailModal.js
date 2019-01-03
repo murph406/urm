@@ -16,8 +16,24 @@ class ItemDetailModal extends Component {
 
   render() {
     return(
-      <View style={}>
+      <View style={{flex: 1}}>
+        <View style={styles.yesnoContainer} >
+          <TouchableOpacity style={[styles.onYesTouch]} >
+            <Text>Yes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.onNoTouch]} >
+            <Text>No</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})
+
+export default ItemDetailModal;

@@ -4,8 +4,9 @@ import { View, Text, StyleSheet,Image,ScrollView, Modal, TouchableOpacity} from 
 import { connect } from 'react-redux';
 
 import TabBar from '../ui-elements/tab-bar';
-import TextBox from '../components/text-box';
+import ItemBox from '../components/item-box';
 import NavigationButton from '../ui-elements/nav-button';
+import ItemDetailModal from './ItemDetailModal';
 
 import * as API from '../api/api';
 
@@ -15,7 +16,8 @@ class ItemScreen extends Component {
     super();
 
     this.state = {
-      itemModalPresented: false
+      itemModalPresented: false,
+      items: []
     }
   }
 
@@ -32,8 +34,16 @@ class ItemScreen extends Component {
       if(err) {
         console.log(err);
       } else {
-        debugger
-        console.log(items)
+        // console.log(items)
+        // this.setState({ items: items });
+        let arr = [];
+        for(let i = 0; i < 20; i++) {
+          arr.push(items.items[i]);
+        }
+        console.log(arr);
+        console.log(arr[0].item_description);
+
+        this.setState({ items: arr });
       }
     })
   }
@@ -46,9 +56,20 @@ class ItemScreen extends Component {
         <NavigationButton onPress={() => this.openDrawer()}/>
 
         <ScrollView style={{flex: 1}} >
+          {(this.state.items.map((item, index) => (
+            <ItemBox
+              title={item.item_description}
+              text={item.department}
+              onPress={() => this.setState({ itemModalPresented: true })}
+              />
 
+          )))}
 
         </ScrollView>
+
+        <Modal visible={this.state.itemModalPresented} >
+          <ItemDetailModal />
+        </Modal>
 
       </View>
     )
