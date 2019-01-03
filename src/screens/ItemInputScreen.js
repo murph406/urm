@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, TouchableOpacity, View, StyleSheet, TextInput } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Modal, TextInput } from "react-native";
 
-import Modal from "react-native-modal";
+// import Modal from "react-native-modal";
 
 import * as UserActions from '../action-types/user-action-types';
 import * as Colors from '../theme/colors';

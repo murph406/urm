@@ -55,6 +55,9 @@ class HomeScreen extends Component {
 
           {(this.state.screens.map((model, index) => (
             <TextBox
+              hasFeature={true}
+              featureColor={'rgb(200,50,100)'}
+              featureValue={'100'}
               title={model.title}
               text="ABC"
               onPress={() => this.navigate(model.screenToSend)}

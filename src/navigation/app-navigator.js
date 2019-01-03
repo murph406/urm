@@ -8,7 +8,7 @@ import StoreScreen from '../screens/StoreScreen';
 import NewsScreen from '../screens/NewsScreen';
 import TaskScreen from '../screens/TaskScreen';
 import NewItemScreen from '../screens/NewItemScreen';
-import ItemScreen from '../screens/ItemsScreen';
+import ItemScreen from '../screens/ItemScreen';
 import LoadScreen from '../screens/LoadScreen';
 
 const AppNavigator = createDrawerNavigator({

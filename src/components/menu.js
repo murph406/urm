@@ -28,29 +28,19 @@ class Menu extends Component {
     return(
       <View style={styles.container} >
 
-    
-
-        <TouchableOpacity
-          onPress={this.goHome}
-          >
+        <TouchableOpacity onPress={this.goHome}>
           <Text style={styles.Text}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={this.goNews}
-          >
+        <TouchableOpacity onPress={this.goNews}>
           <Text style={styles.Text}>Corporate News</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={this.goTasks}
-          >
+        <TouchableOpacity onPress={this.goTasks}>
           <Text style={styles.Text}>Tasks</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={this.goItem}
-          >
+        <TouchableOpacity onPress={this.goItem}>
           <Text style={styles.Text}>New Item</Text>
         </TouchableOpacity>
       </View>

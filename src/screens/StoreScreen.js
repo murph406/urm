@@ -32,18 +32,18 @@ class StoreScreen extends Component {
   }
 
   navigateStoreDetail = (store) => {
-    this.props.navigation.navigate('items')
-
     this.props.dispatch({
       type: STORE_ACTIONS.SET_STORE,
       store: store
-    })
+    });
+
+    this.props.navigation.navigate('items')
   }
 
   render() {
     return(
       <View style={styles.container}>
-        <TabBar text= "Store"/>
+        <TabBar text={'Store'} />
 
         <ScrollView style={styles.scrollView}>
 
@@ -51,10 +51,10 @@ class StoreScreen extends Component {
             <TextBox
                 title={model.name}
                 onPress= {() => this.navigateStoreDetail(model)}
-                text= "Store ID:"
+                text={'Store ID: '}
                 id={model.store_id}
                 key={index}
-               />
+              />
             )))}
 
           </ScrollView>
