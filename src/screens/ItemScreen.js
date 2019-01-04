@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, Modal, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, Modal, TouchableOpacity, ActivityIndicator} from 'react-native';
 
 import { connect } from 'react-redux';
 
@@ -43,36 +43,46 @@ class ItemScreen extends Component {
         console.log(arr);
         console.log(arr[0].item_description);
 
-        this.setState({ items: arr });
+        this.setState({ items: items.items });
       }
     })
   }
 
   render() {
-    return(
-      <View style={styles.container}>
-        <TabBar text="Items" />
+    if(this.state.items.length === 0) {
+      return(
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" />
+        </View>
+      )
+    } else {
+      return(
+        <View style={styles.container}>
+          <TabBar text="Items" />
 
-        <NavigationButton onPress={() => this.openDrawer()}/>
 
-        <ScrollView style={{flex: 1}} >
-          {(this.state.items.map((item, index) => (
-            <ItemBox
-              title={item.item_description}
-              text={item.department}
-              onPress={() => this.setState({ itemModalPresented: true })}
-              />
 
-          )))}
+          <ScrollView style={{flex: 1}} >
+            {(this.state.items.map((item, index) => (
+              <ItemBox
+                title={item.item_description}
+                text={item.department}
+                onPress={() => this.setState({ itemModalPresented: true })}
+                />
 
-        </ScrollView>
+            )))}
 
-        <Modal visible={this.state.itemModalPresented} >
-          <ItemDetailModal />
-        </Modal>
+          </ScrollView>
 
-      </View>
-    )
+          <Modal animationType={'slide'} visible={this.state.itemModalPresented} >
+            <ItemDetailModal onDismiss={() => this.setState({ itemModalPresented: false })} />
+          </Modal>
+
+          <NavigationButton onPress={() => this.openDrawer()}/>
+
+        </View>
+      )
+    }
   }
 }
 

@@ -7,20 +7,15 @@ const TextBox = (props) => (
 
     <View style={styles.container}>
       <TouchableOpacity onPress={() => {props.onPress()}} style={{flex: 1}}>
-        <View style={styles.mainContainer} >
+        {/*<View style={styles.mainContainer} >*/}
           <View style={styles.textContainer} >
             <Text style={styles.bigText}>{props.title}</Text>
             <Text style={styles.smallText}>{props.text}{props.id}</Text>
           </View>
 
-          {(props.hasFeature)
-            ? <View style={[styles.featureContainer, {backgroundColor:props.featureColor}]} >
-                <Text style={styles.featureText}>{props.featureValue}</Text>
-              </View>
-            : null
-          }
+          
 
-        </View>
+        {/*</View>*/}
 
       </TouchableOpacity>
     </View>
@@ -53,15 +48,16 @@ const styles = StyleSheet.create({
     shadowOffset:{ width: 0, height: 4 },
     justifyContent:'center',
     margin: 12,
+    overflow: 'hidden'
   },
   mainContainer: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden'
   },
   featureContainer: {
     width: 84, justifyContent: 'center', alignItems: 'center'
   },
   featureText: {
-    fontSize: 24, textAlign: 'center'
+    fontSize: 24, textAlign: 'center', fontFamily: 'bold', color: 'white'
   },
   textContainer: {
     flex: 1, justifyContent: 'center', alignItems: 'stretch',

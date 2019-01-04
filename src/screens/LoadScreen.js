@@ -16,11 +16,10 @@ class LoadScreen extends Component {
   componentDidMount() {
     let user = {
       stores: [
-        { name: 'Albertsons', store_id: '7960' },
-        { name: 'Walmart', store_id: '7970' },
-        { name: 'Safeway', store_id: '7975' },
-        { name: 'Rosaurs', store_id: '970' },
-        { name: 'Penis Butt', store_id: '550' }
+        { name: 'Albertsons', store_id: '7960', itemCount: '252' },
+        { name: 'Walmart', store_id: '550', itemCount: '12' },
+        { name: 'Safeway', store_id: '7975', itemCount: '81' },
+        { name: 'Rosaurs', store_id: '970', itemCount: '82' }
       ]
     }
 
