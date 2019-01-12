@@ -74,8 +74,12 @@ class ItemScreen extends Component {
 
           </ScrollView>
 
-          <Modal animationType={'slide'} visible={this.state.itemModalPresented} >
-            <ItemDetailModal onDismiss={() => this.setState({ itemModalPresented: false })} />
+          <Modal
+            animationType={'slide'}
+            visible={this.state.itemModalPresented} >
+            <ItemDetailModal 
+              onDismiss={() => this.setState({ itemModalPresented: false })}
+              />
           </Modal>
 
           <NavigationButton onPress={() => this.openDrawer()}/>

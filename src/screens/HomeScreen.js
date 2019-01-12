@@ -18,8 +18,8 @@ class HomeScreen extends Component {
   this.state = {
     screens: [
       { title: 'My Stores', screenToSend: 'store', feature: '5', featureLabel: 'Stores'},
-      { title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
-      { title: 'Tasks', screenToSend: 'task', feature: '35', featureLabel: 'Tasks'},
+      //{ title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
+      //{ title: 'Tasks', screenToSend: 'task', feature: '35', featureLabel: 'Tasks'},
       {title: 'New Items', screenToSend: 'newItem', feature: '17', featureLabel: 'Items'},
     ],
   }

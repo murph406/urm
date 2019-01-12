@@ -75,7 +75,8 @@ class ItemDetailModal extends Component {
         }
 
         <View style={styles.submitContainer} >
-          <TouchableOpacity style={styles.submitTouch} onPress={() => this.props.onDismiss()}>
+          <TouchableOpacity style={styles.submitTouch} 
+            onPress={() => this.props.onDismiss()}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
