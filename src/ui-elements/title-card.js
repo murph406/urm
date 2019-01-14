@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 },
     alignItems: 'stretch',
-  
     padding: 16,
     justifyContent: 'space-around',
   },

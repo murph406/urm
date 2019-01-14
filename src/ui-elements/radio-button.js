@@ -50,7 +50,6 @@ const FRAME = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'column',
     // flexWrap: 'wrap',
     justifyContent: 'center',
@@ -59,18 +58,22 @@ const styles = StyleSheet.create({
   buttonOn: {
     // flexGrow: 1,
     height: 48,
-    borderRadius: 8, marginBottom: 8,
+    borderRadius: 8,
+    marginTop: 4,
+    marginBottom: 4,
     backgroundColor: Colors.SECONDARY,
     justifyContent: 'center',
-    width: FRAME.width - 32
+
   },
   buttonOff: {
     // flexGrow: 1,
     height: 54,
-    borderRadius: 8, marginBottom: 8,
+    borderRadius: 8,
+    marginTop: 4,
+    marginBottom: 4,
     backgroundColor: 'rgb(240,240,240)',
     justifyContent: 'center',
-    width: FRAME.width - 32
+
   },
   textOn: {
     fontSize: 18,

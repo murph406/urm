@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity, Modal} from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity, Modal, TextInput} from 'react-native';
+
+import * as Colors from '../theme/colors';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import NavigationButton from '../ui-elements/nav-button';
 import TitleCard from '../ui-elements/title-card';
 import SubmitButton from '../ui-elements/submit-button';
-import NewItemOrderScreen from './NewItemOrderScreen';
+import NewItemOrderModal from './NewItemOrderModal'; //NewItemOrderScreen
 
 class NewItemScreen extends Component {
 
@@ -20,11 +22,18 @@ class NewItemScreen extends Component {
       manufacturer: 'Food Distributor',
       msrp: '150.00'
     },
+    selectedStore: null,
     itemModalPresented: false,
   }
 
   openDrawer = (text) => {
     this.props.navigation.openDrawer();
+  }
+
+  _onSelectStore(store) {
+    this.setState({ selectedStore: store, itemModalPresented: false }, () => {
+      console.log(this.state.selectedStore)
+    })
   }
 
   render() {
@@ -33,11 +42,11 @@ class NewItemScreen extends Component {
           <TabBar text="New Item Order"/>
           <NavigationButton
             onPress={() => this.openDrawer()}/>
-          <View style={styles.scrollView}>
+          <ScrollView>
+        <View style={styles.scrollView}>
 
               <TitleCard
                 title={this.state.item.title}
-
                 info={[
                   {label:'Cost Per Case:', value: this.state.item.costPerCase},
                   {label:'Weight:', value: this.state.item.weight},
@@ -45,13 +54,43 @@ class NewItemScreen extends Component {
                   {label:'Manufacturer:', value: this.state.item.manufacturer}, {label:'MSRP:', value: this.state.item.msrp}
                 ]}
               />
-            <SubmitButton
-              title='Submit'
-              onPress= {() => this.setState({itemModalPresented: true})}
-              />
+
+              {(this.state.selectedStore)
+                ? <View>
+                    <TextBox
+                      title= {this.state.selectedStore.name}
+                      text={'Store ID: '+ this.state.selectedStore.store_id}
+
+                    />
+                  <View style={styles.cardContainer}>
+                    <Text style={styles.textInput}>How Many Cases?</Text>
+                    <TextInput
+                      style={styles.textInputContatiner}
+                      placeholder= "How Many?"
+                    />
+                  </View>
+
+
+                    <SubmitButton
+                      title='Complete Order'
+                      onPress= {() => this.setState({itemModalPresented: true})}
+                      />
+                  </View>
+                : <SubmitButton
+                  title='Choose Store'
+                  onPress= {() => this.setState({itemModalPresented: true})}
+                  />
+              }
+
+
           </View>
+        </ScrollView>
+
           <Modal animationType={'slide'} visible={this.state.itemModalPresented} >
-            <NewItemOrderScreen onDismiss={() => this.setState({ itemModalPresented: false })} />
+            <NewItemOrderModal
+              onDismiss={() => this.setState({ itemModalPresented: false })}
+              onSelectStore={(store) => this._onSelectStore(store)}
+            />
           </Modal>
       </View>
     )
@@ -70,5 +109,25 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight:16,
     marginBottom: 16,
+  },
+  textInput: {
+    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center', marginBottom: 12,
+  },
+  textInputContatiner: {
+    fontSize: 24, fontFamily: 'regular', color: 'black',
+      borderBottomWidth: 2, borderBottomColor: Colors.PRIMARY
+  },
+  cardContainer: {
+    borderRadius: 4,
+    backgroundColor: 'white',
+    shadowOpacity: 0.2,
+    shadowColor: 'black',
+    shadowRadius: 4,
+    shadowOffset:{ width: 0, height: 4 },
+    justifyContent: 'center',
+    marginTop: 20,
+    paddingLeft: 12,
+    paddingRight: 12,
+    padding: 8,
   },
 });

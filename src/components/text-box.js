@@ -13,7 +13,7 @@ const TextBox = (props) => (
             <Text style={styles.smallText}>{props.text}{props.id}</Text>
           </View>
 
-          
+
 
         {/*</View>*/}
 
@@ -47,8 +47,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 },
     justifyContent:'center',
-    margin: 12,
-    overflow: 'hidden'
+    marginTop: 20,
+    paddingLeft: 12,
+    paddingRight: 12,
+    padding: 8,
   },
   mainContainer: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden'
