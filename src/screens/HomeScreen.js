@@ -54,14 +54,15 @@ class HomeScreen extends Component {
         <ScrollView style={styles.scrollView}>
           <View style={{height: 16}} />
           {(this.state.screens.map((model, index) => (
-
-            <TextBoxFeature
-              title={model.title}
-              subtitle={'Subtitle Text'}
-              featureText={model.feature}
-              featureLabel={model.featureLabel}
-              onPress={() => this.navigate(model.screenToSend)}
-            />
+            <View style={{shadowOpacity: 0.2,shadowColor: 'black',shadowRadius: 4,shadowOffset:{ width: 0, height: 4 }}}>
+              <TextBoxFeature
+                title={model.title}
+                subtitle={'Subtitle Text'}
+                featureText={model.feature}
+                featureLabel={model.featureLabel}
+                onPress={() => this.navigate(model.screenToSend)}
+              />
+            </View>
             /*<TextBox
               hasFeature={true}
               featureColor={Colors.SECONDARY}

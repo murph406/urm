@@ -13,6 +13,8 @@ class LoadScreen extends Component {
     }
   }
 
+  // TODO look at what the user object looks like in the user reducer
+  // and make the dispatch actually dispatch a proper user, complete with namee, etc
   componentDidMount() {
     let user = {
       stores: [

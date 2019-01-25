@@ -17,7 +17,7 @@ const TextBoxFeature = (props) => (
         <Text style={styles.featureLabel}>{props.featureLabel}</Text>
       </View>
     </TouchableOpacity>
-  
+
 )
 
 TextBoxFeature.PropTypes = {
