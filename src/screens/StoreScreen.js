@@ -41,10 +41,11 @@ class StoreScreen extends Component {
     this.props.navigation.navigate('items')
   }
 
+
   render() {
     return(
       <View style={styles.container}>
-        <TabBar text={'Store'} />
+        <TabBar text={'Store'} onGoBack={() => this.props.navigation.goBack()} />
 
         <ScrollView style={styles.scrollView}>
           <View style={{height: 32}} />

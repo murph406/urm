@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   buttonOn: {
     // flexGrow: 1,
-    height: 48,
+    height: 54,
     borderRadius: 8,
     marginTop: 4,
     marginBottom: 4,

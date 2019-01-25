@@ -32,16 +32,8 @@ class Menu extends Component {
           <Text style={styles.Text}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={this.goNews}>
-          <Text style={styles.Text}>Corporate News</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this.goTasks}>
-          <Text style={styles.Text}>Tasks</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity onPress={this.goItem}>
-          <Text style={styles.Text}>New Item</Text>
+          <Text style={styles.Text}>New Items</Text>
         </TouchableOpacity>
       </View>
     )

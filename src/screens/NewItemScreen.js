@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity, Modal, TextInput} from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity, Modal, Picker, TextInput} from 'react-native';
 
 import * as Colors from '../theme/colors';
 
@@ -39,9 +39,8 @@ class NewItemScreen extends Component {
   render() {
     return(
       <View style={styles.container}>
-          <TabBar text="New Item Order"/>
-          <NavigationButton
-            onPress={() => this.openDrawer()}/>
+          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.goBack()} />
+
           <ScrollView>
         <View style={styles.scrollView}>
 
@@ -60,14 +59,17 @@ class NewItemScreen extends Component {
                     <TextBox
                       title= {this.state.selectedStore.name}
                       text={'Store ID: '+ this.state.selectedStore.store_id}
-
+                      onPress= {() => this.setState({itemModalPresented: true})}
                     />
                   <View style={styles.cardContainer}>
-                    <Text style={styles.textInput}>How Many Cases?</Text>
-                    <TextInput
-                      style={styles.textInputContatiner}
-                      placeholder= "How Many?"
-                    />
+                    <View style={styles.textContainer}>
+                      <Text style={styles.textStyle}>How Many Cases?</Text>
+                      <View style={styles.textInputContatiner}>
+                        <TextInput
+                            style={styles.textInput}
+                          />
+                      </View>
+                    </View>
                   </View>
 
 
@@ -82,9 +84,11 @@ class NewItemScreen extends Component {
                   />
               }
 
-
           </View>
         </ScrollView>
+        <NavigationButton
+          onPress={() => this.openDrawer()}
+        />
 
           <Modal animationType={'slide'} visible={this.state.itemModalPresented} >
             <NewItemOrderModal
@@ -110,14 +114,21 @@ const styles = StyleSheet.create({
     marginRight:16,
     marginBottom: 16,
   },
-  textInput: {
-    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center', marginBottom: 12,
+  textContainer: {
+     flexDirection: 'row', marginBottom: 12,
+  },
+  textStyle: {
+    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center',
   },
   textInputContatiner: {
     fontSize: 24, fontFamily: 'regular', color: 'black',
-      borderBottomWidth: 2, borderBottomColor: Colors.PRIMARY
+    borderBottomWidth: 2, borderBottomColor: Colors.PRIMARY, marginLeft: 10, width: 100,
+  },
+  textInput: {
+    fontSize: 24, fontFamily: 'regular', color: 'black',
   },
   cardContainer: {
+    flex: 1,
     borderRadius: 4,
     backgroundColor: 'white',
     shadowOpacity: 0.2,
@@ -129,5 +140,6 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     padding: 8,
+
   },
 });

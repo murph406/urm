@@ -38,7 +38,7 @@ class ItemDetailModal extends Component {
 
   render() {
     return(
-      <View style={{flex: 1, alignItems: 'stretch', margin: 16, marginTop: 30,}}>
+      <View style={{flex: 1, alignItems: 'stretch', margin: 16, marginTop: 50,}}>
 
           <View style={styles.cardContainer}>
           <Text style={styles.promptText}>Were You Able To Make This Sale?</Text>
@@ -63,7 +63,10 @@ class ItemDetailModal extends Component {
 
         {(!this.state.isYes)
           ? <View style={styles.cardContainer}>
-                <RadioButton options={this.state.options} onSelectOption={(index) => this.onSelectRadio(index)} />
+                <RadioButton
+                  options={this.state.options}
+                  onSelectOption={(index) => this.onSelectRadio(index)}
+                />
                 {(this.state.options[this.state.options.length-1].isSelected)
                   ? <View style={styles.otherContainer} >
                       <TextInput placeholder={'Reason'} onChangeText={(text) => this.setState({ otherReason: text})} style={styles.otherInput} />
@@ -125,10 +128,10 @@ const styles = StyleSheet.create({
   },
 
   promptText: {
-    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center'
+    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center', marginTop: 30, marginBottom: 30
   },
   yesnoContainer: {
-    marginBottom: 8, marginTop: 8, marginLeft: 8,
+    marginBottom: 38, marginTop: 8, marginLeft: 8,
     marginRight: 8,
     flexDirection: 'row', justifyContent: 'space-around',
   },

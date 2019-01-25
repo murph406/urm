@@ -49,7 +49,7 @@ class HomeScreen extends Component {
   render() {
     return(
       <View style={styles.container} >
-        <TabBar text="Home" />
+        <TabBar text="Home" hasBackButton={false} />
 
         <ScrollView style={styles.scrollView}>
           <View style={{height: 16}} />

@@ -48,6 +48,7 @@ class ItemScreen extends Component {
     })
   }
 
+
   render() {
     if(this.state.items.length === 0) {
       return(
@@ -58,7 +59,7 @@ class ItemScreen extends Component {
     } else {
       return(
         <View style={styles.container}>
-          <TabBar text="Items" />
+          <TabBar text="Items" onGoBack={() => this.props.navigation.navigate('store')} />
 
 
 
@@ -77,7 +78,7 @@ class ItemScreen extends Component {
           <Modal
             animationType={'slide'}
             visible={this.state.itemModalPresented} >
-            <ItemDetailModal 
+            <ItemDetailModal
               onDismiss={() => this.setState({ itemModalPresented: false })}
               />
           </Modal>
