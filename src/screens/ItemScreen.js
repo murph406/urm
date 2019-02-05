@@ -8,7 +8,10 @@ import ItemBox from '../components/item-box';
 import NavigationButton from '../ui-elements/nav-button';
 import ItemDetailModal from './ItemDetailModal';
 
+import * as Colors from '../theme/colors';
 import * as API from '../api/api';
+import TextBoxFeature from '../components/text-box-feature';
+
 
 class ItemScreen extends Component {
 
@@ -34,12 +37,11 @@ class ItemScreen extends Component {
       if(err) {
         console.log(err);
       } else {
-        // console.log(items)
-        // this.setState({ items: items });
         let arr = [];
         for(let i = 0; i < 20; i++) {
           arr.push(items.items[i]);
         }
+        
         console.log(arr);
         console.log(arr[0].item_description);
 
@@ -60,15 +62,17 @@ class ItemScreen extends Component {
       return(
         <View style={styles.container}>
           <TabBar text="Items" onGoBack={() => this.props.navigation.navigate('store')} />
-
-
-
+          <View style={{height: 32}} />
           <ScrollView style={{flex: 1}} >
             {(this.state.items.map((item, index) => (
-              <ItemBox
+              <TextBoxFeature
                 title={item.item_description}
                 text={item.department}
-                onPress={() => this.setState({ itemModalPresented: true })}
+                subtitle={"Item Code: " + item.item_code}
+                onPress={() => this.setState({ itemModalPresented: true, item: item, })}
+                hasFeature={true}
+                featureColor={(item.sale_complete) ? '#43a047' : Colors.SECONDARY}
+                featureType ={(item.sale_complete) ? null : 'text'} 
                 />
 
             )))}
@@ -78,9 +82,10 @@ class ItemScreen extends Component {
           <Modal
             animationType={'slide'}
             visible={this.state.itemModalPresented} >
-            <ItemDetailModal
-              onDismiss={() => this.setState({ itemModalPresented: false })}
-              />
+            <ItemDetailModal 
+              onDismiss={() => this.setState({ itemModalPresented: false})}
+              item={this.state.item}
+            />
           </Modal>
 
           <NavigationButton onPress={() => this.openDrawer()}/>

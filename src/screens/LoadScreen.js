@@ -29,7 +29,7 @@ class LoadScreen extends Component {
       type: UserActions.SET_USER,
       user: user
     });
-    this.props.navigation.navigate('home')
+    this.props.navigation.navigate('login')
   }
 
   render() {

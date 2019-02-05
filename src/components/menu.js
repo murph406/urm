@@ -8,8 +8,8 @@ class Menu extends Component {
     this.props.navigation.navigate('home');
     this.props.navigation.closeDrawer();
   }
-  goNews = () => {
-    this.props.navigation.navigate('news');
+  goLogin = () => {
+    this.props.navigation.navigate('login');
     this.props.navigation.closeDrawer();
   }
   goTasks= () => {
@@ -34,6 +34,10 @@ class Menu extends Component {
 
         <TouchableOpacity onPress={this.goItem}>
           <Text style={styles.Text}>New Items</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity onPress={this.goLogin}>
+          <Text style={styles.Text}>Log Out</Text>
         </TouchableOpacity>
       </View>
     )

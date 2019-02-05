@@ -13,8 +13,9 @@ const ItemBox = (props) => (
           </View>
 
           {(props.hasFeature)
-            ? <View style={[styles.featureContainer, {backgroundColor:props.featureColor}]} >
-                <Text style={styles.featureText}>{props.featureValue}</Text>
+            ? <View style={styles.featureContainer} >
+                <Text style={styles.featureText}>{props.featureText}</Text>
+               <Text style={styles.featureLabel}>{props.featureLabel}</Text>
               </View>
             : null
           }
@@ -56,14 +57,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'
   },
   featureContainer: {
-    width: 84, justifyContent: 'center', alignItems: 'center'
-  },
-  featureText: {
-    fontSize: 24, textAlign: 'center'
+    flex: 1, backgroundColor: Colors.SECONDARY,
+    flexDirection: 'column', alignItems: 'center', justifyContent:'center'
   },
   textContainer: {
     flex: 1, justifyContent: 'center', alignItems: 'stretch',
-    margin: 16
+    margin: 16, 
+  },
+  featureText: {
+    fontSize: 24, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
+    textAlign: 'center'
+  },
+  featureLabel: {
+    position: 'relative', top: 8, fontSize: 16, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
   },
   smallText: {
     fontSize: 14,

@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 import * as Colors from '../theme/colors';
+import * as API from '../api/api';
 
 import RadioButton from '../ui-elements/radio-button';
 
 class ItemDetailModal extends Component {
 
   static propTypes = {
-    onDismiss: PropTypes.func
+    onDismiss: PropTypes.func,
+    item: PropTypes.object
   }
 
   constructor() {
@@ -22,7 +24,8 @@ class ItemDetailModal extends Component {
         { value: 'Too expensive', index: 1, isSelected: false },
         { value: 'Undesired Product', index: 2, isSelected: false },
         { value: 'Other', index: 3, isSelected: false }
-      ]
+      ],
+      otherReason: '',
     }
   }
 
@@ -34,6 +37,44 @@ class ItemDetailModal extends Component {
     RadioButton.onSelectExclusive(this.state.options, index, (arr) => {
       this.setState({ options: arr });
     });
+  }
+
+  onSumbit = () => {
+    let data = {}
+    for (let i = 0; i < this.state.options.length; i++) {
+      if(this.state.options[i].isSelected) {
+
+        if (i === this.state.options.length - 1 ) {
+          data.otherReason = this.state.otherReason;
+        }
+        data.reason = this.state.options[i].value
+      }
+    };
+
+    data.isSale = this.state.isYes
+    this.updateItem(data)
+  };
+
+  updateItem(data) {
+    let outcome = {
+      is_success: data.isSale,
+      reason: data.reason,
+      updated_by: 'user'
+    }
+
+    const sender = {
+      item_id: this.props.item._id,
+      status: outcome
+    }
+
+    API.updateItemStatus(sender, (err, result) => {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log(result);
+        this.props.onDismiss()
+      }
+    })
   }
 
   render() {
@@ -69,7 +110,9 @@ class ItemDetailModal extends Component {
                 />
                 {(this.state.options[this.state.options.length-1].isSelected)
                   ? <View style={styles.otherContainer} >
-                      <TextInput placeholder={'Reason'} onChangeText={(text) => this.setState({ otherReason: text})} style={styles.otherInput} />
+                      <TextInput
+                        placeholder={'Reason'}
+                        onChangeText={(otherReason) => this.setState({ otherReason })} style={styles.otherInput} />
                     </View>
                   : null
                 }
@@ -81,7 +124,7 @@ class ItemDetailModal extends Component {
 
         <View style={styles.submitTouch} >
           <TouchableOpacity style={styles.submitContainer}
-            onPress={() => this.props.onDismiss()}>
+            onPress={() => this.onSumbit()}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import * as Colors from '../theme/colors';
 
@@ -8,13 +8,30 @@ const TextBoxFeature = (props) => (
 
     <TouchableOpacity style={styles.container} onPress={props.onPress} >
       <View style={styles.textLeftContainer} >
-        <Text style={styles.title}>{props.title}</Text>
+        <Text 
+          adjustsFontSizeToFit= {true} 
+          style={styles.title}
+          numberOfLines= {2}
+          minimumFontScale={.8}
+        >{props.title} </Text>
         <Text style={styles.subtitle}>{props.subtitle}</Text>
       </View>
 
-      <View style={styles.featureContainer} >
-        <Text style={styles.featureText}>{props.featureText}</Text>
-        <Text style={styles.featureLabel}>{props.featureLabel}</Text>
+      <View style={[styles.featureContainer, {backgroundColor: props.featureColor}] } >
+        {(props.featureType === 'text')
+          ? <View>
+              <Text style={styles.featureText}>{props.featureText}</Text>
+              <Text style={styles.featureLabel}>{props.featureLabel}</Text>
+            </View>
+            
+          : <View >
+              <Image
+                style={styles.icon}
+                source={require('../../assets/check-icon.png')}
+              />
+            </View>   
+        }
+        
       </View>
     </TouchableOpacity>
 
@@ -25,7 +42,14 @@ TextBoxFeature.PropTypes = {
   subtitle: PropTypes.string,
   featureText: PropTypes.string,
   featureLabel: PropTypes.string,
+  featureColor: PropTypes.string,
+  featureType: PropTypes.string,
   onPress: PropTypes.func
+}
+
+TextBoxFeature.defaultProps = {
+  featureColor: Colors.SECONDARY,
+  featureType: 'text',
 }
 
 const styles = StyleSheet.create({
@@ -45,16 +69,24 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 24, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
-    textAlign: 'center'
+    textAlign: 'center', 
   },
   featureLabel: {
     position: 'relative', top: 8, fontSize: 16, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
   },
   title: {
-    fontSize: 34, fontFamily: 'bold', marginBottom: 8
+    fontSize: 34,fontFamily: 'bold', marginBottom: 8, marginRight: 32, marginTop: 16
   },
   subtitle: {
     fontSize: 18, color: Colors.PRIMARY, fontFamily: 'bold'
+  },
+  iconContainer: {
+
+  },
+  icon: {
+    justifyContent: 'center',
+    height: 48,
+    width: 48
   }
 });
 
