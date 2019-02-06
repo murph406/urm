@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 
 const TextBox = (props) => (
 
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: props.featureColor}]}>
       <TouchableOpacity onPress={() => {props.onPress()}} style={{flex: 1}}>
         {/*<View style={styles.mainContainer} >*/}
           <View style={styles.textContainer} >
-            <Text style={styles.bigText}>{props.title}</Text>
-            <Text style={styles.smallText}>{props.text}{props.id}</Text>
+            <Text style={[styles.bigText, {color: props.featureText}]}>{props.title}</Text>
+            <Text style={[styles.smallText, {color: props.featureText}]}>{props.text}{props.id}</Text>
           </View>
 
 
@@ -28,13 +28,15 @@ TextBox.propTypes = {
   onPress: PropTypes.func,
   hasFeature: PropTypes.bool,
   featureValue: PropTypes.string,
-  featureColor: PropTypes.string
+  featureColor: PropTypes.string,
+  featureText: PropTypes.string
 }
 
 TextBox.defaultProps = {
   hasFeature: false,
   featureValue: '',
-  featureColor: 'orange'
+  featureColor: Colors.BACKGROUND_DARK_DARKGREY,
+  featureText: 'white'
 }
 
 const styles = StyleSheet.create({
@@ -51,7 +53,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
     padding: 8,
-    backgroundColor: Colors.BACKGROUND_DARK_DARKGREY
   },
   mainContainer: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden', 

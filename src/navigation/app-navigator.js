@@ -11,6 +11,7 @@ import NewItemScreen from '../screens/NewItemScreen';
 import ItemScreen from '../screens/ItemScreen';
 import LoadScreen from '../screens/LoadScreen';
 import LoginScreen from '../screens/LoginScreen';
+import NewItemListScreen from '../screens/NewItemListScreen';
 
 const AppNavigator = createDrawerNavigator({
   load: LoadScreen,
@@ -21,6 +22,7 @@ const AppNavigator = createDrawerNavigator({
   task: TaskScreen,
   newItem: NewItemScreen,
   items: ItemScreen,
+  newItemList: NewItemListScreen,
 },
 {
   contentComponent: Menu,

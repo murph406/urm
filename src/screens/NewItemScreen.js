@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity, Modal, Picker, TextInput} from 'react-native';
+import { View, Text, StyleSheet,ScrollView, Linking, Modal, Picker, TextInput} from 'react-native';
 
 import * as Colors from '../theme/colors';
 
@@ -8,7 +8,7 @@ import TextBox from '../components/text-box';
 import NavigationButton from '../ui-elements/nav-button';
 import TitleCard from '../ui-elements/title-card';
 import SubmitButton from '../ui-elements/submit-button';
-import NewItemOrderModal from './NewItemOrderModal'; //NewItemOrderScreen
+import NewItemOrderModal from './NewItemOrderModal'; 
 
 class NewItemScreen extends Component {
 
@@ -29,10 +29,15 @@ class NewItemScreen extends Component {
   openDrawer = (text) => {
     this.props.navigation.openDrawer();
   }
+  
+  goCompleteOrder = () => {
+    Linking.openURL('mailto:somethingemail@gmail.com?subject=Hello All&body=Description')
+  }
 
   _onSelectStore(store) {
     this.setState({ selectedStore: store, itemModalPresented: false }, () => {
       console.log(this.state.selectedStore)
+      
     })
   }
 
@@ -61,7 +66,7 @@ class NewItemScreen extends Component {
                 ? <View>
                     <TextBox
                       title= {this.state.selectedStore.name}
-                      text={'Store ID: '+ this.state.selectedStore.store_id}
+                      
                       onPress= {() => this.setState({itemModalPresented: true})}
                     />
                   <View style={styles.cardContainer}>
@@ -76,7 +81,7 @@ class NewItemScreen extends Component {
                   </View>
                     <SubmitButton
                       title='Complete Order'
-                      onPress= {() => this.setState({itemModalPresented: true})}
+                      onPress= {() => this.goCompleteOrder()}
                       />
                   </View>
                 : <SubmitButton

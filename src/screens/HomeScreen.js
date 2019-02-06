@@ -19,7 +19,7 @@ class HomeScreen extends Component {
       { title: 'My Stores', screenToSend: 'store', feature: '5', featureLabel: 'Stores'},
       //{ title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
       //{ title: 'Tasks', screenToSend: 'task', feature: '35', featureLabel: 'Tasks'},
-      {title: 'New Items', screenToSend: 'newItem', feature: '17', featureLabel: 'Items'},
+      {title: 'New Items', screenToSend: 'newItemList', feature: '17', featureLabel: 'Items'},
     ],
   }
 }
@@ -52,6 +52,7 @@ class HomeScreen extends Component {
 
         <ScrollView style={styles.scrollView}>
           <View style={{height: 16}} />
+         
           {(this.state.screens.map((model, index) => (
             <View style={{shadowOpacity: 0.2,shadowColor: 'black',shadowRadius: 4,shadowOffset:{ width: 0, height: 4 }}}>
               <TextBoxFeature
