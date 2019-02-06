@@ -4,6 +4,7 @@ import axios from 'axios';
 const BASE_URL = 'https://urm-api.herokuapp.com/api';
 const GET_ITEMS_BY_STORE = '/get-items/';
 const UPDATE_ITEM_STATUS = '/item/update-status';
+const GET_USERS = '/user/get-all';
 
 export function getItemsByStore(storeID, callback) {
   axios.get(BASE_URL + GET_ITEMS_BY_STORE + storeID)
@@ -17,4 +18,11 @@ export function updateItemStatus(status, callback) {
   }).catch((e) => {
     callback(e, null)
   })
+}
+
+export function getUsers(callback) {
+ 
+  axios.get(BASE_URL + GET_USERS)
+  .then(response => callback(null,response.data))
+  .catch(e => callback(e))
 }

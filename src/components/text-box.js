@@ -41,39 +41,41 @@ const styles = StyleSheet.create({
   container: {
     height: 120,
     borderRadius: 4,
-    backgroundColor: 'white',
     shadowOpacity: 0.2,
     shadowColor: 'black',
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 },
     justifyContent:'center',
-    marginTop: 20,
-    paddingLeft: 12,
-    paddingRight: 12,
+    marginTop: 6,
+    marginBottom: 6,
+    marginLeft: 12,
+    marginRight: 12,
     padding: 8,
+    backgroundColor: Colors.BACKGROUND_DARK_DARKGREY
   },
   mainContainer: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden'
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden', 
+    
   },
   featureContainer: {
     width: 84, justifyContent: 'center', alignItems: 'center'
   },
   featureText: {
-    fontSize: 24, textAlign: 'center', fontFamily: 'bold', color: 'white'
+    fontSize: 28, textAlign: 'center', fontFamily: 'bold', color: 'white'
   },
   textContainer: {
     flex: 1, justifyContent: 'center', alignItems: 'stretch',
-    margin: 16
+    margin: 16, 
   },
   smallText: {
-    fontSize: 16,
-    color: 'grey',
+    fontSize: 18,
+    color: 'white',
     fontFamily: 'bold'
   },
   bigText: {
     fontFamily: 'bold',
-    fontSize: 34,
-    color: 'black',
+    fontSize: 24,
+    color: 'white',
     marginBottom: 8
   },
 });

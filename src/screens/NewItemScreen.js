@@ -39,13 +39,16 @@ class NewItemScreen extends Component {
   render() {
     return(
       <View style={styles.container}>
-          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.goBack()} />
+          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('home')} />
 
           <ScrollView>
         <View style={styles.scrollView}>
 
               <TitleCard
-                title={this.state.item.title}
+                 title={this.state.item.title}
+              /> 
+
+              <TitleCard
                 info={[
                   {label:'Cost Per Case:', value: this.state.item.costPerCase},
                   {label:'Weight:', value: this.state.item.weight},
@@ -71,8 +74,6 @@ class NewItemScreen extends Component {
                       </View>
                     </View>
                   </View>
-
-
                     <SubmitButton
                       title='Complete Order'
                       onPress= {() => this.setState({itemModalPresented: true})}
@@ -86,9 +87,6 @@ class NewItemScreen extends Component {
 
           </View>
         </ScrollView>
-        <NavigationButton
-          onPress={() => this.openDrawer()}
-        />
 
           <Modal animationType={'slide'} visible={this.state.itemModalPresented} >
             <NewItemOrderModal
@@ -105,38 +103,41 @@ export default NewItemScreen;
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   backgroundColor: '#f5f5f5',
+   backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY,
    alignItems: 'stretch',
   },
   scrollView: {
     marginTop: 24,
-    marginLeft: 16,
-    marginRight:16,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   textContainer: {
-     flexDirection: 'row', marginBottom: 12,
+     flexDirection: 'row', marginBottom: 12, marginTop: 12, 
+     marginLeft: 12, marginRight: 12,
   },
   textStyle: {
-    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center',
+    fontSize: 18, fontFamily: 'bold', color: 'white', textAlign: 'center',
   },
   textInputContatiner: {
-    fontSize: 24, fontFamily: 'regular', color: 'black',
-    borderBottomWidth: 2, borderBottomColor: Colors.PRIMARY, marginLeft: 10, width: 100,
+    fontSize: 24, fontFamily: 'regular', color: 'white',
+    borderBottomWidth: 2, borderBottomColor: 'white', 
+    marginLeft: 10, width: 100,
   },
   textInput: {
-    fontSize: 24, fontFamily: 'regular', color: 'black',
+    fontSize: 24, fontFamily: 'regular', color: 'white',
   },
   cardContainer: {
     flex: 1,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: Colors.BACKGROUND_DARK_DARKGREY,
     shadowOpacity: 0.2,
     shadowColor: 'black',
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 },
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 6,
+    marginBottom: 6,
+    marginLeft: 12,
+    marginRight: 12,
     paddingLeft: 12,
     paddingRight: 12,
     padding: 8,

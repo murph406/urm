@@ -24,33 +24,40 @@ TitleCard.propTypes = {
   price: PropTypes.string,
   info: PropTypes.array
 }
+TitleCard.defaultProps = {
+  info: [],
+  price: ''
+}
+
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: Colors.BACKGROUND_DARK_DARKGREY,
     shadowOpacity: 0.2,
     shadowColor: 'black',
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 },
     alignItems: 'stretch',
-    padding: 16,
-    justifyContent: 'space-around',
+    padding: 12,
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom:6,
+    marginTop: 6,
+    justifyContent: 'space-between',
   },
-
   smallText: {
-    fontSize: 18,
-    color: 'grey',
+    fontSize: 20,
+    color: 'rgb(220,220,220)',
     fontFamily: 'bold',
-    paddingLeft: 12,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   bigText: {
     backgroundColor: 'transparent',
     fontFamily: 'bold',
     fontSize: 32,
-    color: 'black',
-    marginBottom: 28,
+    color: 'white',
+
   },
   featureText: {
     fontSize: 24, textAlign: 'center'

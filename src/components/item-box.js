@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     margin: 16, 
   },
   featureText: {
-    fontSize: 24, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
+    fontSize: 28, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
     textAlign: 'center'
   },
   featureLabel: {
-    position: 'relative', top: 8, fontSize: 16, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
+    position: 'relative', top: 8, fontSize: 18, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
   },
   smallText: {
     fontSize: 14,

@@ -68,14 +68,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column', alignItems: 'center', justifyContent:'center'
   },
   featureText: {
-    fontSize: 24, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
+    fontSize: 28, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
     textAlign: 'center', 
   },
   featureLabel: {
-    position: 'relative', top: 8, fontSize: 16, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
+    position: 'relative', top: 8, fontSize: 18, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
   },
   title: {
-    fontSize: 34,fontFamily: 'bold', marginBottom: 8, marginRight: 32, marginTop: 16
+    fontSize: 28,fontFamily: 'bold', marginBottom: 8, marginRight: 32, marginTop: 16
   },
   subtitle: {
     fontSize: 18, color: Colors.PRIMARY, fontFamily: 'bold'

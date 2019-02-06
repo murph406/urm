@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as UserActions from '../action-types/user-action-types';
 import * as Colors from '../theme/colors';
 
 import TabBar from '../ui-elements/tab-bar';
-import TextBox from '../components/text-box';
 import TextBoxFeature from '../components/text-box-feature';
 import NavigationButton from '../ui-elements/nav-button';
 
@@ -63,15 +62,6 @@ class HomeScreen extends Component {
                 onPress={() => this.navigate(model.screenToSend)}
               />
             </View>
-            /*<TextBox
-              hasFeature={true}
-              featureColor={Colors.SECONDARY}
-              featureValue={'100'}
-              title={model.title}
-              text="ABC"
-              onPress={() => this.navigate(model.screenToSend)}
-              key={index}
-             />*/
           )))}
 
         </ScrollView>

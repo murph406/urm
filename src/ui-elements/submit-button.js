@@ -22,10 +22,12 @@ export default SubmitButton;
 
 const styles = StyleSheet.create({
   button: {
-    height: 80,
+    height: 54,
     justifyContent: 'center',
-    marginTop: 16,
     alignSelf: 'stretch',
+    marginTop: 6,
+    marginLeft:12,
+    marginRight:12,
   },
   submitContainer:{
     flex: 1,
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitText: {
-    fontSize: 28,
+    fontSize: 18,
     fontFamily: 'bold',
     textAlign: 'center',
     color: 'white'

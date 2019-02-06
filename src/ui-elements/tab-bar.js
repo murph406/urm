@@ -9,7 +9,6 @@ const TabBar = (props) => (
   <View style={styles.container}>
     <View style={styles.tabBar}>
 
-
         <View style={styles.textContainer}>
             {(props.hasBackButton)
               ? <TouchableOpacity
@@ -53,9 +52,10 @@ const styles = StyleSheet.create({
     shadowOffset:{width: 0, height: 5},
   },
   font: {
-    fontFamily: 'regular',
-    fontSize: 32,
+    fontFamily: 'bold',
+    fontSize: 34,
     color: 'white',
+    
   },
   tabBar: {
     paddingHorizontal: 20,

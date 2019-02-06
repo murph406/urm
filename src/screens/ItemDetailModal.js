@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+
 
 import * as Colors from '../theme/colors';
 import * as API from '../api/api';
@@ -69,7 +70,7 @@ class ItemDetailModal extends Component {
 
     API.updateItemStatus(sender, (err, result) => {
       if(err) {
-        console.log(err)
+        console.log('here m8', err)
       } else {
         console.log(result);
         this.props.onDismiss()
@@ -79,9 +80,14 @@ class ItemDetailModal extends Component {
 
   render() {
     return(
-      <View style={{flex: 1, alignItems: 'stretch', margin: 16, marginTop: 50,}}>
-
-          <View style={styles.cardContainer}>
+     
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding" 
+        enabled
+      >
+     <ScrollView>
+        <View style={styles.cardContainer}>
           <Text style={styles.promptText}>Were You Able To Make This Sale?</Text>
 
 
@@ -112,7 +118,10 @@ class ItemDetailModal extends Component {
                   ? <View style={styles.otherContainer} >
                       <TextInput
                         placeholder={'Reason'}
-                        onChangeText={(otherReason) => this.setState({ otherReason })} style={styles.otherInput} />
+                        placeholderTextColor= {'white'}
+                        onChangeText={(otherReason) => this.setState({ otherReason })} 
+                        style={styles.otherInput} 
+                      />
                     </View>
                   : null
                 }
@@ -121,79 +130,85 @@ class ItemDetailModal extends Component {
 
           : null
         }
-
-        <View style={styles.submitTouch} >
-          <TouchableOpacity style={styles.submitContainer}
+        </ScrollView>
+       <View style={styles.submitTouch} >
+        <TouchableOpacity style={styles.submitContainer}
             onPress={() => this.onSumbit()}>
-            <Text style={styles.submitText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
+          <Text style={styles.submitText}>Submit</Text>
+        </TouchableOpacity>
+       </View>
+       
+     </KeyboardAvoidingView>  
+     
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1, alignItems: 'stretch', padding: 16, paddingTop: 54,
+    backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY
+  },
   cardContainer: {
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: Colors.BACKGROUND_DARK_DARKGREY,
     shadowOpacity: 0.2,
     shadowColor: 'black',
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 },
-    //alignItems: 'stretch',
     justifyContent: 'center',
-    marginTop: 20,
-    paddingLeft: 12,
-    paddingRight: 12,
-    padding: 8,
-
+    marginTop: 12,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 12,
+    paddingBottom: 12,
   },
   submitText: {
-    fontSize: 28, fontFamily: 'bold', textAlign: 'center', color: 'white'
+    fontSize: 18, fontFamily: 'bold', textAlign: 'center', color: 'white'
   },
   submitTouch: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 24,
+    left: 36,
+    right: 36,
   },
   submitContainer: {
-    height: 80,  borderRadius: 8, justifyContent: 'center', alignItems: 'stretch', backgroundColor: Colors.SECONDARY,
+    height: 54,  borderRadius: 8, justifyContent: 'center', alignItems: 'stretch', backgroundColor: Colors.SECONDARY,
   },
   otherContainer: {
-    height: 150, justifyContent: 'center',
+    height: 90, justifyContent: 'center',
   },
   otherInput: {
-    fontSize: 24, fontFamily: 'regular', color: 'black',
-      borderBottomWidth: 2, borderBottomColor: Colors.PRIMARY
+    fontSize: 18, fontFamily: 'regular', color: 'white',
+      borderBottomWidth: 2, borderBottomColor: 'white',
+      
   },
 
   promptText: {
-    fontSize: 24, fontFamily: 'bold', color: 'black', textAlign: 'center', marginTop: 30, marginBottom: 30
+    fontSize: 24, fontFamily: 'bold', color: 'white', textAlign: 'center', marginTop: 12, marginBottom: 12
   },
   yesnoContainer: {
-    marginBottom: 38, marginTop: 8, marginLeft: 8,
-    marginRight: 8,
+    marginBottom: 12, marginLeft: 12,
+    marginRight: 12,
     flexDirection: 'row', justifyContent: 'space-around',
   },
   touchContainer: {
-   height: 80, width: 120,  borderRadius: 8, justifyContent: 'center', alignItems: 'center'
+   height: 54, width: 120,  borderRadius: 8, justifyContent: 'center', alignItems: 'center'
   },
 
   onNoTouch: {
     backgroundColor: Colors.BACKGROUND_GREY
   },
   onNoText: {
-    fontSize: 28, fontFamily: 'bold', textAlign: 'center', color: Colors.PRIMARY
+    fontSize: 18, fontFamily: 'bold', textAlign: 'center', color: Colors.PRIMARY
   },
   onYesTouch: {
     backgroundColor: Colors.SECONDARY
   },
   onYesText: {
-    fontSize: 28, fontFamily: 'bold', textAlign: 'center', color: 'white'
+    fontSize: 18, fontFamily: 'bold', textAlign: 'center', color: 'white'
   }
 })
 
 export default ItemDetailModal;
+

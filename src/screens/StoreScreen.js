@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,ScrollView,} from 'react-native';
 import { connect } from 'react-redux';
 
 import * as STORE_ACTIONS from '../action-types/store-detail-action-types';
 
 import TabBar from '../ui-elements/tab-bar';
-import TextBox from '../components/text-box';
 import TextBoxFeature from '../components/text-box-feature';
 import NavigationButton from '../ui-elements/nav-button';
 
@@ -45,7 +44,7 @@ class StoreScreen extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <TabBar text={'Store'} onGoBack={() => this.props.navigation.goBack()} />
+        <TabBar text={'Store'} onGoBack={() => this.props.navigation.navigate('home')} />
 
         <ScrollView style={styles.scrollView}>
           <View style={{height: 32}} />
@@ -58,13 +57,6 @@ class StoreScreen extends Component {
                 onPress={() => this.navigateStoreDetail(model)}
                 key={index}
               />
-            /*<TextBox
-                title={model.name}
-                onPress= {() => this.navigateStoreDetail(model)}
-                text={'Store ID: '}
-                id={model.store_id}
-                key={index}
-              />*/
             )))}
 
           </ScrollView>

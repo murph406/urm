@@ -6,3 +6,6 @@ export const SECONDARY_DARK = '#ab000d';
 
 
 export const BACKGROUND_GREY = '#f0f0f0';
+
+export const BACKGROUND_DARK_LIGHTGREY = '#606060';
+export const BACKGROUND_DARK_DARKGREY = '#373737';

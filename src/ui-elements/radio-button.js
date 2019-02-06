@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
+
 import * as Colors from '../theme/colors';
 
 const RadioButton = props => (
@@ -56,34 +57,32 @@ const styles = StyleSheet.create({
 
   },
   buttonOn: {
-    // flexGrow: 1,
     height: 54,
     borderRadius: 8,
-    marginTop: 4,
-    marginBottom: 4,
+    marginTop: 12,
+    marginBottom: 12,
     backgroundColor: Colors.SECONDARY,
     justifyContent: 'center',
 
   },
   buttonOff: {
-    // flexGrow: 1,
     height: 54,
     borderRadius: 8,
-    marginTop: 4,
-    marginBottom: 4,
+    marginTop: 12,
+    marginBottom: 12,
     backgroundColor: 'rgb(240,240,240)',
     justifyContent: 'center',
 
   },
   textOn: {
     fontSize: 18,
-    marginLeft: 12, marginRight: 12,
-    color: 'white', textAlign: 'center',
+    color: 'white', 
+    textAlign: 'center',
     fontFamily: 'bold'
   },
   textOff: {
     fontSize: 18,
-    marginLeft: 12, marginRight: 12,
+ 
     color: 'black', textAlign: 'center',
     fontFamily: 'bold'
   }

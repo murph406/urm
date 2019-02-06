@@ -46,6 +46,7 @@ class ItemScreen extends Component {
         console.log(arr[0].item_description);
 
         this.setState({ items: items.items });
+          
       }
     })
   }

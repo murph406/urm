@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 
+import * as Colors from '../theme/colors';
 import TextBox from '../components/text-box';
 import SubmitButton from '../ui-elements/submit-button';
 
@@ -18,8 +19,6 @@ class NewItemOrderModal extends Component {
   render() {
     return(
       <View style={styles.container}>
-
-
           <ScrollView>
             <View >
               {(this.props.stores.map((model, index)=>
@@ -31,9 +30,6 @@ class NewItemOrderModal extends Component {
               ))}
            </View>
          </ScrollView>
-
-
-
 
         <View style={styles.submitButton}>
           <SubmitButton
@@ -55,11 +51,9 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    alignItems: 'stretch',
-   backgroundColor: '#f5f5f5',
-   padding: 16,
-   paddingTop: 30,
+   backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY,
+   paddingTop: 54,
   },
-
   cardContainer: {
    height: 120,
    borderRadius: 4,
@@ -69,13 +63,15 @@ const styles = StyleSheet.create({
    shadowRadius: 4,
    shadowOffset:{ width: 0, height: 4 },
    justifyContent:'center',
-   margin: 12,
+   marginBottom: 12,
+   marginLeft: 12,
+   marginRight: 12,
   },
   submitButton: {
     position: 'absolute',
-    bottom: 16,
-    right: 16,
-    left: 16,
+    bottom: 24,
+    right: 36,
+    left: 36,
   },
 });
 
