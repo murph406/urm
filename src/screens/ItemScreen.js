@@ -33,7 +33,7 @@ class ItemScreen extends Component {
   }
 
   getItems() {
-    API.getItemsByStore(this.props.store.store_id, (err, items) => {
+    API.getItemsByStore(this.props.store.code, (err, items) => {
       if(err) {
         console.log(err);
       } else {
@@ -41,12 +41,12 @@ class ItemScreen extends Component {
         for(let i = 0; i < 20; i++) {
           arr.push(items.items[i]);
         }
-        
+
         console.log(arr);
         console.log(arr[0].item_description);
 
         this.setState({ items: items.items });
-          
+
       }
     })
   }
@@ -73,7 +73,7 @@ class ItemScreen extends Component {
                 onPress={() => this.setState({ itemModalPresented: true, item: item, })}
                 hasFeature={true}
                 featureColor={(item.sale_complete) ? '#43a047' : Colors.SECONDARY}
-                featureType ={(item.sale_complete) ? null : 'text'} 
+                featureType ={(item.sale_complete) ? null : 'text'}
                 />
 
             )))}
@@ -83,7 +83,7 @@ class ItemScreen extends Component {
           <Modal
             animationType={'slide'}
             visible={this.state.itemModalPresented} >
-            <ItemDetailModal 
+            <ItemDetailModal
               onDismiss={() => this.setState({ itemModalPresented: false})}
               item={this.state.item}
             />

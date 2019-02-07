@@ -8,10 +8,10 @@ const TextBoxFeature = (props) => (
 
     <TouchableOpacity style={styles.container} onPress={props.onPress} >
       <View style={styles.textLeftContainer} >
-        <Text 
-          adjustsFontSizeToFit= {true} 
+        <Text
+          adjustsFontSizeToFit={true}
           style={styles.title}
-          numberOfLines= {2}
+          numberOfLines={2}
           minimumFontScale={.8}
         >{props.title} </Text>
         <Text style={styles.subtitle}>{props.subtitle}</Text>
@@ -23,15 +23,15 @@ const TextBoxFeature = (props) => (
               <Text style={styles.featureText}>{props.featureText}</Text>
               <Text style={styles.featureLabel}>{props.featureLabel}</Text>
             </View>
-            
+
           : <View >
               <Image
                 style={styles.icon}
                 source={require('../../assets/check-icon.png')}
               />
-            </View>   
+            </View>
         }
-        
+
       </View>
     </TouchableOpacity>
 
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 28, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
-    textAlign: 'center', 
+    textAlign: 'center',
   },
   featureLabel: {
     position: 'relative', top: 8, fontSize: 18, color: Colors.SECONDARY_DARK, fontFamily: 'bold'

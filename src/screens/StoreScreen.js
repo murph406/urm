@@ -14,11 +14,6 @@ class StoreScreen extends Component {
     super();
 
     this.state = {
-      stores: [
-        { name: 'Albertsons', store_id: '1234' },
-        { name: 'Safeway', store_id: '4565' },
-        { name: 'Rosauers', store_id: '4321' }
-      ],
       screens: [
         { title: 'Store', screenToSend: 'store'},
         { title: 'Corporate News', screenToSend: 'news'},
@@ -52,8 +47,8 @@ class StoreScreen extends Component {
             {(this.props.stores.map((model, index) => (
               <TextBoxFeature
                 title={model.name}
-                subtitle={'Store ID: ' + model.store_id}
-                featureText={model.itemCount} featureLabel={'Items'}
+                subtitle={'Store ID: ' + model.code.toString()}
+                featureText={model.item_count} featureLabel={'Items'}
                 onPress={() => this.navigateStoreDetail(model)}
                 key={index}
               />
@@ -77,6 +72,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = state => {
+  console.log('STORE', state.user.user.stores)
   return {
     stores: state.user.user.stores
   }

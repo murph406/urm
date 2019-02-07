@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as UserActions from '../action-types/user-action-types';
+import * as API from '../api/api';
 
 class LoadScreen extends Component {
   constructor() {
@@ -13,23 +14,69 @@ class LoadScreen extends Component {
     }
   }
 
-  // TODO look at what the user object looks like in the user reducer
-  // and make the dispatch actually dispatch a proper user, complete with namee, etc
-  componentDidMount() {
-    let user = {
-      stores: [
-        { name: 'Albertsons', store_id: '7960', itemCount: '252' },
-        { name: 'Walmart', store_id: '550', itemCount: '12' },
-        { name: 'Safeway', store_id: '7975', itemCount: '81' },
-        { name: 'Rosaurs', store_id: '970', itemCount: '82' }
-      ]
+  async componentDidMount() {
+    let userID = await AsyncStorage.getItem('@USER_ID')
+    if(userID) {
+      this.getUser(userID)
+    } else {
+      this.props.navigation.navigate('login')
+    }
+  }
+
+  getUser = (userID) => {
+    API.getUser(userID, async(err, user) => {
+      if(err) {
+        console.log(err)
+        await AsyncStorage.removeItem('@USER_ID')
+        this.props.navigation.navigate('login')
+      } else {
+        await AsyncStorage.setItem('@USER_ID', user._id)
+        this.handleUser(user)
+      }
+    })
+  }
+
+  handleUser = (user) => {
+    this.getStores(user.stores, (err, stores) => {
+      if(err) {
+        console.log(err)
+      } else {
+        user.stores = stores;
+        this.props.dispatch({
+          type: UserActions.SET_USER,
+          user: user
+        });
+        this.props.navigation.navigate('home')
+      }
+    })
+  }
+
+  getStores = (stores, callback) => {
+    let promises = []
+    for(let i = 0; i < stores.length; i++) {
+      promises.push(this.getStore(stores[i]))
     }
 
-    this.props.dispatch({
-      type: UserActions.SET_USER,
-      user: user
-    });
-    this.props.navigation.navigate('login')
+    Promise.all(promises).then((response) => {
+      callback(null, response)
+    }).catch((e) => {
+      console.log(e)
+      callback(e)
+    })
+  }
+
+  getStore(id) {
+    return new Promise((resolve, reject) => {
+      API.getStoreByCode(id, (err, store) => {
+        if(err) {
+          console.log(err)
+          reject(err)
+        } else {
+          console.log(store)
+          resolve(store)
+        }
+      })
+    })
   }
 
   render() {

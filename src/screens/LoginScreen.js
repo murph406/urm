@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as Colors from '../theme/colors';
@@ -15,28 +15,17 @@ class LoginScreen extends Component {
     super();
 
     this.state = {
-      user: [ 
-        {name:'Ryan', id: '1234' },
-        {name:'Cooper', id: '8741'},
-        {name:'Bryan', id: '1979'},
-      ],
-      stores: [
-        { name: 'Albertsons', store_id: '7960', itemCount: '252' },
-        { name: 'Walmart', store_id: '550', itemCount: '12' },
-        { name: 'Safeway', store_id: '7975', itemCount: '81' },
-        { name: 'Rosaurs', store_id: '970', itemCount: '82' }
-      ],
+      stores: [],
       users: [],
     }
   }
-  
+
   componentDidMount() {
     this.getUsers();
-    
+
   }
 
   getUsers() {
-
     API.getUsers((err, users) => {
       this.setState({users: users})
     })
@@ -48,33 +37,82 @@ class LoginScreen extends Component {
   }
 
   onUserSelect = (user) => {
-    user.stores = this.state.stores
-    this.props.dispatch({
-      type: UserActions.SET_USER,
-      user
-    });
-    this.props.navigation.navigate('home')
+    AsyncStorage.setItem('@USER_ID', user._id, (err, success) => {
+      if(err) {
+        console.log(err.message)
+      } else {
+        // user.stores = this.state.stores
+        this.handleUser(user)
+      }
+    })
+  }
+
+  handleUser = (user) => {
+    this.getStores(user.stores, (err, stores) => {
+      if(err) {
+        console.log(err)
+      } else {
+        user.stores = stores;
+        this.props.dispatch({
+          type: UserActions.SET_USER,
+          user
+        });
+        this.props.navigation.navigate('home')
+      }
+    })
+  }
+
+  getStores = (stores, callback) => {
+    let promises = []
+    for(let i = 0; i < stores.length; i++) {
+      promises.push(this.getStore(stores[i]))
+    }
+
+    Promise.all(promises).then((response) => {
+      callback(null, response)
+    }).catch((e) => {
+      console.log(e)
+      callback(e)
+    })
+  }
+
+  getStore(id) {
+    return new Promise((resolve, reject) => {
+      API.getStoreByCode(id, (err, store) => {
+        if(err) {
+          console.log(err)
+          reject(err)
+        } else {
+          console.log(store)
+          resolve(store)
+        }
+      })
+    })
   }
 
 
   render() {
     return(
       <View style={styles.container} >
-        <TabBar 
+        {/*<TabBar
           hasBackButton= {false}
           text="Login"
-        />
-        <ScrollView>
+        />*/}
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>Who are you?</Text>
+        </View>
+        <ScrollView style={{flex: 1, marginTop: 64}}>
+          <View style={{height:32}}/>
           {(this.state.users.map((data, index)=> (
             <TextBox
               title={data.name}
-              text= {"User ID: " + data._id}
-              onPress= {() => this.onUserSelect(data)}
+              text={"User ID: " + data._id}
+              onPress={() => this.onUserSelect(data)}
           />
           )))}
-          
+
         </ScrollView>
-       
+
       </View>
     )
   }
@@ -82,8 +120,17 @@ class LoginScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
     backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY,
+  },
+  titleContainer: {
+    margin: 16, marginTop: 84,
+    justifyContent: 'center', alignItems: 'center'
+  },
+  titleText: {
+
+    fontFamily: 'bold', textAlign: 'center', color: 'white',
+    fontSize: 32
   }
 });
 
