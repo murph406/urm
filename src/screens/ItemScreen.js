@@ -55,7 +55,7 @@ class ItemScreen extends Component {
   render() {
     if(this.state.items.length === 0) {
       return(
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.BACKGROUND_DARK_DARKGREY}}>
           <ActivityIndicator size="large" />
         </View>
       )
@@ -72,8 +72,8 @@ class ItemScreen extends Component {
                 subtitle={"Item Code: " + item.item_code}
                 onPress={() => this.setState({ itemModalPresented: true, item: item, })}
                 hasFeature={true}
-                featureColor={(item.sale_complete) ? '#43a047' : Colors.SECONDARY}
-                featureType ={(item.sale_complete) ? null : 'text'}
+                featureColor={(item.is_complete) ? '#43a047' : Colors.SECONDARY}
+                featureType ={(item.is_complete) ? null : 'text'}
                 />
 
             )))}

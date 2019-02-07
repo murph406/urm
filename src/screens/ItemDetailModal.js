@@ -58,9 +58,10 @@ class ItemDetailModal extends Component {
 
   updateItem(data) {
     let outcome = {
-      is_success: data.isSale,
-      reason: data.reason,
-      updated_by: 'user'
+      'is_success': data.isSale,
+      'reason': data.reason,
+      'updated_by': 'user',
+      'completed_at': new Date()
     }
 
     const sender = {
@@ -80,10 +81,10 @@ class ItemDetailModal extends Component {
 
   render() {
     return(
-     
+
       <KeyboardAvoidingView
         style={styles.container}
-        behavior="padding" 
+        behavior="padding"
         enabled
       >
      <ScrollView>
@@ -119,8 +120,8 @@ class ItemDetailModal extends Component {
                       <TextInput
                         placeholder={'Reason'}
                         placeholderTextColor= {'white'}
-                        onChangeText={(otherReason) => this.setState({ otherReason })} 
-                        style={styles.otherInput} 
+                        onChangeText={(otherReason) => this.setState({ otherReason })}
+                        style={styles.otherInput}
                       />
                     </View>
                   : null
@@ -137,9 +138,9 @@ class ItemDetailModal extends Component {
           <Text style={styles.submitText}>Submit</Text>
         </TouchableOpacity>
        </View>
-       
-     </KeyboardAvoidingView>  
-     
+
+     </KeyboardAvoidingView>
+
     )
   }
 }
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
   otherInput: {
     fontSize: 18, fontFamily: 'regular', color: 'white',
       borderBottomWidth: 2, borderBottomColor: 'white',
-      
+
   },
 
   promptText: {
@@ -211,4 +212,3 @@ const styles = StyleSheet.create({
 })
 
 export default ItemDetailModal;
-
