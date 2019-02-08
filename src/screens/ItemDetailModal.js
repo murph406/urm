@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TextInput, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 
 
 import * as Colors from '../theme/colors';
@@ -88,6 +88,15 @@ class ItemDetailModal extends Component {
         enabled
       >
      <ScrollView>
+       
+        <TouchableOpacity
+          onPress={() => this.props.onDismiss()}
+        >
+          <Image
+            style={styles.icon}
+            source={require('../../assets/X-icon2.png')}
+          />
+        </TouchableOpacity>
         <View style={styles.cardContainer}>
           <Text style={styles.promptText}>Were You Able To Make This Sale?</Text>
 
@@ -147,7 +156,7 @@ class ItemDetailModal extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, alignItems: 'stretch', padding: 16, paddingTop: 54,
+    flex: 1, alignItems: 'stretch', padding: 16, paddingTop: 44,
     backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY
   },
   cardContainer: {
@@ -182,9 +191,7 @@ const styles = StyleSheet.create({
   otherInput: {
     fontSize: 18, fontFamily: 'regular', color: 'white',
       borderBottomWidth: 2, borderBottomColor: 'white',
-
   },
-
   promptText: {
     fontSize: 24, fontFamily: 'bold', color: 'white', textAlign: 'center', marginTop: 12, marginBottom: 12
   },
@@ -208,6 +215,10 @@ const styles = StyleSheet.create({
   },
   onYesText: {
     fontSize: 18, fontFamily: 'bold', textAlign: 'center', color: 'white'
+  },
+  icon: {
+    height: 36,
+    width: 36,
   }
 })
 

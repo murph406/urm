@@ -4,9 +4,9 @@ import { View, Text, StyleSheet,Image,ScrollView, Modal, TouchableOpacity, Activ
 import { connect } from 'react-redux';
 
 import TabBar from '../ui-elements/tab-bar';
-import ItemBox from '../components/item-box';
 import NavigationButton from '../ui-elements/nav-button';
 import ItemDetailModal from './ItemDetailModal';
+import FilterItemModal from './FilterItemModal';
 
 import * as Colors from '../theme/colors';
 import * as API from '../api/api';
@@ -19,6 +19,7 @@ class ItemScreen extends Component {
     super();
 
     this.state = {
+      filterModalPresented: false,
       itemModalPresented: false,
       items: []
     }
@@ -62,7 +63,12 @@ class ItemScreen extends Component {
     } else {
       return(
         <View style={styles.container}>
-          <TabBar text="Items" onGoBack={() => this.props.navigation.navigate('store')} />
+          <TabBar 
+            text="Items" 
+            onGoBack={() => this.props.navigation.navigate('store')} 
+            hasFilterButton={true}
+            onGoFilter={() => this.setState({filterModalPresented: true})}
+            />
           <View style={{height: 32}} />
           <ScrollView style={{flex: 1}} >
             {(this.state.items.map((item, index) => (
@@ -79,6 +85,14 @@ class ItemScreen extends Component {
             )))}
 
           </ScrollView>
+          <Modal
+            animationType={'slide'}
+            visible={this.state.filterModalPresented}
+          >
+            <FilterItemModal
+              onDismissFilter={() => this.setState({ filterModalPresented: false })}
+            />
+          </Modal>
 
           <Modal
             animationType={'slide'}

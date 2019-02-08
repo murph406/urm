@@ -5,7 +5,6 @@ import * as Colors from '../theme/colors';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
-import NavigationButton from '../ui-elements/nav-button';
 import TitleCard from '../ui-elements/title-card';
 import SubmitButton from '../ui-elements/submit-button';
 import NewItemOrderModal from './NewItemOrderModal'; 
@@ -44,7 +43,7 @@ class NewItemScreen extends Component {
   render() {
     return(
       <View style={styles.container}>
-          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('home')} />
+          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('newItemList')} />
 
           <ScrollView>
         <View style={styles.scrollView}>
@@ -66,7 +65,7 @@ class NewItemScreen extends Component {
                 ? <View>
                     <TextBox
                       title= {this.state.selectedStore.name}
-                      
+                      text={'Store ID: '+ this.state.selectedStore.store_id}
                       onPress= {() => this.setState({itemModalPresented: true})}
                     />
                   <View style={styles.cardContainer}>

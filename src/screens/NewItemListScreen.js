@@ -42,7 +42,10 @@ componentDidMount() {
   render() {
     return(
       <View style={styles.container}>
-        <TabBar text="New Items"/>
+        <TabBar 
+        text="New Items" 
+        onGoBack={() => this.props.navigation.navigate('home')}
+        />
         <ScrollView>
             <View>
         {(this.state.item.map((data, index) => (
