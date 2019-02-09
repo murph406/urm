@@ -11,10 +11,10 @@ const FilterButton = (props) => (
      {(props.options.map(
        (data) => (
         <TouchableOpacity
-          onPress={() => props.onPress()}
+          onPress={() => props.onPress(data.index)}
           style={ ((data.isSelected) ? styles.submitContainer2 : styles.submitContainer ) }
         >
-        <Text style={styles.submitText}>{data.name}</Text>
+        <Text style={((data.isSelected) ? styles.submitText2 : styles.submitText )}>{data.name}</Text>
         </TouchableOpacity>
       )))}
 
@@ -23,7 +23,23 @@ const FilterButton = (props) => (
 )
 
 FilterButton.PropTypes = {
+  data: PropTypes.arr,
   onPress: PropTypes.func
+}
+
+FilterButton.onSelectItem = function(arr, index, callback) {
+  for(let i = 0; i < arr.length; i++) {
+    if ( arr[index].isSelected === false ) {
+      arr[index].isSelected = true;
+      callback(arr);
+      break;
+   } 
+    else { 
+      arr[index].isSelected = false; 
+      callback(arr);
+      break;
+    }
+  } 
 }
 
 export default FilterButton;
@@ -49,7 +65,7 @@ const styles = StyleSheet.create({
   submitContainer2:{
     flex: 1,
     borderRadius: 28,
-    backgroundColor: 'red',
+    backgroundColor: Colors.SECONDARY,
     justifyContent: 'center',
     alignItems: 'center',
     height: 54,
@@ -60,7 +76,14 @@ const styles = StyleSheet.create({
   },
   submitText: {
     fontSize: 18,
+    fontWeight: 'bold',
     textAlign: 'center',
     color: 'black'
+  },
+  submitText2: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white'
   },
 });

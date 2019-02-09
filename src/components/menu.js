@@ -18,7 +18,7 @@ class Menu extends Component {
   }
 
   goItem= () => {
-    this.props.navigation.navigate('items');
+    this.props.navigation.navigate('newItemList');
     this.props.navigation.closeDrawer();
   }
 

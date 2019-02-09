@@ -14,19 +14,32 @@ class FilterItemModal extends Component {
         super();
         this.state = {
             filterOptions: [
-                {name: 'Alphabetical', isSelected: false},
-                {name: 'Newest', isSelected: false},
+                {name: 'Alphabetical',  index: 0, isSelected: false},
+                {name: 'Newest', index: 1, isSelected: false},
+             
             ],
             filterOptions2: [
-                {name: 'YES', isSelected: false},
-                {name: 'YES', isSelected: false},
-                {name: 'YES', isSelected: false},
+                {name: 'YES', index: 0, isSelected: false},
+                {name: 'Yup', index: 1, isSelected: false},
+                {name: 'Ooh', index: 2, isSelected: false},
             ]
         }
 }
   componentDidMount() {
 
   }
+
+  onSelectFilter = (index) => {
+    FilterButton.onSelectItem(this.state.filterOptions, index, (arr) => {
+      this.setState({ filterOptions: arr });
+    });
+  }
+  onSelectFilter2 = (index) => {
+    FilterButton.onSelectItem(this.state.filterOptions2, index, (arr) => {
+      this.setState({ filterOptions2: arr });
+    });
+  }
+
 
   render() {
     return(
@@ -44,8 +57,12 @@ class FilterItemModal extends Component {
            </View>
            <View style={styles.filterContainer}>
             <FilterButton
-                onPress={() => this.setState({isSelected: true})}
+                onPress={(index) => this.onSelectFilter(index)}
                 options={this.state.filterOptions}
+            />
+            <FilterButton
+                onPress={(index) => this.onSelectFilter2(index)}
+                options={this.state.filterOptions2}
             />
            </View>
          </View>
