@@ -8,9 +8,11 @@ import NavigationButton from '../ui-elements/nav-button';
 import ItemDetailModal from './ItemDetailModal';
 import FilterItemModal from './FilterItemModal';
 
+import TextBoxFeature from '../components/text-box-feature';
+import CircleButton from '../ui-elements/circle-button';
+
 import * as Colors from '../theme/colors';
 import * as API from '../api/api';
-import TextBoxFeature from '../components/text-box-feature';
 
 
 class ItemScreen extends Component {
@@ -21,7 +23,8 @@ class ItemScreen extends Component {
     this.state = {
       filterModalPresented: false,
       itemModalPresented: false,
-      items: []
+      items: [],
+      onCompletedItems: false
     }
   }
 
@@ -38,20 +41,38 @@ class ItemScreen extends Component {
       if(err) {
         console.log(err);
       } else {
-        let arr = [];
-        for(let i = 0; i < 20; i++) {
-          arr.push(items.items[i]);
+        for(let i = 0; i < items.items.length; i++) {
+          items.items[i].isVisible = true;
         }
-
-        console.log(arr);
-        console.log(arr[0].item_description);
-
         this.setState({ items: items.items });
-
       }
     })
   }
 
+  onToggle() {
+    this.setState({ onCompletedItems: !this.state.onCompletedItems }, () => {
+
+      let items = [];
+
+      if(this.state.onCompletedItems) {
+        for(let i = 0; i < this.state.items.length; i++) {
+          this.state.items[i].isVisible = false;
+          if(this.state.items[i].is_complete == true) {
+            this.state.items[i].isVisible = true;
+          }
+        }
+      } else {
+        for(let i = 0; i < this.state.items.length; i++) {
+          this.state.items[i].isVisible = false;
+          if(!this.state.items[i].is_complete) {
+            this.state.items[i].isVisible = true;
+          }
+        }
+      }
+
+      this.setState({ items: this.state.items })
+    })
+  }
 
   render() {
     if(this.state.items.length === 0) {
@@ -63,24 +84,26 @@ class ItemScreen extends Component {
     } else {
       return(
         <View style={styles.container}>
-          <TabBar 
-            text="Items" 
-            onGoBack={() => this.props.navigation.navigate('store')} 
+          <TabBar
+            text="Items"
+            onGoBack={() => this.props.navigation.navigate('store')}
             hasFilterButton={true}
             onGoFilter={() => this.setState({filterModalPresented: true})}
             />
           <View style={{height: 32}} />
           <ScrollView style={{flex: 1}} >
             {(this.state.items.map((item, index) => (
-              <TextBoxFeature
-                title={item.item_description}
-                text={item.department}
-                subtitle={"Item Code: " + item.item_code}
-                onPress={() => this.setState({ itemModalPresented: true, item: item, })}
-                hasFeature={true}
-                featureColor={(item.is_complete) ? '#43a047' : Colors.SECONDARY}
-                featureType ={(item.is_complete) ? null : 'text'}
-                />
+              (item.isVisible)
+                ? <TextBoxFeature
+                    title={item.item_description}
+                    text={item.department}
+                    subtitle={"Item Code: " + item.item_code}
+                    onPress={() => this.setState({ itemModalPresented: true, item: item, })}
+                    hasFeature={true}
+                    featureColor={(item.is_complete) ? Colors.GREEN : Colors.SECONDARY}
+                    featureType ={(item.is_complete) ? null : 'text'}
+                  />
+                : null
 
             )))}
 
@@ -103,7 +126,13 @@ class ItemScreen extends Component {
             />
           </Modal>
 
-          <NavigationButton onPress={() => this.openDrawer()}/>
+          <View style={styles.toggle} >
+            <CircleButton
+              backgroundColor={(this.state.onCompletedItems) ? Colors.SECONDARY : Colors.GREEN }
+              onPress={() => this.onToggle()}
+            />
+          </View>
+
 
         </View>
       )
@@ -116,6 +145,10 @@ const styles = StyleSheet.create({
    flex: 1,
    backgroundColor: '#f5f5f5',
   },
+  toggle: {
+    position: 'absolute',
+    left: 16, bottom: 16
+  }
 });
 
 var mapStateToProps = state => {

@@ -7,7 +7,7 @@ import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import TitleCard from '../ui-elements/title-card';
 import SubmitButton from '../ui-elements/submit-button';
-import NewItemOrderModal from './NewItemOrderModal'; 
+import NewItemOrderModal from './NewItemOrderModal';
 
 class NewItemScreen extends Component {
 
@@ -28,7 +28,7 @@ class NewItemScreen extends Component {
   openDrawer = (text) => {
     this.props.navigation.openDrawer();
   }
-  
+
   goCompleteOrder = () => {
     Linking.openURL('mailto:somethingemail@gmail.com?subject=Hello All&body=Description')
   }
@@ -36,7 +36,7 @@ class NewItemScreen extends Component {
   _onSelectStore(store) {
     this.setState({ selectedStore: store, itemModalPresented: false }, () => {
       console.log(this.state.selectedStore)
-      
+
     })
   }
 
@@ -50,7 +50,7 @@ class NewItemScreen extends Component {
 
               <TitleCard
                  title={this.state.item.title}
-              /> 
+              />
 
               <TitleCard
                 info={[
@@ -65,7 +65,7 @@ class NewItemScreen extends Component {
                 ? <View>
                     <TextBox
                       title= {this.state.selectedStore.name}
-                      text={'Store ID: '+ this.state.selectedStore.store_id}
+                      text={'Store ID: '+ this.state.selectedStore.code}
                       onPress= {() => this.setState({itemModalPresented: true})}
                     />
                   <View style={styles.cardContainer}>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   textContainer: {
-     flexDirection: 'row', marginBottom: 12, marginTop: 12, 
+     flexDirection: 'row', marginBottom: 12, marginTop: 12,
      marginLeft: 12, marginRight: 12,
   },
   textStyle: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   textInputContatiner: {
     fontSize: 24, fontFamily: 'regular', color: 'white',
-    borderBottomWidth: 2, borderBottomColor: 'white', 
+    borderBottomWidth: 2, borderBottomColor: 'white',
     marginLeft: 10, width: 100,
   },
   textInput: {

@@ -25,7 +25,7 @@ class NewItemOrderModal extends Component {
                 <TextBox
                   onPress={()=> this.props.onSelectStore(model)}
                   title= {model.name}
-                  text={'Store ID: '+ model.store_id}
+                  text={'Store ID: '+ model.code}
                 />
               ))}
            </View>

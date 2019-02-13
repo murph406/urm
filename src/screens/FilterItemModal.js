@@ -16,12 +16,12 @@ class FilterItemModal extends Component {
             filterOptions: [
                 {name: 'Alphabetical',  index: 0, isSelected: false},
                 {name: 'Newest', index: 1, isSelected: false},
-             
+
             ],
             filterOptions2: [
-                {name: 'YES', index: 0, isSelected: false},
-                {name: 'Yup', index: 1, isSelected: false},
-                {name: 'Ooh', index: 2, isSelected: false},
+                // {name: 'YES', index: 0, isSelected: false},
+                // {name: 'Yup', index: 1, isSelected: false},
+                // {name: 'Ooh', index: 2, isSelected: false},
             ]
         }
 }

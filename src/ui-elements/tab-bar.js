@@ -10,7 +10,7 @@ const TabBar = (props) => (
     <View style={styles.tabBar}>
 
         <View style={styles.textContainer}>
-     
+
             {(props.hasBackButton)
               ? <TouchableOpacity
                   onPress={() => props.onGoBack()}
@@ -33,11 +33,11 @@ const TabBar = (props) => (
                     style={styles.filterIcon}
                     source={require('../../assets/filter-icon.png')}
                   />
-                
+
               </TouchableOpacity>
             : null
             }
-          
+
         </View>
     </View>
   </View>
@@ -54,11 +54,7 @@ TabBar.defaultProps = {
   hasFilterButton: false
 }
 
-
-
 export default TabBar;
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
     fontFamily: 'bold',
     fontSize: 34,
     color: 'white',
-    
+
   },
   tabBar: {
     paddingHorizontal: 20,
@@ -81,16 +77,17 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    
+
   },
   icon: {
     marginRight: 20
   },
   filterContainer: {
-    paddingLeft: 180,
+    position: 'absolute',
+    right: 16
   },
   filterIcon: {
       height: 36,
-      width: 36, 
+      width: 36,
   }
 });
