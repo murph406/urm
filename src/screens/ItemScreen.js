@@ -41,9 +41,10 @@ class ItemScreen extends Component {
       if(err) {
         console.log(err);
       } else {
-        for(let i = 0; i < items.items.length; i++) {
-          items.items[i].isVisible = true;
-        }
+        console.log('ITEMS')
+        // for(let i = 0; i < items.items.length; i++) {
+        //   items.items[i].isVisible = true;
+        // }
         this.setState({ items: items.items });
       }
     })
@@ -53,7 +54,7 @@ class ItemScreen extends Component {
     this.setState({ onCompletedItems: !this.state.onCompletedItems }, () => {
 
       let items = [];
-
+      return;
       if(this.state.onCompletedItems) {
         for(let i = 0; i < this.state.items.length; i++) {
           this.state.items[i].isVisible = false;
@@ -92,8 +93,32 @@ class ItemScreen extends Component {
             />
           <View style={{height: 32}} />
           <ScrollView style={{flex: 1}} >
-            {(this.state.items.map((item, index) => (
-              (item.isVisible)
+            {(this.state.onCompletedItems)
+              ? (this.state.items.filter((item) => item.is_complete).map((item, index) => (
+                  <TextBoxFeature
+                      title={item.item_description}
+                      text={item.department}
+                      subtitle={"Item Code: " + item.item_code}
+                      onPress={() => this.setState({ itemModalPresented: true, item: item, })}
+                      hasFeature={true}
+                      featureColor={(item.is_complete) ? Colors.GREEN : Colors.SECONDARY}
+                      featureType ={(item.is_complete) ? null : 'text'}
+                    />
+
+                )))
+              : (this.state.items.filter((item) => !item.is_complete).map((item, index) => (
+                  <TextBoxFeature
+                      title={item.item_description}
+                      text={item.department}
+                      subtitle={"Item Code: " + item.item_code}
+                      onPress={() => this.setState({ itemModalPresented: true, item: item, })}
+                      hasFeature={true}
+                      featureColor={(item.is_complete) ? Colors.GREEN : Colors.SECONDARY}
+                      featureType ={(item.is_complete) ? null : 'text'}
+                    />
+                )))
+            }
+            {/*(this.state.items.map((item, index) => (
                 ? <TextBoxFeature
                     title={item.item_description}
                     text={item.department}
@@ -105,7 +130,7 @@ class ItemScreen extends Component {
                   />
                 : null
 
-            )))}
+            )))*/}
 
           </ScrollView>
           <Modal

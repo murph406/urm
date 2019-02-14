@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
 import * as Colors from '../theme/colors';
 
 class Menu extends Component {
@@ -8,7 +8,9 @@ class Menu extends Component {
     this.props.navigation.navigate('home');
     this.props.navigation.closeDrawer();
   }
-  goLogin = () => {
+  goLogin = async() => {
+    await AsyncStorage.removeItem('@USER_ID');
+
     this.props.navigation.navigate('login');
     this.props.navigation.closeDrawer();
   }
@@ -35,7 +37,7 @@ class Menu extends Component {
         <TouchableOpacity onPress={this.goItem}>
           <Text style={styles.Text}>New Items</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity onPress={this.goLogin}>
           <Text style={styles.Text}>Log Out</Text>
         </TouchableOpacity>
