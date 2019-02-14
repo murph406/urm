@@ -22,6 +22,10 @@ export default class App extends React.Component {
 
   store = createStore(MainReducer, applyMiddleware(thunk));
 
+  componentWillMount() {
+    console.disableYellowBox = true;
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       'regular': require('./assets/fonts/Roboto-Regular.ttf'),
