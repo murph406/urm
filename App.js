@@ -8,6 +8,7 @@ import MainReducer from './src/reducers/main-reducer';
 import thunk from 'redux-thunk';
 
 import AppNavigator from './src/navigation/app-navigator';
+import * as Colors from './src/theme/colors';
 
 
 export default class App extends React.Component {
@@ -44,7 +45,7 @@ export default class App extends React.Component {
       );
     } else {
       return(
-        <View style={{flex:1}}><ActivityIndicator size='large'></ActivityIndicator></View>
+        <View style={{flex:1, backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY}}><ActivityIndicator size='large'></ActivityIndicator></View>
       )
     }
   }

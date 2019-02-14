@@ -3,11 +3,13 @@ import { View, Text, StyleSheet,ScrollView, Linking, Modal, Picker, TextInput} f
 
 import * as Colors from '../theme/colors';
 
+import NewItemPreviewModal from './NewItemPreviewModal'
 import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import TitleCard from '../ui-elements/title-card';
 import SubmitButton from '../ui-elements/submit-button';
 import NewItemOrderModal from './NewItemOrderModal';
+import CircleButton from '../ui-elements/circle-button';
 
 class NewItemScreen extends Component {
 
@@ -23,6 +25,7 @@ class NewItemScreen extends Component {
     },
     selectedStore: null,
     itemModalPresented: false,
+    isPreviewPresented: false,
   }
 
   openDrawer = (text) => {
@@ -91,11 +94,25 @@ class NewItemScreen extends Component {
 
           </View>
         </ScrollView>
+       
+         <View style={styles.presentImageButton}>
+            <CircleButton
+              onPress={() => this.setState({isPreviewPresented: true})}
+            />
+          </View>
 
           <Modal animationType={'slide'} visible={this.state.itemModalPresented} >
             <NewItemOrderModal
               onDismiss={() => this.setState({ itemModalPresented: false })}
               onSelectStore={(store) => this._onSelectStore(store)}
+            />
+          </Modal>
+            
+          <Modal 
+          animationType={'slide'}
+          visible={this.state.isPreviewPresented}>
+            <NewItemPreviewModal
+              onDissmissPreview={() => this.setState({ isPreviewPresented: false})}
             />
           </Modal>
       </View>
@@ -145,6 +162,9 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     padding: 8,
-
   },
+  presentImageButton: {
+    position: 'absolute',
+    left: 16, bottom: 16
+  }
 });

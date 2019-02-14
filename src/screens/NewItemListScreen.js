@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, TouchableOpacity, Modal} from 'react-native';
+
+
 
 import * as Colors from '../theme/colors';
 import * as API from '../api/api';
@@ -7,13 +9,16 @@ import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import NavigationButton from '../ui-elements/nav-button';
 
+
+
 class NewItemList extends Component {
 
   constructor(props){
     super(props);
 
     this.state = {
-      items: []
+      items: [],
+      
     }
 }
 
@@ -61,10 +66,15 @@ componentDidMount() {
              </View>
             )))}
          </View>
+        
         </ScrollView>
 
-        <NavigationButton
-          onPress={() => this.openDrawer()}/>
+          <View>
+            <NavigationButton
+              onPress={() => this.openDrawer()}
+            />
+          </View>
+     
       </View>
     )
   }
@@ -82,5 +92,6 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowRadius: 4,
     shadowOffset:{ width: 0, height: 4 }
-  }
+  },
+  
 });

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import * as UserActions from '../action-types/user-action-types';
 import * as API from '../api/api';
+import * as Colors from '../theme/colors';
 
 class LoadScreen extends Component {
   constructor() {
@@ -90,7 +91,8 @@ class LoadScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, justifyContent: 'center', alignItems: 'center'
+    flex: 1, backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY, 
+    justifyContent: 'center', alignItems: 'center'
   }
 });
 
