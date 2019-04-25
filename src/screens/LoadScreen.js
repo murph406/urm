@@ -73,7 +73,6 @@ class LoadScreen extends Component {
           console.log(err)
           reject(err)
         } else {
-          console.log(store)
           resolve(store)
         }
       })
@@ -91,7 +90,7 @@ class LoadScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY, 
+    flex: 1, backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY,
     justifyContent: 'center', alignItems: 'center'
   }
 });

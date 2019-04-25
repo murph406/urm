@@ -6,17 +6,11 @@ import PropTypes from 'prop-types';
 const TextBox = (props) => (
 
     <View style={[styles.container, {backgroundColor: props.featureColor}]}>
-      <TouchableOpacity onPress={() => {props.onPress()}} style={{flex: 1}}>
-        {/*<View style={styles.mainContainer} >*/}
+      <TouchableOpacity onPress={props.onPress} style={{flex: 1}}>
           <View style={styles.textContainer} >
             <Text style={[styles.bigText, {color: props.featureText}]}>{props.title}</Text>
             <Text style={[styles.smallText, {color: props.featureText}]}>{props.text}{props.id}</Text>
           </View>
-
-
-
-        {/*</View>*/}
-
       </TouchableOpacity>
     </View>
 )
@@ -55,8 +49,8 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   mainContainer: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden', 
-    
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden',
+
   },
   featureContainer: {
     width: 84, justifyContent: 'center', alignItems: 'center'
@@ -66,7 +60,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1, justifyContent: 'center', alignItems: 'stretch',
-    margin: 16, 
+    margin: 16,
   },
   smallText: {
     fontSize: 18,

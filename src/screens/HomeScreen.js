@@ -16,16 +16,18 @@ class HomeScreen extends Component {
 
     this.state = {
       screens: [
-        { title: 'My Stores', screenToSend: 'store', feature: props.user.stores.length, featureLabel: 'Stores'},
+        { title: 'Master List', screenToSend: 'store', feature: '00', featureLabel: 'Items'},
+        { title: 'New Items', screenToSend: 'newList', feature: '00', featureLabel: 'Items'},
+        { title: 'Promo Items', screenToSend: 'promoList', feature: '00', featureLabel: 'Items'},
         //{ title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
         //{ title: 'Tasks', screenToSend: 'task', feature: '35', featureLabel: 'Tasks'},
-        {title: 'New Items', screenToSend: 'newItemList', feature: '17', featureLabel: 'Items'},
+        // {title: 'New Items', screenToSend: 'newItemList', feature: '17', featureLabel: 'Items'},
       ],
     }
   }
 
   componentDidMount() {
-
+    this.props.navigation.navigate('promoList')
   }
 
   doSomethin() {
@@ -54,7 +56,7 @@ class HomeScreen extends Component {
           <View style={{height: 16}} />
 
           {(this.state.screens.map((model, index) => (
-            <View style={{shadowOpacity: 0.2,shadowColor: 'black',shadowRadius: 4,shadowOffset:{ width: 0, height: 4 }}}>
+            <View style={{shadowOpacity: 0.2,shadowColor: 'black',shadowRadius: 4,shadowOffset:{ width: 0, height: 4 }}} key={{index}}>
               <TextBoxFeature
                 title={model.title}
                 subtitle={'Subtitle Text'}

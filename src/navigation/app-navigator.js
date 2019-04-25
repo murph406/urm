@@ -7,11 +7,12 @@ import Menu from '../components/menu';
 import StoreScreen from '../screens/StoreScreen';
 import NewsScreen from '../screens/NewsScreen';
 import TaskScreen from '../screens/TaskScreen';
-import NewItemScreen from '../screens/NewItemScreen';
+import NewItemDetail from '../screens/NewItemDetail';
 import ItemScreen from '../screens/ItemScreen';
 import LoadScreen from '../screens/LoadScreen';
 import LoginScreen from '../screens/LoginScreen';
-import NewItemListScreen from '../screens/NewItemListScreen';
+import NewItemScreen from '../screens/NewItemScreen';
+import PromoItemScreen from '../screens/PromoItemScreen';
 
 const AppNavigator = createDrawerNavigator({
   load: LoadScreen,
@@ -20,9 +21,11 @@ const AppNavigator = createDrawerNavigator({
   store: StoreScreen,
   news: NewsScreen,
   task: TaskScreen,
-  newItem: NewItemScreen,
   items: ItemScreen,
-  newItemList: NewItemListScreen,
+  newList: NewItemScreen,
+  newDetail: NewItemDetail,
+  promoList: PromoItemScreen,
+  promoDetail: NewItemDetail
 },
 {
   contentComponent: Menu,
