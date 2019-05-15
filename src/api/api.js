@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-let IS_DEV = false;
-let BASE_URL = 'http://localhost:5000/api'
+let IS_DEV = true;
+let BASE_URL = 'http://localhost:8888/api'
 
 if(!IS_DEV) {
   BASE_URL = 'https://urm-api.herokuapp.com/api';

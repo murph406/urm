@@ -16,9 +16,9 @@ class HomeScreen extends Component {
 
     this.state = {
       screens: [
-        { title: 'Master List', screenToSend: 'store', feature: '00', featureLabel: 'Items'},
-        { title: 'New Items', screenToSend: 'newList', feature: '00', featureLabel: 'Items'},
-        { title: 'Promo Items', screenToSend: 'promoList', feature: '00', featureLabel: 'Items'},
+        { title: 'Master List', screenToSend: 'store', feature: '0', featureLabel: 'Items'},
+        { title: 'New Items', screenToSend: 'newList', feature: '0', featureLabel: 'Items'},
+        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items'},
         //{ title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
         //{ title: 'Tasks', screenToSend: 'task', feature: '35', featureLabel: 'Tasks'},
         // {title: 'New Items', screenToSend: 'newItemList', feature: '17', featureLabel: 'Items'},
@@ -27,7 +27,7 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.navigate('promoList')
+    // this.props.navigation.navigate('promoList')
   }
 
   doSomethin() {

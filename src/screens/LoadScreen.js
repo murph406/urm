@@ -16,21 +16,27 @@ class LoadScreen extends Component {
   }
 
   async componentDidMount() {
-    let userID = await AsyncStorage.getItem('@USER_ID')
-    if(userID) {
-      this.getUser(userID)
-    } else {
+    try {
+      let userID = await AsyncStorage.getItem('@USER_ID')
+      if(userID) {
+        this.getUser(userID)
+      } else {
+        this.props.navigation.navigate('login')
+      }
+    } catch(e) {
+      console.log(e)
       this.props.navigation.navigate('login')
     }
   }
 
   getUser = (userID) => {
     API.getUser(userID, async(err, user) => {
-      if(err) {
+      if(err || !user) {
         console.log(err)
         await AsyncStorage.removeItem('@USER_ID')
         this.props.navigation.navigate('login')
       } else {
+        console.log('user',user)
         await AsyncStorage.setItem('@USER_ID', user._id)
         this.handleUser(user)
       }

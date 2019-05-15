@@ -27,6 +27,7 @@ class LoginScreen extends Component {
 
   getUsers() {
     API.getUsers((err, users) => {
+      console.log(users)
       this.setState({users: users})
     })
   }

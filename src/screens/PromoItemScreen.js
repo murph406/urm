@@ -8,7 +8,7 @@ import * as Colors from '../theme/colors';
 import TabBar from '../ui-elements/tab-bar';
 import TextBoxFeature from '../components/text-box-feature';
 import NavigationButton from '../ui-elements/nav-button';
-import ItemCarousel from '../components/carousel';
+import ItemCarousel from '../components/item-carousel';
 
 class PromoItemsScreen extends Component {
 
@@ -75,7 +75,7 @@ class PromoItemsScreen extends Component {
   render() {
     return(
       <View style={styles.container} >
-        <TabBar text="Promos" hasBackButton={false} />
+        <TabBar text="Promos" onGoBack={() => this.props.navigation.goBack()} />
 
         <View style={styles.carouselContainer} >
           <ItemCarousel items={this.state.items} />
