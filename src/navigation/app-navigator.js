@@ -1,5 +1,5 @@
 import React from 'react';
-import { createDrawerNavigator } from 'react-navigation';
+import { createDrawerNavigator, createAppContainer } from 'react-navigation';
 import { Dimensions } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -14,7 +14,7 @@ import LoginScreen from '../screens/LoginScreen';
 import NewItemScreen from '../screens/NewItemScreen';
 import PromoItemScreen from '../screens/PromoItemScreen';
 
-const AppNavigator = createDrawerNavigator({
+const navigator = createDrawerNavigator({
   load: LoadScreen,
   login: LoginScreen,
   home: HomeScreen,
@@ -32,5 +32,7 @@ const AppNavigator = createDrawerNavigator({
   drawerWidth: Dimensions.get('window').width * 0.7,
   drawerType: 'front'
 })
+
+const AppNavigator = createAppContainer(navigator)
 
 export default AppNavigator;

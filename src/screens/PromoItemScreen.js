@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Modal } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as UserActions from '../action-types/user-action-types';
@@ -9,6 +9,7 @@ import TabBar from '../ui-elements/tab-bar';
 import TextBoxFeature from '../components/text-box-feature';
 import NavigationButton from '../ui-elements/nav-button';
 import ItemCarousel from '../components/item-carousel';
+import SpecialItemOrder from './SpecialItemOrder';
 
 class PromoItemsScreen extends Component {
 
@@ -16,6 +17,8 @@ class PromoItemsScreen extends Component {
     super(props);
 
     this.state = {
+      isOrderModalPresented: false,
+      selectedItemGroup: { items: [] },
       items: [
         {
           title: 'Merchant Craft',
@@ -72,8 +75,9 @@ class PromoItemsScreen extends Component {
     this.props.navigation.navigate(screen);
   }
 
-  _onSelectItem(item) {
+  _onSelectItemGroup(item) {
     console.log(item)
+    this.setState({ selectedItemGroup: item, isOrderModalPresented: true })
   }
 
   render() {
@@ -82,9 +86,12 @@ class PromoItemsScreen extends Component {
         <TabBar text="Promos" onGoBack={() => this.props.navigation.goBack()} />
 
         <View style={styles.carouselContainer} >
-          <ItemCarousel items={this.props.promoItems} onSelect={(item) => this._onSelectItem(item)} />
+          <ItemCarousel items={this.props.promoItems} onSelect={(item) => this._onSelectItemGroup(item)} />
         </View>
 
+        <Modal animationType={'slide'} visible={this.state.isOrderModalPresented} >
+          <SpecialItemOrder items={this.state.selectedItemGroup.items} />
+        </Modal>
 
       </View>
     )
