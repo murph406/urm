@@ -72,13 +72,17 @@ class PromoItemsScreen extends Component {
     this.props.navigation.navigate(screen);
   }
 
+  _onSelectItem(item) {
+    console.log(item)
+  }
+
   render() {
     return(
       <View style={styles.container} >
         <TabBar text="Promos" onGoBack={() => this.props.navigation.goBack()} />
 
         <View style={styles.carouselContainer} >
-          <ItemCarousel items={this.state.items} />
+          <ItemCarousel items={this.props.promoItems} onSelect={(item) => this._onSelectItem(item)} />
         </View>
 
 
@@ -102,8 +106,10 @@ const styles = StyleSheet.create({
 })
 
 var mapStateToProps = (state) => {
+  console.log(state.specialItems.dealItems)
   return {
-    user: state.user.user
+    user: state.user.user,
+    promoItems: state.specialItems.dealItems
   }
 }
 

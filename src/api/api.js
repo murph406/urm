@@ -17,6 +17,8 @@ const UPDATE_ITEM_STATUS = '/item/update-status';
 const GET_USER = '/user/get-one/';
 const GET_USERS = '/user/get-all';
 
+const GET_ITEM_GROUPS = '/special/get-all-groups';
+
 
 export function getItemsByStore(storeID, callback) {
   axios.get(BASE_URL + GET_ITEMS_BY_STORE + storeID)
@@ -53,5 +55,11 @@ export function getNewItems(callback) {
 export function getStoreByCode(code, callback) {
   axios.get(BASE_URL + GET_STORE_BY_CODE + code)
     .then(response => callback(null, response.data))
+    .catch(e => callback(e))
+}
+
+export function getAllItemGroups(callback) {
+  axios.get(BASE_URL + GET_ITEM_GROUPS)
+    .then(res => callback(null, res.data))
     .catch(e => callback(e))
 }

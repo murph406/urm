@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,ScrollView, } from 'react-native';
 import { connect } from 'react-redux';
 
+import * as API from '../api/api';
 import * as UserActions from '../action-types/user-action-types';
+import * as SpecialItemActions from '../action-types/special-item-actions';
 import * as Colors from '../theme/colors';
 
 import TabBar from '../ui-elements/tab-bar';
@@ -16,7 +18,7 @@ class HomeScreen extends Component {
 
     this.state = {
       screens: [
-        { title: 'Master List', screenToSend: 'store', feature: '0', featureLabel: 'Items'},
+        // { title: 'Master List', screenToSend: 'store', feature: '0', featureLabel: 'Items'},
         { title: 'New Items', screenToSend: 'newList', feature: '0', featureLabel: 'Items'},
         { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items'},
         //{ title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
@@ -28,6 +30,7 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     // this.props.navigation.navigate('promoList')
+    this.getPromoItems()
   }
 
   doSomethin() {
@@ -45,6 +48,17 @@ class HomeScreen extends Component {
 
   navigate = (screen) => {
     this.props.navigation.navigate(screen);
+  }
+
+  getPromoItems() {
+    API.getAllItemGroups((err, promoItems) => {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log(promoItems)
+        this.props.dispatch({ type: SpecialItemActions.SET_DEAL_ITEMS, items: promoItems })
+      }
+    })
   }
 
   render() {

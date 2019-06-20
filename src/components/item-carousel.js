@@ -8,53 +8,41 @@ import * as Colors from '../theme/colors';
 
 const FRAME = Dimensions.get('window')
 
-class ItemCarousel extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-
-    }
-  }
-
-  static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({
-      title: PropTypes.string,
-      cost: PropTypes.string,
-      unit: PropTypes.string,
-      exclusiveGroups: PropTypes.array,
-      variations: PropTypes.array
-    }))
-  }
-
-  renderItem({ item, index }) {
-    console.log('ayoooo')
-    return (
-      <View style={styles.item} >
-        <View style={{flex: 4, justifyContent: 'center', alignItems: 'stretch'}}>
-          <Image style={{ width: FRAME.width - 64, flex: 1}} source={item.image} resizeMode={'center'} />
-        </View>
-        <View style={styles.bottomView}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={[styles.title, {fontSize: 18}]}>${item.cost} per {item.unit}</Text>
-          <Text style={[styles.title, {fontSize: 18}]}>Whole Foods</Text>
-        </View>
+function renderItem({ item, index }, onSelect) {
+  console.log(item)
+  return (
+    <TouchableOpacity style={styles.item} onPress={() => onSelect(item)} >
+      <View style={{flex: 4, justifyContent: 'center', alignItems: 'stretch'}}>
+        <Image style={{ width: FRAME.width - 64, flex: 1}} source={{uri: item.image_url}} resizeMode={'center'} />
       </View>
-    )
-  }
+      <View style={styles.bottomView}>
+        <Text style={styles.title}>{item.brand}</Text>
+        <Text style={[styles.title, {fontSize: 18}]}>{item.brand}</Text>
+        <Text style={[styles.title, {fontSize: 18}]}>{item.items.length} Variations</Text>
+      </View>
+    </TouchableOpacity>
+  )
+}
 
-  render() {
-    return(
-        <Carousel
-          ref={(c) => { this._carousel = c; }}
-          data={this.props.items}
-          renderItem={this.renderItem}
-          sliderWidth={FRAME.width}
-          itemWidth={FRAME.width - 64}
-        />
-    )
-  }
+const ItemCarousel = props => (
+  <Carousel
+    ref={(c) => { _carousel = c; }}
+    data={props.items}
+    renderItem={(item) => renderItem(item, props.onSelect)}
+    sliderWidth={FRAME.width}
+    itemWidth={FRAME.width - 64}
+  />
+  )
 
+ItemCarousel.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string,
+    cost: PropTypes.string,
+    unit: PropTypes.string,
+    exclusiveGroups: PropTypes.array,
+    variations: PropTypes.array
+  })),
+  onSelect: PropTypes.func
 }
 
 const styles = StyleSheet.create({

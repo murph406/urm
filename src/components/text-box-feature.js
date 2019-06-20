@@ -37,7 +37,7 @@ const TextBoxFeature = (props) => (
 
 )
 
-TextBoxFeature.PropTypes = {
+TextBoxFeature.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
   featureText: PropTypes.string,
