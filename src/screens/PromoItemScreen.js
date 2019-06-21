@@ -3,7 +3,11 @@ import { View, Text, StyleSheet, Image, ScrollView, Modal } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as UserActions from '../action-types/user-action-types';
+import * as OrderActions from '../action-types/order-action-types';
 import * as Colors from '../theme/colors';
+import * as MailComposer from 'expo-mail-composer';
+
+import { composeEmail } from '../util/util';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBoxFeature from '../components/text-box-feature';
@@ -19,47 +23,6 @@ class PromoItemsScreen extends Component {
     this.state = {
       isOrderModalPresented: false,
       selectedItemGroup: { items: [] },
-      items: [
-        {
-          title: 'Merchant Craft',
-          cost: '2.63',
-          unit: 'case',
-          image: require('../../assets/orders/order2.png'),
-          exclusiveGroups: [],
-          variations: [
-            // TODO COMBAK ITEM MODEL
-            { title: 'Root Beer', cost: '2.63' },
-            { title: 'Lemon Lime', cost: '2.63' },
-            { title: 'Grape', cost: '2.63' }
-          ]
-        },
-        {
-          title: 'Merchant Craft',
-          cost: '2.63',
-          unit: 'case',
-          image: require('../../assets/orders/order2.png'),
-          exclusiveGroups: [],
-          variations: [
-            // TODO COMBAK ITEM MODEL
-            { title: 'Root Beer', cost: '2.63' },
-            { title: 'Lemon Lime', cost: '2.63' },
-            { title: 'Grape', cost: '2.63' }
-          ]
-        },
-        {
-          title: 'Merchant Craft',
-          cost: '2.63',
-          unit: 'case',
-          image: require('../../assets/orders/order2.png'),
-          exclusiveGroups: [],
-          variations: [
-            // TODO COMBAK ITEM MODEL
-            { title: 'Root Beer', cost: '2.63' },
-            { title: 'Lemon Lime', cost: '2.63' },
-            { title: 'Grape', cost: '2.63' }
-          ]
-        }
-      ]
     }
   }
 
@@ -76,8 +39,24 @@ class PromoItemsScreen extends Component {
   }
 
   _onSelectItemGroup(item) {
-    console.log(item)
     this.setState({ selectedItemGroup: item, isOrderModalPresented: true })
+  }
+
+  _onSubmit(items) {
+    this.state.selectedItemGroup.items = items
+    this.props.dispatch({ type: OrderActions.SET_ITEMGROUP_ITEMS, items: items })
+    this.setState({ isOrderModalPresented: false }, () => {
+      this.props.navigation.navigate('orderPreview')
+    })
+      //, async() => {
+      // await MailComposer.composeAsync({
+      //   recipients: ['abc@yahoo.com'],
+      //   subject: 'APP ORDER',
+      //   body: composeEmail(this.state.selectedItemGroup)
+      // }).then((status) => {
+      //   console.log(status)
+      // }).catch(e => console.log(e))
+    // })
   }
 
   render() {
@@ -90,7 +69,11 @@ class PromoItemsScreen extends Component {
         </View>
 
         <Modal animationType={'slide'} visible={this.state.isOrderModalPresented} >
-          <SpecialItemOrder items={this.state.selectedItemGroup.items} />
+          <SpecialItemOrder
+            items={this.state.selectedItemGroup.items}
+            onSubmit={(items) => this._onSubmit(items)}
+            onDismiss={() => this.setState({ isOrderModalPresented: false })}
+          />
         </Modal>
 
       </View>
@@ -113,7 +96,6 @@ const styles = StyleSheet.create({
 })
 
 var mapStateToProps = (state) => {
-  console.log(state.specialItems.dealItems)
   return {
     user: state.user.user,
     promoItems: state.specialItems.dealItems

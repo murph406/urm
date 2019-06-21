@@ -13,6 +13,8 @@ import LoadScreen from '../screens/LoadScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NewItemScreen from '../screens/NewItemScreen';
 import PromoItemScreen from '../screens/PromoItemScreen';
+import StoreInfoOrder from '../screens/StoreInfoOrder';
+import OrderPreview from '../screens/OrderPreview';
 
 const navigator = createDrawerNavigator({
   load: LoadScreen,
@@ -25,7 +27,9 @@ const navigator = createDrawerNavigator({
   newList: NewItemScreen,
   newDetail: NewItemDetail,
   promoList: PromoItemScreen,
-  promoDetail: NewItemDetail
+  promoDetail: NewItemDetail,
+  storeInfoOrder: StoreInfoOrder,
+  orderPreview: OrderPreview
 },
 {
   contentComponent: Menu,

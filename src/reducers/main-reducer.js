@@ -6,13 +6,15 @@ import user from './user-reducer';
 import storeDetail from './store-detail-reducer';
 import item from './item-reducer';
 import specialItems from './special-item-reducer';
+import order from './order-reducer';
 
 const MainReducer = combineReducers({
   nav,
   user,
   storeDetail,
   item,
-  specialItems
+  specialItems,
+  order
 })
 
 export default MainReducer;
