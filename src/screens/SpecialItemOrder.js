@@ -11,16 +11,16 @@ import CircleButton from '../ui-elements/circle-button'
 
 function SpecialItemOrder(props) {
   let [store, setStore] = useState('')
-  let [cost, setCost] = useState(0)
+  let [quantity, setQuantity] = useState(0)
 
   calculate = () => {
     let total = 0
     props.items.forEach((item) => {
-      if(item.count > 0) {
-        total += (item.count * Number(item.case_cost))
+      if(item.quantity > 0) {
+        total += (item.quantity * Number(item.case_cost))
       }
     })
-    setCost(total)
+    setQuantity(total)
   }
 
   return(
@@ -34,14 +34,14 @@ function SpecialItemOrder(props) {
         {(props.items.map((item, index) => (
           <SpecialItemSelector
             item={item}
-            onIncrement={(count) => {item.count = count; this.calculate()}}
+            onIncrement={(quantity) => {item.quantity = quantity; this.calculate()}}
             />
         )))}
 
-        <OrderCard cost={cost.toFixed(2)} />
+        <OrderCard cost={quantity.toFixed(2)} />
 
         <View style={{height: 140, justifyContent: 'center', alignItems: 'center', marginBottom: 100}} >
-          <TouchableOpacity style={styles.submit} onPress={() => props.onSubmit(props.items)}>
+          <TouchableOpacity style={styles.submit} onPress={() => props.onSubmit(props.items, store)}>
             <Text style={styles.text}>Submit</Text>
           </TouchableOpacity>
         </View>

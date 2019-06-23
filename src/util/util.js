@@ -14,3 +14,15 @@ export function composeEmail(itemGroup) {
   // })
   return message
 }
+
+export function formatItemsForOrder(itemGroup) {
+  let items = []
+  itemGroup.items.forEach((item) => {
+    items.push({
+      'case_upc_num': item.case_upc_num,
+      'urm_item_num': item.urm_item_num,
+      'quantity': item.quantity
+    })
+  })
+  return items
+}

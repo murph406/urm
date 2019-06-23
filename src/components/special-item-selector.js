@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   incrementer: {
     height: 64, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center',
-    backgroundColor: Colors.GREEN, borderBottomLeftRadius: 4, borderBottomRightRadius: 4
+    backgroundColor: Colors.SECONDARY_DARK, borderBottomLeftRadius: 4, borderBottomRightRadius: 4
   },
   button: {
     height: 48, width: 64, borderRadius: 4,

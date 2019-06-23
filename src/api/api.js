@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-let IS_DEV = false;
+let IS_DEV = true;
 let BASE_URL = 'http://localhost:8888/api'
 
 if(!IS_DEV) {
@@ -18,6 +18,8 @@ const GET_USER = '/user/get-one/';
 const GET_USERS = '/user/get-all';
 
 const GET_ITEM_GROUPS = '/special/get-all-groups';
+
+const CREATE_ORDER = '/order/create';
 
 
 export function getItemsByStore(storeID, callback) {
@@ -61,5 +63,14 @@ export function getStoreByCode(code, callback) {
 export function getAllItemGroups(callback) {
   axios.get(BASE_URL + GET_ITEM_GROUPS)
     .then(res => callback(null, res.data))
+    .catch(e => callback(e))
+}
+
+export function createOrder(order, callback) {
+  let sender = {
+    order: order
+  }
+  axios.post(BASE_URL + CREATE_ORDER, sender)
+    .then(response => callback(null, response.data))
     .catch(e => callback(e))
 }

@@ -6,8 +6,9 @@ import * as UserActions from '../action-types/user-action-types';
 import * as OrderActions from '../action-types/order-action-types';
 import * as Colors from '../theme/colors';
 import * as MailComposer from 'expo-mail-composer';
+import * as API from '../api/api';
 
-import { composeEmail } from '../util/util';
+import { composeEmail, formatItemsForOrder } from '../util/util';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBoxFeature from '../components/text-box-feature';
@@ -19,6 +20,8 @@ class PromoItemsScreen extends Component {
 
   constructor(props){
     super(props);
+
+    this.formatItemsForOrder = formatItemsForOrder.bind(this)
 
     this.state = {
       isOrderModalPresented: false,
@@ -42,21 +45,30 @@ class PromoItemsScreen extends Component {
     this.setState({ selectedItemGroup: item, isOrderModalPresented: true })
   }
 
-  _onSubmit(items) {
+  _onSubmit(items, store) {
     this.state.selectedItemGroup.items = items
     this.props.dispatch({ type: OrderActions.SET_ITEMGROUP_ITEMS, items: items })
     this.setState({ isOrderModalPresented: false }, () => {
-      this.props.navigation.navigate('orderPreview')
+      let order = {
+        user_id: this.props.user._id,
+        buyer: 'Test',
+        store: store,
+        items: this.formatItemsForOrder(this.state.selectedItemGroup)
+      }
+      // let orderItems = this.formatItemsForOrder(this.state.selectedItemGroup)
+
+      this.createOrder(order)
     })
-      //, async() => {
-      // await MailComposer.composeAsync({
-      //   recipients: ['abc@yahoo.com'],
-      //   subject: 'APP ORDER',
-      //   body: composeEmail(this.state.selectedItemGroup)
-      // }).then((status) => {
-      //   console.log(status)
-      // }).catch(e => console.log(e))
-    // })
+  }
+
+  createOrder(order) {
+    API.createOrder(order, (err, result) => {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log(result)
+      }
+    })
   }
 
   render() {
@@ -71,7 +83,7 @@ class PromoItemsScreen extends Component {
         <Modal animationType={'slide'} visible={this.state.isOrderModalPresented} >
           <SpecialItemOrder
             items={this.state.selectedItemGroup.items}
-            onSubmit={(items) => this._onSubmit(items)}
+            onSubmit={(items, store) => this._onSubmit(items, store)}
             onDismiss={() => this.setState({ isOrderModalPresented: false })}
           />
         </Modal>

@@ -22,7 +22,7 @@ OrderCard.defaultProps = {
 const styles = StyleSheet.create({
   card: {
     height: 100,
-    margin: 16, borderRadius: 4,
+    borderRadius: 4,
     backgroundColor: Colors.BACKGROUND_GREY, overflow: 'visible',
     shadowOffset:{  width: 0,  height: 0  }, shadowRadius: 12,
     shadowColor: 'rgb(100,100,100)',
