@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,ScrollView, } from 'react-native';
+import { View, Text, StyleSheet,Image,ScrollView, Modal } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as API from '../api/api';
@@ -7,6 +7,7 @@ import * as UserActions from '../action-types/user-action-types';
 import * as SpecialItemActions from '../action-types/special-item-actions';
 import * as Colors from '../theme/colors';
 
+import OrderStatusScreen from './OrderStatusScreen';
 import TabBar from '../ui-elements/tab-bar';
 import TextBoxFeature from '../components/text-box-feature';
 import NavigationButton from '../ui-elements/nav-button';
@@ -17,19 +18,16 @@ class HomeScreen extends Component {
     super(props);
 
     this.state = {
+      isOrderModalPresented: false,
       screens: [
-        // { title: 'Master List', screenToSend: 'store', feature: '0', featureLabel: 'Items'},
-        { title: 'New Items', screenToSend: 'newList', feature: '0', featureLabel: 'Items'},
-        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items'},
-        //{ title: 'News', screenToSend: 'news', feature: '9', featureLabel: 'News'},
-        //{ title: 'Tasks', screenToSend: 'task', feature: '35', featureLabel: 'Tasks'},
-        // {title: 'New Items', screenToSend: 'newItemList', feature: '17', featureLabel: 'Items'},
+        { title: 'Announcements', screenToSend: 'announcements', feature: '0', featureLabel: 'Alerts', subtitle: 'On the go news'},
+        { title: 'New Items', screenToSend: 'newList', feature: '0', featureLabel: 'Items', subtitle: 'New to catologue'},
+        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items', subtitle: 'Items with deals'},
       ],
     }
   }
 
   componentDidMount() {
-    // this.props.navigation.navigate('promoList')
     this.getPromoItems()
   }
 
@@ -43,7 +41,14 @@ class HomeScreen extends Component {
   }
 
   openDrawer = (text) => {
+    this.onPresentOrders()
+    return
+    // for testing ^
     this.props.navigation.openDrawer();
+  }
+
+  onPresentOrders() {
+    this.setState({ isOrderModalPresented: true })
   }
 
   navigate = (screen) => {
@@ -73,7 +78,7 @@ class HomeScreen extends Component {
             <View style={{shadowOpacity: 0.2,shadowColor: 'black',shadowRadius: 4,shadowOffset:{ width: 0, height: 4 }}} key={{index}}>
               <TextBoxFeature
                 title={model.title}
-                subtitle={'Subtitle Text'}
+                subtitle={model.subtitle}
                 featureText={model.feature}
                 featureLabel={model.featureLabel}
                 onPress={() => this.navigate(model.screenToSend)}
@@ -83,11 +88,15 @@ class HomeScreen extends Component {
 
         </ScrollView>
 
-        <View >
-          <NavigationButton
-            onPress={() => this.openDrawer()}
-          />
-        </View>
+
+        <NavigationButton
+          onPress={() => this.openDrawer()}
+        />
+
+      <Modal animationType={'slide'} visible={this.state.isOrderModalPresented} >
+        <OrderStatusScreen />
+      </Modal>
+
       </View>
     )
   }

@@ -9,6 +9,7 @@ import * as MailComposer from 'expo-mail-composer';
 import * as API from '../api/api';
 
 import { composeEmail, formatItemsForOrder } from '../util/util';
+import { saveOrderAsync } from '../api/offline-order-manager';
 
 import TabBar from '../ui-elements/tab-bar';
 import TextBoxFeature from '../components/text-box-feature';
@@ -22,6 +23,7 @@ class PromoItemsScreen extends Component {
     super(props);
 
     this.formatItemsForOrder = formatItemsForOrder.bind(this)
+    this.saveOrderAsync = saveOrderAsync.bind(this)
 
     this.state = {
       isOrderModalPresented: false,
@@ -55,7 +57,6 @@ class PromoItemsScreen extends Component {
         store: store,
         items: this.formatItemsForOrder(this.state.selectedItemGroup)
       }
-      // let orderItems = this.formatItemsForOrder(this.state.selectedItemGroup)
 
       this.createOrder(order)
     })
@@ -65,6 +66,7 @@ class PromoItemsScreen extends Component {
     API.createOrder(order, (err, result) => {
       if(err) {
         console.log(err)
+        this.saveOrderAsync(order)
       } else {
         console.log(result)
       }
@@ -74,7 +76,7 @@ class PromoItemsScreen extends Component {
   render() {
     return(
       <View style={styles.container} >
-        <TabBar text="Promos" onGoBack={() => this.props.navigation.goBack()} />
+        <TabBar text="Promos" onGoBack={() => this.props.navigation.navigate('home')} />
 
         <View style={styles.carouselContainer} >
           <ItemCarousel items={this.props.promoItems} onSelect={(item) => this._onSelectItemGroup(item)} />

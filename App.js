@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, AsyncStorage } from 'react-native';
 import { Font } from 'expo';
 import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { ORDERS_KEY } from './src/api/offline-order-manager';
 
 import MainReducer from './src/reducers/main-reducer';
 import thunk from 'redux-thunk';
 
 import AppNavigator from './src/navigation/app-navigator';
+
 import * as Colors from './src/theme/colors';
 
 
@@ -34,7 +36,17 @@ export default class App extends React.Component {
       // 'mont': require('')
     });
 
+    await this.initOfflineOrderManagerAsync()
+
     this.setState({ fontsLoaded: true });
+  }
+
+  async initOfflineOrderManagerAsync() {
+    await AsyncStorage.getItem(ORDERS_KEY, async(err, result) => {
+      if(err) {
+        await AsyncStorage.setItem(ORDERS_KEY, '[]')
+      }
+    })
   }
 
   render() {

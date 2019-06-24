@@ -52,7 +52,7 @@ class NewItemDetail extends Component {
   render() {
     return(
       <View style={styles.container}>
-          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('newItemList')} />
+          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('newList')} />
 
           <ScrollView>
         <View style={styles.scrollView}>

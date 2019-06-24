@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.BACKGROUND_GREY,
-    padding: 32, paddingTop: 120
+    padding: 16, paddingTop: 140
   },
   submit: {
     height: 54, width: 300, backgroundColor: Colors.SECONDARY,

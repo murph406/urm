@@ -13,25 +13,37 @@ function SpecialItemSelector(props) {
   return(
     <View style={styles.container} >
       <View style={styles.title}>
-        <Text style={[styles.text, { color: 'black'}]}>{props.item.description}</Text>
+        <Text style={[styles.label, { color: 'black'}]}>{props.item.description}</Text>
       </View>
       <View style={styles.infoContainer} >
-        {/*<Text style={styles.text}>URM Item Num: {props.item.urm_item_num}</Text>
-        <Text style={styles.text}>Case UPC Num: {props.item.case_upc_num}</Text>*/}
         <View style={styles.infoPair}>
-          <Text style={styles.text}>Pack/Size: {props.item.pack_size}</Text>
-          <Text style={styles.text}>Case Cost: {props.item.case_cost}</Text>
+          <View style={styles.labelValue}>
+            <Text style={styles.label}>Pack/Size  </Text>
+            <Text style={styles.value}>{props.item.pack_size}</Text>
+          </View>
+          <View style={styles.labelValue}>
+            <Text style={styles.label}>Case Cost  </Text>
+            <Text style={styles.value}>${props.item.case_cost}</Text>
+          </View>
         </View>
+
         <View style={styles.infoPair}>
-          <Text style={styles.text}>Net Case: {props.item.net_case}</Text>
-          <Text style={styles.text}>Net Unit: {props.item.net_unit}</Text>
+          <View style={styles.labelValue}>
+            <Text style={styles.label}>Net Case  </Text>
+            <Text style={styles.value}>${props.item.net_case}</Text>
+          </View>
+          <View style={styles.labelValue}>
+            <Text style={styles.label}>Net Unit  </Text>
+            <Text style={styles.value}>{props.item.net_unit}</Text>
+          </View>
         </View>
       </View>
+
       <View style={styles.incrementer} >
         <TouchableOpacity style={styles.button} onPress={() => setCount((count === 0) ? count : --count)}>
           <Image style={styles.image} source={require('../../assets/icons/minus.png')} />
         </TouchableOpacity>
-        <Text style={[styles.text, { fontFamily:'bold', fontSize:24, color: 'white'}]}>{count}</Text>
+        <Text style={[styles.value, { fontFamily:'bold', fontSize:24, color: 'white'}]}>{count}</Text>
         <TouchableOpacity style={styles.button} onPress={() => setCount(++count)}>
           <Image style={styles.image} source={require('../../assets/icons/add.png')} />
         </TouchableOpacity>
@@ -64,8 +76,15 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 3, justifyContent: 'center'
   },
-  text: {
-    fontSize: 18, fontFamily: 'bold', textAlign: 'center', color: Colors.BACKGROUND_DARK_DARKGREY, margin: 4
+  label: {
+    fontSize: 18, color: Colors.BACKGROUND_DARK_DARKGREY, margin: 4,
+    fontFamily: 'bold', textAlign: 'center', color: Colors.BACKGROUND_DARK_LIGHTGREY, opacity: 0.7
+  },
+  labelValue: {
+    flexDirection: 'row', justifyContent: 'center', alignItems: 'center'
+  },
+  value: {
+    fontSize: 18, color: 'black', fontFamily: 'bold', textAlign: 'center'
   },
   title: {
     height: 48, justifyContent: 'center', alignItems: 'center',
@@ -78,11 +97,11 @@ const styles = StyleSheet.create({
     height: 32, width: 32, tintColor: 'white'
   },
   incrementer: {
-    height: 64, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center',
+    height: 64, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
     backgroundColor: Colors.SECONDARY_DARK, borderBottomLeftRadius: 4, borderBottomRightRadius: 4
   },
   button: {
-    height: 48, width: 64, borderRadius: 4,
+    height: 64, width: 100, borderRadius: 4,
     backgroundColor: Colors.SECONDARY,
     justifyContent: 'center', alignItems: 'center'
   }

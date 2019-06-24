@@ -13,8 +13,9 @@ import LoadScreen from '../screens/LoadScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NewItemScreen from '../screens/NewItemScreen';
 import PromoItemScreen from '../screens/PromoItemScreen';
-import StoreInfoOrder from '../screens/StoreInfoOrder';
-import OrderPreview from '../screens/OrderPreview';
+import Announcements from '../screens/Announcements';
+// import StoreInfoOrder from '../screens/StoreInfoOrder';
+// import OrderPreview from '../screens/OrderPreview';
 
 const navigator = createDrawerNavigator({
   load: LoadScreen,
@@ -28,8 +29,7 @@ const navigator = createDrawerNavigator({
   newDetail: NewItemDetail,
   promoList: PromoItemScreen,
   promoDetail: NewItemDetail,
-  storeInfoOrder: StoreInfoOrder,
-  orderPreview: OrderPreview
+  announcements: Announcements
 },
 {
   contentComponent: Menu,

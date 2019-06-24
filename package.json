@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^33.0.0",
+    "expo-file-system": "^5.0.1",
     "expo-mail-composer": "^5.0.1",
     "mailgun-js": "^0.22.0",
     "react": "16.8.3",
