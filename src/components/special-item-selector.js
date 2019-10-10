@@ -91,18 +91,18 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: Colors.BACKGROUND_GREY
   },
   infoPair: {
-    flexDirection: 'row', justifyContent: 'space-around'
+    flexDirection: 'row', justifyContent: 'space-between', marginLeft: 16, marginRight: 16
   },
   image: {
     height: 32, width: 32, tintColor: 'white'
   },
   incrementer: {
     height: 64, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    backgroundColor: Colors.SECONDARY_DARK, borderBottomLeftRadius: 4, borderBottomRightRadius: 4
+    backgroundColor: Colors.SECONDARY, borderBottomLeftRadius: 4, borderBottomRightRadius: 4
   },
   button: {
     height: 64, width: 100, borderRadius: 4,
-    backgroundColor: Colors.SECONDARY,
+    backgroundColor: Colors.GREEN,
     justifyContent: 'center', alignItems: 'center'
   }
 })

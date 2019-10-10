@@ -29,7 +29,9 @@ function SpecialItemOrder(props) {
         <CircleButton image={require('../../assets/go-back-icon.png')} onPress={props.onDismiss} />
       </View>
       <View style={styles.container}>
+
         <Field placeholder={'Store #'} keyboard={'numeric'} updateState={setStore} text={store} />
+        
         <View style={{height: 32}}/>
         {(props.items.map((item, index) => (
           <SpecialItemSelector

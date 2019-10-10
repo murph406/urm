@@ -28,7 +28,7 @@ class NewItemPreviewModal extends Component {
                 />
                 <View style={styles.button}>
                     <CircleButton
-                    onPress={() => this.props.onDissmissPreview()}
+                    onPress={() => this.props.onDismissPreview()}
                     />
                 </View>
             </View>
@@ -36,7 +36,7 @@ class NewItemPreviewModal extends Component {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',

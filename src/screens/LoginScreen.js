@@ -21,14 +21,19 @@ class LoginScreen extends Component {
   }
 
   componentDidMount() {
-    this.getUsers();
+    AsyncStorage.removeItem('@USER_ID', () => {
+      this.getUsers();
+    })
 
   }
 
   getUsers() {
     API.getUsers((err, users) => {
-      console.log(users)
-      this.setState({users: users})
+      if(!err) {
+        console.log(users)
+        console.log('yup')
+        this.setState({users: users})
+      }
     })
   }
 
@@ -43,12 +48,19 @@ class LoginScreen extends Component {
         console.log(err.message)
       } else {
         // user.stores = this.state.stores
-        this.handleUser(user)
+        // this.handleUser(user)
+        user.stores = []
+        this.props.dispatch({
+          type: UserActions.SET_USER,
+          user: user
+        })
+        this.props.navigation.navigate('home')
       }
     })
   }
 
   handleUser = (user) => {
+
     this.getStores(user.stores, (err, stores) => {
       if(err) {
         console.log(err)

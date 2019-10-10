@@ -55,7 +55,7 @@ class NewItemDetail extends Component {
           <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('newList')} />
 
           <ScrollView>
-        <View style={styles.scrollView}>
+            <View style={styles.scrollView}>
 
               <TitleCard
                  title={this.state.item.title}
@@ -118,7 +118,7 @@ class NewItemDetail extends Component {
           animationType={'slide'}
           visible={this.state.isPreviewPresented}>
             <NewItemPreviewModal
-              onDissmissPreview={() => this.setState({ isPreviewPresented: false})}
+              onDismissPreview={() => this.setState({ isPreviewPresented: false})}
             />
           </Modal>
       </View>

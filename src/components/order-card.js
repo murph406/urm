@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     fontSize: 28, fontFamily: 'bold',
   },
   cost: {
-    fontSize: 24, fontFamily: 'bold',
-    color: Colors.GREEN
+    fontSize: 28, fontFamily: 'bold',
+    color: Colors.SECONDARY
   }
 })
 

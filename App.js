@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, AsyncStorage } from 'react-native';
-import { Font } from 'expo';
+// import { Font } from 'expo';
+import * as Font from 'expo-font';
 import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { ORDERS_KEY } from './src/api/offline-order-manager';
@@ -36,7 +37,7 @@ export default class App extends React.Component {
       // 'mont': require('')
     });
 
-    await this.initOfflineOrderManagerAsync()
+    // await this.initOfflineOrderManagerAsync()
 
     this.setState({ fontsLoaded: true });
   }

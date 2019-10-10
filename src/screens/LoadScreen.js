@@ -38,7 +38,13 @@ class LoadScreen extends Component {
       } else {
         console.log('user',user)
         await AsyncStorage.setItem('@USER_ID', user._id)
-        this.handleUser(user)
+        // this.handleUser(user)
+        user.stores = [];
+        this.props.dispatch({
+          type: UserActions.SET_USER,
+          user: user
+        });
+        this.props.navigation.navigate('home')
       }
     })
   }

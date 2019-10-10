@@ -56,6 +56,7 @@ class HomeScreen extends Component {
   }
 
   getPromoItems() {
+    console.log('bruhhh')
     API.getAllItemGroups((err, promoItems) => {
       if(err) {
         console.log(err)
@@ -94,7 +95,7 @@ class HomeScreen extends Component {
         />
 
       <Modal animationType={'slide'} visible={this.state.isOrderModalPresented} >
-        <OrderStatusScreen />
+        <OrderStatusScreen onDismiss={() => this.setState({ isOrderModalPresented: false })} />
       </Modal>
 
       </View>
