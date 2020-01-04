@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
-import * as Colors from '../theme/colors';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+import { BACKGROUND_DARK_LIGHTGREY } from '../theme/colors';
 
 class Menu extends Component {
 
   goHome = () => {
     this.props.navigation.navigate('home');
-    this.props.navigation.closeDrawer();
-  }
-  goLogin = async() => {
-    await AsyncStorage.removeItem('@USER_ID');
-
-    this.props.navigation.navigate('login');
-    this.props.navigation.closeDrawer();
-  }
-  goTasks= () => {
-    this.props.navigation.navigate('task');
     this.props.navigation.closeDrawer();
   }
 
@@ -31,15 +22,11 @@ class Menu extends Component {
       <View style={styles.container} >
 
         <TouchableOpacity onPress={this.goHome}>
-          <Text style={styles.Text}>Home</Text>
+          <Text style={styles.text}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={this.goItem}>
-          <Text style={styles.Text}>New Items</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this.goLogin}>
-          <Text style={styles.Text}>Log Out</Text>
+          <Text style={styles.text}>New Items</Text>
         </TouchableOpacity>
       </View>
     )
@@ -49,10 +36,11 @@ class Menu extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.BACKGROUND_DARK_LIGHTGREY,
-    paddingTop: 60
+    backgroundColor: BACKGROUND_DARK_LIGHTGREY,
+    paddingTop: 60, 
+    paddingHorizontal: 16
   },
-  Text: {
+  text: {
     fontFamily: 'bold',
     fontSize: 34,
     color: 'white',

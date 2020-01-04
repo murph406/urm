@@ -4,7 +4,7 @@ import { View, Text, StyleSheet,Image,ScrollView, Modal, TouchableOpacity, Activ
 import { connect } from 'react-redux';
 
 import TabBar from '../ui-elements/tab-bar';
-import NavigationButton from '../ui-elements/nav-button';
+// import NavigationButton from '../ui-elements/nav-button';
 import ItemDetailModal from './ItemDetailModal';
 import FilterItemModal from './FilterItemModal';
 
@@ -32,9 +32,6 @@ class ItemScreen extends Component {
     this.getItems();
   }
 
-  openDrawer = (text) => {
-    this.props.navigation.openDrawer();
-  }
 
   getItems() {
     API.getItemsByStore(this.props.store.code, (err, items) => {
@@ -42,9 +39,7 @@ class ItemScreen extends Component {
         console.log(err);
       } else {
         console.log('ITEMS')
-        // for(let i = 0; i < items.items.length; i++) {
-        //   items.items[i].isVisible = true;
-        // }
+ 
         this.setState({ items: items.items });
       }
     })
@@ -118,19 +113,6 @@ class ItemScreen extends Component {
                     />
                 )))
             }
-            {/*(this.state.items.map((item, index) => (
-                ? <TextBoxFeature
-                    title={item.item_description}
-                    text={item.department}
-                    subtitle={"Item Code: " + item.item_code}
-                    onPress={() => this.setState({ itemModalPresented: true, item: item, })}
-                    hasFeature={true}
-                    featureColor={(item.is_complete) ? Colors.GREEN : Colors.SECONDARY}
-                    featureType ={(item.is_complete) ? null : 'text'}
-                  />
-                : null
-
-            )))*/}
 
           </ScrollView>
           <Modal
