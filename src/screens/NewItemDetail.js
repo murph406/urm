@@ -5,7 +5,6 @@ import { View, Text, StyleSheet,ScrollView, Linking, Modal, Picker, TextInput} f
 import * as Colors from '../theme/colors';
 
 import NewItemPreviewModal from './NewItemPreviewModal'
-import TabBar from '../ui-elements/tab-bar';
 import TextBox from '../components/text-box';
 import TitleCard from '../ui-elements/title-card';
 import SubmitButton from '../ui-elements/submit-button';
@@ -52,8 +51,6 @@ class NewItemDetail extends Component {
   render() {
     return(
       <View style={styles.container}>
-          <TabBar text="New Item Order" onGoBack={() => this.props.navigation.navigate('newList')} />
-
           <ScrollView>
             <View style={styles.scrollView}>
 
