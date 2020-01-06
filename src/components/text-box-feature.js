@@ -1,41 +1,51 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-import * as Colors from '../theme/colors';
+import { SECONDARY, SECONDARY_DARK, PRIMARY } from '../theme/colors';
+import { Fonts } from '../theme/styling'
 
-const TextBoxFeature = (props) => (
+class TextBoxFeature extends PureComponent {
+  render() {
+    let { title, subtitle, featureLabel, featureText } = this.props.data
+    let { featureColor, featureType } = this.props
 
-    <TouchableOpacity style={styles.container} onPress={props.onPress} >
-      <View style={styles.textLeftContainer} >
-        <Text
-          adjustsFontSizeToFit={true}
-          style={styles.title}
-          numberOfLines={2}
-          minimumFontScale={.8}
-        >{props.title} </Text>
-        <Text style={styles.subtitle}>{props.subtitle}</Text>
-      </View>
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.textLeftContainer}
+          onPress={this.props.onPress}>
+          <Text
+            adjustsFontSizeToFit={true}
+            style={[Fonts.headline, { color: 'black' }]}
+            numberOfLines={2}
+            minimumFontScale={.8}>
+            {title}
+          </Text>
+          <Text style={[Fonts.subHeading, { color: PRIMARY }]}>
+            {subtitle}
+          </Text>
+        </TouchableOpacity>
 
-      <View style={[styles.featureContainer, {backgroundColor: props.featureColor}] } >
-        {(props.featureType === 'text')
-          ? <View>
-              <Text style={styles.featureText}>{props.featureText}</Text>
-              <Text style={styles.featureLabel}>{props.featureLabel}</Text>
+        <View style={[styles.featureContainer, { backgroundColor: featureColor }]} >
+          {(featureType === 'text')
+            ?
+            <View>
+              <Text style={[ Fonts.subHeading, { color: SECONDARY_DARK}]}>{featureText}</Text>
+              <Text style={[Fonts.subHeading, { color: SECONDARY_DARK }]}>{featureLabel}</Text>
             </View>
-
-          : <View >
+            :
+            <View>
               <Image
                 style={styles.icon}
-                source={require('../../assets/check-icon.png')}
-              />
+                source={require('../../assets/check-icon.png')} />
             </View>
-        }
-
+          }
+        </View>
       </View>
-    </TouchableOpacity>
-
-)
+    )
+  }
+}
 
 TextBoxFeature.propTypes = {
   title: PropTypes.string,
@@ -48,40 +58,40 @@ TextBoxFeature.propTypes = {
 }
 
 TextBoxFeature.defaultProps = {
-  featureColor: Colors.SECONDARY,
+  featureColor: SECONDARY,
   featureType: 'text',
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 120, borderRadius: 4,
-    marginLeft:12, marginRight: 12, marginBottom: 12, backgroundColor: 'white',
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch',
+    height: 120,
+    borderRadius: 4,
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 12,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
     overflow: 'hidden'
   },
   textLeftContainer: {
-    flex: 3, marginLeft: 16,
+    flex: 3,
+    marginLeft: 16,
     justifyContent: 'center'
   },
   featureContainer: {
-    flex: 1, backgroundColor: Colors.SECONDARY,
-    flexDirection: 'column', alignItems: 'center', justifyContent:'center'
+    flex: 1,
+    backgroundColor: SECONDARY,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   featureText: {
-    fontSize: 28, fontFamily: 'bold', color: Colors.SECONDARY_DARK,
+    fontSize: 28,
+    fontFamily: 'bold',
+    color: SECONDARY_DARK,
     textAlign: 'center',
-  },
-  featureLabel: {
-    position: 'relative', top: 8, fontSize: 18, color: Colors.SECONDARY_DARK, fontFamily: 'bold'
-  },
-  title: {
-    fontSize: 28,fontFamily: 'bold', marginBottom: 8, marginRight: 32, marginTop: 16
-  },
-  subtitle: {
-    fontSize: 18, color: Colors.PRIMARY, fontFamily: 'bold'
-  },
-  iconContainer: {
-
   },
   icon: {
     justifyContent: 'center',

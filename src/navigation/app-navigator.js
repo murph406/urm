@@ -1,40 +1,29 @@
-import React from 'react';
-import { createDrawerNavigator, createAppContainer } from 'react-navigation';
-import { Dimensions } from 'react-native';
+import { SECONDARY } from '../theme/colors';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { Fonts, HeaderHeight } from '../theme/styling';
 
-import HomeScreen from '../screens/HomeScreen';
-import Menu from '../components/menu';
-import StoreScreen from '../screens/StoreScreen';
-import NewsScreen from '../screens/NewsScreen';
-import TaskScreen from '../screens/TaskScreen';
-import NewItemDetail from '../screens/NewItemDetail';
-import ItemScreen from '../screens/ItemScreen';
 import LoadScreen from '../screens/LoadScreen';
-import LoginScreen from '../screens/LoginScreen';
-import NewItemScreen from '../screens/NewItemScreen';
+import HomeScreen from '../screens/HomeScreen';
 import PromoItemScreen from '../screens/PromoItemScreen';
-import Announcements from '../screens/Announcements';
-// import StoreInfoOrder from '../screens/StoreInfoOrder';
-// import OrderPreview from '../screens/OrderPreview';
+import NewItemDetail from '../screens/NewItemDetail';
 
-const navigator = createDrawerNavigator({
+const navigator = createStackNavigator({
   load: LoadScreen,
-  login: LoginScreen,
   home: HomeScreen,
-  store: StoreScreen,
-  news: NewsScreen,
-  task: TaskScreen,
-  items: ItemScreen,
-  newList: NewItemScreen,
-  newDetail: NewItemDetail,
   promoList: PromoItemScreen,
   promoDetail: NewItemDetail,
-  announcements: Announcements
 },
 {
-  contentComponent: Menu,
-  drawerWidth: Dimensions.get('window').width * 0.7,
-  drawerType: 'front'
+  initialRouteName: 'home',
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: SECONDARY,
+      height: HeaderHeight,
+    },
+    headerTintColor: 'white',
+    headerTitleStyle: Fonts.headline,
+    headerBackTitleStyle: Fonts.subHeading
+  },
 })
 
 const AppNavigator = createAppContainer(navigator)
