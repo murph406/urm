@@ -6,12 +6,14 @@ import LoadScreen from '../screens/LoadScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PromoItemScreen from '../screens/PromoItemScreen';
 import NewItemDetail from '../screens/NewItemDetail';
+import ProductReferenceScreen from '../screens/ProductReferenceScreen'
 
 const navigator = createStackNavigator({
   load: LoadScreen,
   home: HomeScreen,
   promoList: PromoItemScreen,
   promoDetail: NewItemDetail,
+  productReference: ProductReferenceScreen
 },
 {
   initialRouteName: 'home',

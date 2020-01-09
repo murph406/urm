@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 
-import TextBoxFeature from '../components/text-box-feature';
+import { TextBoxFeature } from '../components/index'
 
 import { BACKGROUND_GREY } from '../theme/colors';
 
@@ -16,7 +16,8 @@ class HomeScreen extends Component {
 
     this.state = {
       screens: [
-        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items', subtitle: 'Items with deals'},
+        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items', subtitle: 'Items with deals' },
+        { title: 'Product Reference', screenToSend: 'productReference', feature: '0', featureLabel: 'Items', subtitle: 'Search products by Reference' }
       ],
     }
   }
@@ -40,11 +41,11 @@ class HomeScreen extends Component {
           data={screens}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-              <TextBoxFeature
-                data={item}
-                onPress={this.navigate(item.screenToSend)}
-              />
-          )}/>
+            <TextBoxFeature
+              data={item}
+              onPress={this.navigate(item.screenToSend)}
+            />
+          )} />
       </View>
     )
   }

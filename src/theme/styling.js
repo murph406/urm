@@ -1,21 +1,25 @@
 
 import { StyleSheet, Dimensions } from 'react-native'
-import { 
-    PRIMARY, 
-    PRIMARY_LIGHT, 
-    SECONDARY, 
-    SECONDARY_DARK, 
-    BACKGROUND_LIGHT_GREY, 
-    BACKGROUND_DARK_GREY, 
-    GREEN 
+import {
+    PRIMARY,
+    PRIMARY_LIGHT,
+    SECONDARY,
+    SECONDARY_DARK,
+    BACKGROUND_LIGHT_GREY,
+    BACKGROUND_DARK_GREY,
+    GREEN
 } from './colors';
 
 const { width, height } = Dimensions.get("window");
+
 const HeaderHeight = height * .1;
+const MarginLength = 16;
+const DeviceWidth = width;
+const DeviceHeight = height;
 
 const Fonts = StyleSheet.create({
     display: {
-       
+
     },
     headline: {
         fontFamily: 'bold',
@@ -33,8 +37,8 @@ const Fonts = StyleSheet.create({
         color: 'white',
     },
     label: {
-      
+
     },
 })
 
-export { Fonts, HeaderHeight }
+export { Fonts, HeaderHeight, MarginLength, DeviceHeight, DeviceWidth }
