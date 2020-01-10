@@ -10,3 +10,4 @@ export const BACKGROUND_LIGHT_GREY = '#606060';
 export const BACKGROUND_DARK_GREY = '#373737';
 
 export const GREEN = '#e64a19';
+export const RED = '#b71c1c'
