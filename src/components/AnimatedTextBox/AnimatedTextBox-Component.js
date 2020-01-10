@@ -28,7 +28,7 @@ export default class AnimatedTextBox extends PureComponent {
         const { name, brand, code } = this.props.data
 
         let contents = (
-            <View style={{  }}>
+            <View>
                 <Text style={[Fonts.headline, { color: 'black', paddingBottom: 8}]} numberOfLines={1}>{name}</Text>
                 <Text style={[Fonts.subHeading, { color: BACKGROUND_DARK_GREY }]}>{brand}</Text>
                 <Text style={[Fonts.subHeading, { color: BACKGROUND_DARK_GREY }]}>Code #: {code}</Text>
@@ -44,7 +44,6 @@ export default class AnimatedTextBox extends PureComponent {
         const iconSize = 24
 
         let contents = (
-
             <TouchableOpacity
                 style={styles.buttonContainer}
                 activeOpacity={.7}
