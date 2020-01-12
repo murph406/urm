@@ -21,10 +21,11 @@ const navigator = createStackNavigator({
     headerStyle: {
       backgroundColor: SECONDARY,
       height: HeaderHeight,
+      marginRight: 0
     },
     headerTintColor: 'white',
     headerTitleStyle: Fonts.headline,
-    headerBackTitleStyle: Fonts.subHeading
+    headerBackTitleStyle: Fonts.subHeadingWhite
   },
 })
 
