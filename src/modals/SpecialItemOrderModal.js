@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, FlatList, StatusBar } from 'react-native';
 
-import { BACKGROUND_GREY, SECONDARY } from '../theme/colors';
-import { Fonts } from '../theme/styling'
+import { BACKGROUND_GREY, SECONDARY, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY } from '../theme/colors';
+import { Fonts, isScreenLarge, DeviceWidth, HeaderHeight } from '../theme/styling'
 
 import SpecialItemSelector from '../components/special-item-selector';
 import Field from '../ui-elements/field.js';
 import OrderCard from '../components/order-card';
 import CircleButton from '../ui-elements/circle-button'
+import IconButton from '../ui-elements/icon-button'
+
+const filterIconSize = (isScreenLarge) ? 32 : 28
+
+function SubmitButton(props) {
+  let { text, onPress } = props
+  return (
+    <View style={styles.submitButtonContainer} >
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={onPress}>
+        <Text style={Fonts.headline}>{text}</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
 
 function SpecialItemOrder(props) {
 
@@ -32,21 +49,27 @@ function SpecialItemOrder(props) {
   }
 
   return (
-    <View style={styles.scrollViewContainer} >
-      <View style={{ position: 'absolute', left: 16, top: 40, zIndex: 10004 }}>
-        <CircleButton
-          image={require('../../assets/go-back-icon.png')}
-          onPress={onDismiss}
-        />
+    <View style={styles.container} >
+      <StatusBar hidden={true} />
+      <View style={styles.headerContainer}>
+        <View style={styles.headerIcon}>
+          <IconButton
+            iconSource={require('../../assets/X-icon-white.png')}
+            iconDimensions={filterIconSize}
+            primaryColor={BACKGROUND_LIGHT_GREY}
+            secondaryColor={BACKGROUND_DARK_GREY}
+            onPress={onDismiss}
+          />
+        </View>
+        <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY, paddingTop: 12, textAlign: 'center' }]}>Order Item</Text>
       </View>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.scrollViewContainer}>
         <Field
-          placeholder={'Store #'}
+          label={'Store Number :'}
+          placeholder={'Ex. 1234'}
           keyboard={'numeric'}
           updateState={setStore}
           text={store} />
-
-        <View style={{ height: 32 }} />
 
         <FlatList
           data={items}
@@ -55,19 +78,16 @@ function SpecialItemOrder(props) {
               item={item}
               onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }}
             />
-          )}/>
+          )} />
 
-        <OrderCard cost={quantity.toFixed(2)} />
+        <OrderCard
+          cost={quantity.toFixed(2)} />
 
-        <View style={styles.submitButtonContainer} >
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={onSubmitOrder}>
-            <Text style={Fonts.headline}>Submit</Text>
-          </TouchableOpacity>
-        </View>
+        <SubmitButton
+          onPress={onSubmitOrder}
+          text={"Submit"} />
       </ScrollView>
-    </View>
+    </View >
   )
 }
 
@@ -86,21 +106,33 @@ SpecialItemOrder.propTypes = {
 }
 
 const styles = StyleSheet.create({
-  scrollViewContainer: {
+  container: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY
   },
-  container: {
+  headerContainer: {
+    width: DeviceWidth,
+    height: HeaderHeight * 1.5,
+    backgroundColor: BACKGROUND_GREY,
+    paddingTop: HeaderHeight * .5,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    justifyContent: 'center'
+  },
+  headerIcon: {
+    position: 'absolute',
+    left: 16,
+    top: HeaderHeight * .5
+  },
+  scrollViewContainer: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY,
     padding: 16,
-    paddingTop: 140
   },
   submitButtonContainer: {
     height: 140,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 200
   },
   submitButton: {
     height: 54,
@@ -108,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: SECONDARY,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
+    borderRadius: 8,
     overflow: 'hidden'
   },
 })

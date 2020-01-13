@@ -1,21 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { SECONDARY } from '../theme/colors'
+import { View, TextInput, StyleSheet, Text } from 'react-native';
+import { SECONDARY, BACKGROUND_LIGHT_GREY } from '../theme/colors'
+import { Fonts, DeviceWidth } from '../theme/styling';
 
-const Field = props => (
-  <View style={styles.fieldContainer} >
-    <TextInput
-      selectionColor={SECONDARY} autoCorrect={false}
-      style={styles.field}
-      placeholder={props.placeholder}
-      onChangeText={(text) => props.updateState(text)}
-      value={props.text}
-      returnKeyType={'next'}
-      keyboardType={props.keyboard}
-    />
-  </View>
-)
+function Field(props) {
+
+  const { placeholder, keyboard, text, label, updateState } = props
+
+  onChangeText = (text) => {
+    updateState(text)
+  }
+
+  return (
+    <View style={styles.fieldContainer} >
+      <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>{label}</Text>
+      <TextInput
+        selectionColor={SECONDARY}
+        autoCorrect={false}
+        style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY, paddingLeft: 8 }]}
+        placeholder={placeholder}
+        onChangeText={onChangeText}
+        value={text}
+        returnKeyType={'next'}
+        keyboardType={keyboard}
+      />
+    </View>
+  )
+}
 
 Field.propTypes = {
   placeholder: PropTypes.string,
@@ -26,11 +38,17 @@ Field.propTypes = {
 
 const styles = StyleSheet.create({
   fieldContainer: {
-    height: 64, justifyContent: 'center',
-    borderBottomColor: SECONDARY, borderBottomWidth: 2
+    height: 64,
+    flexDirection: 'row',
+    borderBottomColor: SECONDARY,
+    borderBottomWidth: 2,
+    marginBottom: 32,
+    alignItems: 'center'
   },
   field: {
-    color: SECONDARY, fontSize: 24, fontFamily: 'bold'
+    color: SECONDARY,
+    fontSize: 24,
+    fontFamily: 'bold'
   },
 })
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, FlatList, TouchableOpacity, Text, StatusBar } from 'react-native'
 import IconButton from '../ui-elements/icon-button'
 
 import { BACKGROUND_GREY, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY } from '../theme/colors';
@@ -25,6 +25,7 @@ class FilterModal extends Component {
 
         return (
             <View style={styles.container}>
+                <StatusBar hidden={true}/>
                 <View style={styles.headerContainer}>
                     <IconButton
                         iconSource={require('../../assets/X-icon-white.png')}
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         width: DeviceWidth,
-        height: HeaderHeight * 1.75,
+        height: HeaderHeight * 1.5,
         backgroundColor: BACKGROUND_GREY,
         paddingTop: HeaderHeight * .5,
         paddingHorizontal: 16,

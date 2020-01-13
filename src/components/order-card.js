@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-import * as Colors from '../theme/colors';
+import { SECONDARY } from '../theme/colors';
+import { Fonts } from '../theme/styling';
 
-const OrderCard = props => (
-  <View style={styles.card}>
-    <Text style={styles.total}>Total</Text>
-    <Text style={styles.cost}>${props.cost}</Text>
-  </View>
-)
+function OrderCard(props) {
+  let { cost } = props
+  return (
+    <View style={styles.card}>
+      <Text style={[Fonts.headline, { color: 'black'}]}>Total:</Text>
+      <Text style={[Fonts.headline, { color: SECONDARY}]}>${cost}</Text>
+    </View>
+  )
+}
 
 OrderCard.propTypes = {
   cost: PropTypes.string
@@ -21,22 +25,14 @@ OrderCard.defaultProps = {
 
 const styles = StyleSheet.create({
   card: {
-    height: 100,
-    borderRadius: 4,
-    backgroundColor: Colors.BACKGROUND_GREY, overflow: 'visible',
-    shadowOffset:{  width: 0,  height: 0  }, shadowRadius: 12,
-    shadowColor: 'rgb(100,100,100)',
-    shadowOpacity: 0.4,
+    height: 80,
+    borderRadius: 8,
+    backgroundColor: "white",
+    overflow: 'visible',
     flexDirection: 'row',
-    justifyContent: 'space-around', alignItems: 'center'
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
-  total: {
-    fontSize: 28, fontFamily: 'bold',
-  },
-  cost: {
-    fontSize: 28, fontFamily: 'bold',
-    color: Colors.SECONDARY
-  }
 })
 
 export default OrderCard
