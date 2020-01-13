@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
-import * as Colors from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY } from '../theme/colors';
+import { Fonts } from '../theme/styling'
 
 import SpecialItemSelector from '../components/special-item-selector';
 import Field from '../ui-elements/field.js';
@@ -10,47 +11,63 @@ import OrderCard from '../components/order-card';
 import CircleButton from '../ui-elements/circle-button'
 
 function SpecialItemOrder(props) {
+
   let [store, setStore] = useState('')
   let [quantity, setQuantity] = useState(0)
+  const { items, onDismiss, onSubmit } = props
 
-  calculate = () => {
+  calculateTotal = () => {
     let total = 0
-    props.items.forEach((item) => {
-      if(item.quantity > 0) {
+
+    items.forEach((item) => {
+      if (item.quantity > 0) {
         total += (item.quantity * Number(item.case_cost))
       }
     })
     setQuantity(total)
   }
 
-  return(
-    <ScrollView style={{flex: 1, backgroundColor: Colors.BACKGROUND_GREY}} >
-      <View style={{position: 'absolute', left: 16, top: 40, zIndex: 10004}}>
-        <CircleButton image={require('../../assets/go-back-icon.png')} onPress={props.onDismiss} />
-      </View>
-      <View style={styles.container}>
+  onSubmitOrder = () => {
+    onSubmit(items, store)
+  }
 
-        <Field placeholder={'Store #'} keyboard={'numeric'} updateState={setStore} text={store} />
-        
-        <View style={{height: 32}}/>
-        {(props.items.map((item, index) => (
-          <SpecialItemSelector
-            item={item}
-            onIncrement={(quantity) => {item.quantity = quantity; this.calculate()}}
+  return (
+    <View style={styles.scrollViewContainer} >
+      <View style={{ position: 'absolute', left: 16, top: 40, zIndex: 10004 }}>
+        <CircleButton
+          image={require('../../assets/go-back-icon.png')}
+          onPress={onDismiss}
+        />
+      </View>
+      <ScrollView style={styles.container}>
+        <Field
+          placeholder={'Store #'}
+          keyboard={'numeric'}
+          updateState={setStore}
+          text={store} />
+
+        <View style={{ height: 32 }} />
+
+        <FlatList
+          data={items}
+          renderItem={(item, index) => (
+            <SpecialItemSelector
+              item={item}
+              onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }}
             />
-        )))}
+          )}/>
 
         <OrderCard cost={quantity.toFixed(2)} />
 
-        <View style={{height: 140, justifyContent: 'center', alignItems: 'center', marginBottom: 100}} >
-          <TouchableOpacity style={styles.submit} onPress={() => props.onSubmit(props.items, store)}>
-            <Text style={styles.text}>Submit</Text>
+        <View style={styles.submitButtonContainer} >
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={onSubmitOrder}>
+            <Text style={Fonts.headline}>Submit</Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 
@@ -69,20 +86,31 @@ SpecialItemOrder.propTypes = {
 }
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flex: 1,
+    backgroundColor: BACKGROUND_GREY
+  },
   container: {
     flex: 1,
-    backgroundColor: Colors.BACKGROUND_GREY,
-    padding: 16, paddingTop: 140
+    backgroundColor: BACKGROUND_GREY,
+    padding: 16,
+    paddingTop: 140
   },
-  submit: {
-    height: 54, width: 300, backgroundColor: Colors.SECONDARY,
-    justifyContent: 'center', alignItems: 'center',
-    borderRadius: 4, overflow: 'hidden'
+  submitButtonContainer: {
+    height: 140,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 200
   },
-  text: {
-    textAlign: 'center', fontSize: 24, color: 'white',
-    fontFamily: 'bold'
-  }
+  submitButton: {
+    height: 54,
+    width: 300,
+    backgroundColor: SECONDARY,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    overflow: 'hidden'
+  },
 })
 
 export default SpecialItemOrder;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, StatusBar } from 'react-native';
 
 import { TextBoxFeature } from '../components/index'
 
@@ -36,6 +36,7 @@ class HomeScreen extends Component {
 
     return (
       <View style={styles.container} >
+        <StatusBar backgroundColor="blue" barStyle="light-content" />
         <FlatList
           style={{ paddingTop: 16 }}
           data={screens}

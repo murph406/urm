@@ -1,52 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import * as Colors from '../theme/colors';
+
+import { SECONDARY, RED, BACKGROUND_DARK_GREY, BACKGROUND_GREY, BACKGROUND_LIGHT_GREY } from '../theme/colors';
+import { Fonts } from '../theme/styling';
+
+const addIcon = require('../../assets/icons/add.png')
+const subtractIcon = require('../../assets/icons/minus.png')
+
+function IncrementButton(props) {
+
+  let { icon, onPress } = props
+
+  return (
+    <TouchableOpacity
+      activeOpacity={.7}
+      style={styles.button}
+      onPress={onPress}>
+      <Image
+        style={styles.incrementIcon}
+        source={icon} />
+    </TouchableOpacity>
+  )
+}
 
 function SpecialItemSelector(props) {
   let [count, setCount] = useState(0)
+  const { onIncrement } = props
+  const { description, pack_size, case_cost, net_case, net_unit } = props.item.item
+
 
   useEffect(() => {
-    props.onIncrement(count)
+    onIncrement(count)
   })
 
-  return(
+  return (
     <View style={styles.container} >
-      <View style={styles.title}>
-        <Text style={[styles.label, { color: 'black'}]}>{props.item.description}</Text>
+      <View style={styles.descriptionContainer}>
+        <Text style={[Fonts.subHeading, { color: 'black' }]}>Description: {description}</Text>
       </View>
-      <View style={styles.infoContainer} >
+
+      <View style={styles.infoContainer}>
         <View style={styles.infoPair}>
           <View style={styles.labelValue}>
-            <Text style={styles.label}>Pack/Size  </Text>
-            <Text style={styles.value}>{props.item.pack_size}</Text>
+            <Text style={styles.label}>Pack/Size:  </Text>
+            <Text style={styles.value}>{pack_size}</Text>
           </View>
+
           <View style={styles.labelValue}>
-            <Text style={styles.label}>Case Cost  </Text>
-            <Text style={styles.value}>${props.item.case_cost}</Text>
+            <Text style={styles.label}>Case Cost:  </Text>
+            <Text style={styles.value}>${case_cost}</Text>
           </View>
         </View>
 
         <View style={styles.infoPair}>
           <View style={styles.labelValue}>
-            <Text style={styles.label}>Net Case  </Text>
-            <Text style={styles.value}>${props.item.net_case}</Text>
+            <Text style={styles.label}>Net Case:  </Text>
+            <Text style={styles.value}>${net_case}</Text>
           </View>
+
           <View style={styles.labelValue}>
-            <Text style={styles.label}>Net Unit  </Text>
-            <Text style={styles.value}>{props.item.net_unit}</Text>
+            <Text style={styles.label}>Net Unit:  </Text>
+            <Text style={styles.value}>{net_unit}</Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.incrementer} >
-        <TouchableOpacity style={styles.button} onPress={() => setCount((count === 0) ? count : --count)}>
-          <Image style={styles.image} source={require('../../assets/icons/minus.png')} />
-        </TouchableOpacity>
-        <Text style={[styles.value, { fontFamily:'bold', fontSize:24, color: 'white'}]}>{count}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => setCount(++count)}>
-          <Image style={styles.image} source={require('../../assets/icons/add.png')} />
-        </TouchableOpacity>
+      <View style={styles.numberIncrementers} >
+        <IncrementButton
+          icon={subtractIcon}
+          onPress={() => setCount((count === 0) ? count : --count)}/>
+        <Text style={[Fonts.headline, { color: 'white' }]}>{count}</Text>
+        <IncrementButton
+          icon={addIcon}
+          onPress={() => setCount(++count)}/>
       </View>
     </View>
   )
@@ -67,44 +94,70 @@ SpecialItemSelector.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.BACKGROUND_GREY,//'rgb(180, 180, 180)',
-    height: 200, borderRadius: 4, marginBottom: 32,
-    shadowOffset:{  width: 0,  height: 0,  }, shadowRadius: 12,
-    shadowColor: Colors.BACKGROUND_LIGHT_DARKGREY,
-    shadowOpacity: 0.4,
+    backgroundColor: 'white',
+    height: 250,
+    borderRadius: 8,
+    marginBottom: 32,
+  },
+  descriptionContainer: {
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoContainer: {
-    flex: 3, justifyContent: 'center'
+    flex: 3,
+    justifyContent: 'center'
   },
   label: {
-    fontSize: 18, color: Colors.BACKGROUND_DARK_DARKGREY, margin: 4,
-    fontFamily: 'bold', textAlign: 'center', color: Colors.BACKGROUND_DARK_LIGHTGREY, opacity: 0.7
+    fontSize: 18,
+    color: BACKGROUND_DARK_GREY,
+    margin: 4,
+    fontFamily: 'bold',
+    textAlign: 'center',
+    color: BACKGROUND_LIGHT_GREY,
+    opacity: 0.7
   },
   labelValue: {
-    flexDirection: 'row', justifyContent: 'center', alignItems: 'center'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   value: {
-    fontSize: 18, color: 'black', fontFamily: 'bold', textAlign: 'center'
+    fontSize: 18,
+    color: 'black',
+    fontFamily: 'bold',
+    textAlign: 'center'
   },
-  title: {
-    height: 48, justifyContent: 'center', alignItems: 'center',
-    borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: Colors.BACKGROUND_GREY
-  },
+
   infoPair: {
-    flexDirection: 'row', justifyContent: 'space-between', marginLeft: 16, marginRight: 16
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 16, marginRight: 16
   },
-  image: {
-    height: 32, width: 32, tintColor: 'white'
+  incrementIcon: {
+    height: 24,
+    width: 24,
+    tintColor: 'white'
   },
-  incrementer: {
-    height: 64, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    backgroundColor: Colors.SECONDARY, borderBottomLeftRadius: 4, borderBottomRightRadius: 4
+  numberIncrementers: {
+    height: 64,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: SECONDARY,
+   borderRadius: 8
   },
   button: {
-    height: 64, width: 100, borderRadius: 4,
-    backgroundColor: Colors.GREEN,
-    justifyContent: 'center', alignItems: 'center'
+    height: 64,
+    width: 100,
+    borderRadius: 4,
+    backgroundColor: RED,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
 export default SpecialItemSelector;
+
+
+

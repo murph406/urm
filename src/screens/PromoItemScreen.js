@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Modal } from 'react-native';
+import { View, StyleSheet, Modal, StatusBar } from 'react-native';
 
 import { formatItemsForOrder } from '../util/util';
 import { saveOrderAsync } from '../api/offline-order-manager';
+import { DeviceHeight } from '../theme/styling'
 import { BACKGROUND_GREY } from '../theme/colors';
 
 import * as API from '../api/api';
 
-import ItemCarousel from '../components/item-carousel';
 import SpecialItemOrderModal from '../modals/SpecialItemOrderModal';
+import { ItemCarousel } from '../components/index'
 
 class PromoItemsScreen extends Component {
   static navigationOptions = {
@@ -24,6 +25,7 @@ class PromoItemsScreen extends Component {
     this.state = {
       isOrderModalPresented: false,
       selectedItemGroup: { items: [] },
+      promotedItems: []
     }
   }
 
@@ -37,11 +39,13 @@ class PromoItemsScreen extends Component {
         console.log("PROMOTED_ITEMS_ERROR", err)
       } else {
         console.log("PROMOTED_ITEMS", promoItems)
+        this.setState({ promotedItems: promoItems })
       }
     })
   }
 
-  _onSelectItemGroup(item) {
+  _onSelectItemGroup = (item)  => {
+    console.log("SELECTED", item)
     this.setState({
       selectedItemGroup: item,
       isOrderModalPresented: true
@@ -82,27 +86,26 @@ class PromoItemsScreen extends Component {
 
   render() {
 
-    let { isOrderModalPresented, selectedItemGroup } = this.state
+    let { isOrderModalPresented, selectedItemGroup, promotedItems } = this.state
 
     return (
-      <View style={styles.container} >
-
+      <View style={styles.container}>
+        <StatusBar backgroundColor="blue" barStyle="light-content" />
         <View style={styles.carouselContainer} >
-          {/* <ItemCarousel
-            // items={this.props.promoItems}
-            // Old redux functionality removed ^ ^ ^
-            onSelect={(item) => this._onSelectItemGroup(item)}
-          /> */}
+          <ItemCarousel
+            items={promotedItems}
+            onSelect={this._onSelectItemGroup}
+          />
         </View>
 
         <Modal
           animationType={'slide'}
-          visible={isOrderModalPresented} >
+          visible={isOrderModalPresented}>
           <SpecialItemOrderModal
             items={selectedItemGroup.items}
             // onSubmit={(items, store) => this._onSubmit(items, store)}
-            onDismiss={this.closeOrderModal}
-          />
+            onSubmit={(item, store) => console.log(item, store)}
+            onDismiss={this.closeOrderModal} />
         </Modal>
       </View>
     )
@@ -116,10 +119,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   carouselContainer: {
-    flex: 5,
+    flex: 1,
     justifyContent: 'center',
-    marginTop: 32,
-    marginBottom: 64,
   }
 })
 

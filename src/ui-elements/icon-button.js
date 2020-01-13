@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
 
+
 function IconButton(props) {
     const [isIconPressed, toggleButton] = useState(false);
     const { iconSource, iconDimensions, onPress, primaryColor, secondaryColor } = props
@@ -17,10 +18,10 @@ function IconButton(props) {
             <View style={{
                 height: iconDimensions * 1.75,
                 width: iconDimensions * 1.75,
-                borderRadius: iconDimensions ,
+                borderRadius: iconDimensions,
                 backgroundColor: (isIconPressed) ? secondaryColor : primaryColor,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             }}>
                 <Image
                     style={{ height: iconDimensions, width: iconDimensions }}

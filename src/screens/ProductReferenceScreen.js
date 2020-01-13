@@ -40,7 +40,7 @@ class ProductReferenceScreen extends Component {
       tabs: [
         { name: "Bananas", brand: "Fruit Company", type: "Fruit", description: "Lamest fruit out there.", code: '0001', price: '10.00', index: 0 },
         { name: "Apple", brand: "Fruit Company", type: "Fruit", description: "Best fruit out there", code: '0002', price: '5.00', index: 1 },
-        { name: "Captain Crunch", brand: "Quaker Oats", type: "Cereal", description: "Best cereal hands down, will cut your mouth tho", code: '0003', price: '20.00', index: 2 },
+        { name: "Captain Crunch", brand: "Quaker Oats", type: "Cereal", description: "Be\st cereal hands down, will cut your mouth tho", code: '0003', price: '20.00', index: 2 },
         { name: "Cheerios", brand: "General Mills", type: "Cereal", description: "Pretty basic, but tasty. 6.7 out of 10", code: '0004', price: '7.00', index: 3 },
         { name: "Flamin Hot Cheetos", brand: "PepsiCo", type: "Chips", description: "What's this shit on my hands?", code: '0005', price: '1.00', index: 4 },
         { name: "Funyuns", brand: "PepsiCo", type: "Chips", description: "Have some fun with your yuns", code: '0006', price: '69.00', index: 5 }
