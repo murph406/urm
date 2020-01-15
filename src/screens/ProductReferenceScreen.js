@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
 
 import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal'
@@ -52,7 +52,7 @@ class ProductReferenceScreen extends Component {
 
   componentDidMount() {
     this.setNavigationParams()
-    this.setItems()
+    this.retrieveItems()
 
   }
 
@@ -67,6 +67,22 @@ class ProductReferenceScreen extends Component {
         this.setState({ items: items, isActivityIndicatorVisible: false })
       }
     })
+  }
+
+  async retrieveItems() {
+    try {
+      const retrievedItems = await AsyncStorage.getItem('data');
+      const items = JSON.parse(retrievedItems);
+
+      console.log("RETURNED_ITEMS", items)
+      this.setState({ items: items, isActivityIndicatorVisible: false })
+
+    } catch (err) {
+      console.log(err.message);
+      
+      Alert.alert('Error', "Problem retrieving data", [{ text: 'Ok' }])
+      this.setState({ isActivityIndicatorVisible: false })
+    }
   }
 
   setNavigationParams = () => {

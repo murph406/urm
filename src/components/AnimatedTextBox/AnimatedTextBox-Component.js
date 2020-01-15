@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { styles, containerHeight, } from './AnimatedTextBox-Styles'
 import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity, AnimatedText, AnimatedPositionAbsolute } from './Animated-Utility'
 import { Fonts, isScreenLarge } from '../../theme/styling'
-import { SECONDARY, BACKGROUND_DARK_GREY, RED } from '../../theme/colors'
+import { SECONDARY, BACKGROUND_DARK_GREY, RED, GREEN } from '../../theme/colors'
 
 export default class AnimatedTextBox extends PureComponent {
     constructor() {
@@ -66,7 +66,7 @@ export default class AnimatedTextBox extends PureComponent {
                                 finalDeg={'0deg'}
                                 isActive={isAnimatedTextBoxActive}>
                                 <Image
-                                    source={require('../../../assets/X-icon-white.png')}
+                                    source={require('../../../assets/icons/X-icon-white.png')}
                                     style={{ height: iconSize, width: iconSize }} />
                             </AnimatedRotation>
                         </AnimatedColor>
@@ -77,7 +77,7 @@ export default class AnimatedTextBox extends PureComponent {
                     outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 1.5 }}
                     isActive={isAnimatedTextBoxActive}>
                     <TouchableOpacity
-                        style={[styles.buttonStyle, { backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', zIndex: 50 }]}
+                        style={[styles.buttonStyle, { backgroundColor: GREEN, justifyContent: 'center', alignItems: 'center', zIndex: 50 }]}
                         activeOpacity={.7}
                         onPress={() => console.log('hello')}>
                         <Image
@@ -145,7 +145,7 @@ AnimatedTextBox.defaultProps = {
 
 function TextDetail(props) {
 
-    const { label, value, marginTop, multiLine } = props
+    const { label, value, marginTop } = props
 
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: marginTop, }}>

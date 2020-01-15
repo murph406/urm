@@ -39,7 +39,7 @@ export default class TextBoxFeature extends PureComponent {
                     <>
                         <Image
                             style={styles.icon}
-                            source={require('../../../assets/check-icon.png')} />
+                            source={require('../../../assets/icons/check-icon.png')} />
                     </>
                 }
             </View>

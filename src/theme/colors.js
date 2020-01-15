@@ -2,12 +2,17 @@ export const PRIMARY = '#424242';
 export const PRIMARY_LIGHT = '#f5f5f5';
 
 export const SECONDARY =  '#1565c0'
-export const SECONDARY_DARK = '#1a237e'
+export const SECONDARY_DARK = '#003c8f'
+export const SECONDARY_LIGHT = '#5e92f3'
 
 export const BACKGROUND_GREY = '#f0f0f0';
 
 export const BACKGROUND_LIGHT_GREY = '#606060';
 export const BACKGROUND_DARK_GREY = '#373737';
 
-export const GREEN = '#e64a19';
-export const RED = '#b71c1c'
+export const GREEN = '#388e3c';
+export const GREEN_DARK = '#00600f';
+
+export const RED = '#d32f2f'
+export const RED_DARK = '#d32f2f'
+
