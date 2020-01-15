@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, Modal } from 'react-native';
 
 import IconButton from '../ui-elements/icon-button';
@@ -9,7 +9,7 @@ import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_DARK_GREY, BACKG
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge } from '../theme/styling';
 
-import * as API from '../api/api';
+import { } from '../api/api';
 
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
@@ -50,11 +50,16 @@ class ProductReferenceScreen extends Component {
   }
 
   componentDidMount() {
+    this.setNavigationParams()
+  }
+
+  setNavigationParams = () => {
     const { navigation } = this.props
 
     navigation.setParams({
       toggleFilterModal: this.toggleFilterModal
     })
+    // ^^^ Connects the toggleFilterModal function to react-navigation's header functionally. 
   }
 
   toggleFilterModal = () => {
@@ -86,6 +91,7 @@ class ProductReferenceScreen extends Component {
             <AnimatedTextBox
               data={item} />
           )} />
+
         <Modal
           animationType="slide"
           transparent={false}

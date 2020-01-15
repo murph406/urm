@@ -8,7 +8,6 @@ import { Fonts, isScreenLarge, DeviceWidth, HeaderHeight } from '../theme/stylin
 import SpecialItemSelector from '../components/special-item-selector';
 import Field from '../ui-elements/field.js';
 import OrderCard from '../components/order-card';
-import CircleButton from '../ui-elements/circle-button'
 import IconButton from '../ui-elements/icon-button'
 
 const filterIconSize = (isScreenLarge) ? 32 : 28

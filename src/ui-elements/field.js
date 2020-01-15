@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput, StyleSheet, Text } from 'react-native';
 import { SECONDARY, BACKGROUND_LIGHT_GREY } from '../theme/colors'
-import { Fonts, DeviceWidth } from '../theme/styling';
+import { Fonts } from '../theme/styling';
 
 function Field(props) {
 
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Field
+export default Field;

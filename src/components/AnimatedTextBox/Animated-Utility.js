@@ -1,9 +1,7 @@
-import React, { PureComponent, Children } from 'react';
-import { View, Text, Image, Animated, Easing } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { View, Animated, Easing } from 'react-native';
 
-import { styles, containerHeight } from './AnimatedTextBox-Styles';
-import { SECONDARY } from '../../theme/colors'
+import { styles } from './AnimatedTextBox-Styles';
 
 export class AnimatedContainer extends PureComponent {
     constructor(props) {
@@ -13,14 +11,13 @@ export class AnimatedContainer extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        let prevIsActive = prevProps.isActive
+    componentDidUpdate() {
         let isActive = this.props.isActive
 
-        this.goAnimation(prevIsActive, isActive)
+        this.goAnimation(isActive)
     }
 
-    goAnimation(prevIsActive, isActive) {
+    goAnimation(isActive) {
         let { animatedValue } = this.state
 
         Animated.timing(animatedValue, {
@@ -30,7 +27,7 @@ export class AnimatedContainer extends PureComponent {
     }
 
     render() {
-        const { children, minHeight, maxHeight, isActive } = this.props
+        const { children, minHeight, maxHeight } = this.props
         const { animatedValue } = this.state
 
         const animatedValueStyle = animatedValue.interpolate({
@@ -56,14 +53,13 @@ export class AnimatedColor extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        let prevIsActive = prevProps.isActive
+    componentDidUpdate() {
         let isActive = this.props.isActive
 
-        this.goAnimation(prevIsActive, isActive)
+        this.goAnimation(isActive)
     }
 
-    goAnimation(prevIsActive, isActive) {
+    goAnimation(isActive) {
         let { animatedValue } = this.state
 
         Animated.timing(animatedValue, {
@@ -99,14 +95,13 @@ export class AnimatedRotation extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        let prevIsActive = prevProps.isActive
+    componentDidUpdate() {
         let isActive = this.props.isActive
 
-        this.goAnimation(prevIsActive, isActive)
+        this.goAnimation( isActive)
     }
 
-    goAnimation(prevIsActive, isActive) {
+    goAnimation( isActive) {
         let { animatedValue } = this.state
 
         Animated.timing(animatedValue, {
@@ -143,14 +138,13 @@ export class AnimatedOpacity extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        let prevIsActive = prevProps.isActive
+    componentDidUpdate() {
         let isActive = this.props.isActive
 
-        this.goAnimation(prevIsActive, isActive)
+        this.goAnimation(isActive)
     }
 
-    goAnimation(prevIsActive, isActive) {
+    goAnimation(isActive) {
         let { animatedValue } = this.state
 
         Animated.timing(animatedValue, {
@@ -171,7 +165,7 @@ export class AnimatedOpacity extends PureComponent {
 
         return (
             <Animated.View
-                style={{opacity: AnimatedOpacityStyle}}>
+                style={{ opacity: AnimatedOpacityStyle }}>
                 {children}
             </Animated.View>
         )
