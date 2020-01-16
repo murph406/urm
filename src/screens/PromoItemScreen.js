@@ -3,7 +3,6 @@ import { View, StyleSheet, Modal, StatusBar } from 'react-native';
 
 import { formatItemsForOrder } from '../util/util';
 import { saveOrderAsync } from '../api/offline-order-manager';
-import { DeviceHeight } from '../theme/styling'
 import { BACKGROUND_GREY } from '../theme/colors';
 
 import * as API from '../api/api';

@@ -13,15 +13,17 @@ import MaterialIcons from './node_modules/@expo/vector-icons/build/vendor/react-
 import MainReducer from './src/reducers/main-reducer';
 import AppNavigator from './src/navigation/app-navigator';
 
-import { BACKGROUND_DARK_LIGHTGREY } from './src/theme/colors';
+import { BACKGROUND_DARK_LIGHT_GREY } from './src/theme/colors';
 import { getItemsAll } from './src/api/api'
+import { Fonts } from './src/theme/styling';
 
 export default class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      isAppReady: false
+      isAppReady: false,
+      isErrorOnLoading: false
     }
   }
 
@@ -39,6 +41,7 @@ export default class App extends Component {
       this.setState({ isAppReady: true });
     } catch (err) {
       console.log(err)
+      this.setState({ isErrorOnLoading: true })
     }
   }
 
@@ -86,7 +89,7 @@ export default class App extends Component {
 
 
   render() {
-    let { isAppReady } = this.state
+    let { isAppReady, isErrorOnLoading } = this.state
 
     if (isAppReady) {
       return (
@@ -98,7 +101,9 @@ export default class App extends Component {
       return (
         <View
           style={styles.container}>
-          <ActivityIndicator size='large' />
+          {(isErrorOnLoading)
+            ? <Text style={Fonts.headline, { color: BACKGROUND_DARK_GREY }}>Error Loading App</Text>
+            : <ActivityIndicator size='large' />}
         </View>
       )
     }
@@ -108,7 +113,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BACKGROUND_DARK_LIGHTGREY,
+    backgroundColor: BACKGROUND_DARK_LIGHT_GREY,
     alignItems: 'center',
     justifyContent: 'center',
   }

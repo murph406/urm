@@ -122,7 +122,7 @@ export class AnimatedRotation extends PureComponent {
 
         return (
             <Animated.View
-                source={imageSource}
+                // source={imageSource}
                 style={[style, { transform: [{ rotate: AnimatedRotationStyle }] }]}>
                 {children}
             </Animated.View>

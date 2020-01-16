@@ -57,11 +57,14 @@ export default class AnimatedTextBox extends PureComponent {
                         activeOpacity={1}
                         onPress={this.goAnimatedTextBox}>
                         <AnimatedColor
+                            isAnimationEnabled={true}
+                            // ^^^ New prop to add to animated functions
                             style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                             initialColor={SECONDARY}
                             finalColor={RED}
                             isActive={isAnimatedTextBoxActive}>
                             <AnimatedRotation
+                                isAnimationEnabled={true}
                                 initialDeg={'45deg'}
                                 finalDeg={'0deg'}
                                 isActive={isAnimatedTextBoxActive}>
@@ -72,10 +75,15 @@ export default class AnimatedTextBox extends PureComponent {
                         </AnimatedColor>
                     </TouchableOpacity>
                 </View>
+
                 <AnimatedPositionAbsolute
                     inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
                     outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 1.5 }}
                     isActive={isAnimatedTextBoxActive}>
+                    {/* Possibly Move to its own functional component 
+                        Could be done for animated button above. Give the component a prop isAnimatedRotation and isAnimatedColor. 
+                        Pass those props to the Animated Components 
+                    */}
                     <TouchableOpacity
                         style={[styles.buttonStyle, { backgroundColor: GREEN, justifyContent: 'center', alignItems: 'center', zIndex: 50 }]}
                         activeOpacity={.7}
@@ -84,6 +92,8 @@ export default class AnimatedTextBox extends PureComponent {
                             source={require('../../../assets/icons/arrow-icon-white.png')}
                             style={{ height: iconSize, width: iconSize }} />
                     </TouchableOpacity>
+                    {/* ^^^ */}
+
                 </AnimatedPositionAbsolute>
             </>
 
@@ -102,10 +112,10 @@ export default class AnimatedTextBox extends PureComponent {
                 inputRange={[.3, .7]}
                 outputRange={[0, 1]}
                 isActive={isAnimatedTextBoxActive} >
-                <TextDetail label={"Size: "} value={size} marginTop={8} />
-                <TextDetail label={"Pack: "} value={pack} marginTop={8} />
-                <TextDetail label={"Unit Price: $"} value={unit_price} marginTop={8} />
-                <TextDetail label={"Group Description: "} value={group_description} marginTop={8} />
+                <TextDetail value={size} marginTop={8} label={"Size: "} />
+                <TextDetail value={pack} marginTop={8} label={"Pack: "} />
+                <TextDetail value={unit_price} marginTop={8} label={"Unit Price: $"} />
+                <TextDetail value={group_description} marginTop={8} label={"Group Description: "} />
             </AnimatedOpacity>
         )
 

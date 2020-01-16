@@ -37,14 +37,7 @@ class ProductReferenceScreen extends Component {
     super(props);
 
     this.state = {
-      items: [
-        // { name: "Bananas", brand: "Fruit Company", type: "Fruit", description: "Lamest fruit out there.", code: '0001', price: '10.00', index: 0 },
-        // { name: "Apple", brand: "Fruit Company", type: "Fruit", description: "Best fruit out there", code: '0002', price: '5.00', index: 1 },
-        // { name: "Captain Crunch", brand: "Quaker Oats", type: "Cereal", description: "Be\st cereal hands down, will cut your mouth tho", code: '0003', price: '20.00', index: 2 },
-        // { name: "Cheerios", brand: "General Mills", type: "Cereal", description: "Pretty basic, but tasty. 6.7 out of 10", code: '0004', price: '7.00', index: 3 },
-        // { name: "Flamin Hot Cheetos", brand: "PepsiCo", type: "Chips", description: "What's this shit on my hands?", code: '0005', price: '1.00', index: 4 },
-        // { name: "Funyuns", brand: "PepsiCo", type: "Chips", description: "Have some fun with your yuns", code: '0006', price: '69.00', index: 5 }
-      ],
+      items: [],
       isFilterModalVisible: false,
       isActivityIndicatorVisible: true
     }
@@ -56,18 +49,18 @@ class ProductReferenceScreen extends Component {
 
   }
 
-  setItems = () => {
-    getItemsAll((err, items) => {
-      if (err) {
-        console.log("API_ERR", err)
-        Alert.alert('Error', "Failed with status code " + err.request.status, [{ text: 'Cancel' }])
-        this.setState({ isActivityIndicatorVisible: false })
-      } else {
-        console.log("RETURNED_ITEMS", items)
-        this.setState({ items: items, isActivityIndicatorVisible: false })
-      }
-    })
-  }
+  // setItems = () => {
+  //   getItemsAll((err, items) => {
+  //     if (err) {
+  //       console.log("API_ERR", err)
+  //       Alert.alert('Error', "Failed with status code " + err.request.status, [{ text: 'Cancel' }])
+  //       this.setState({ isActivityIndicatorVisible: false })
+  //     } else {
+  //       console.log("RETURNED_ITEMS", items)
+  //       this.setState({ items: items, isActivityIndicatorVisible: false })
+  //     }
+  //   })
+  // }
 
   async retrieveItems() {
     try {
@@ -79,7 +72,7 @@ class ProductReferenceScreen extends Component {
 
     } catch (err) {
       console.log(err.message);
-      
+
       Alert.alert('Error', "Problem retrieving data", [{ text: 'Ok' }])
       this.setState({ isActivityIndicatorVisible: false })
     }
@@ -121,11 +114,25 @@ class ProductReferenceScreen extends Component {
     return contents
   }
 
+  getNumberOfResultsDetail() {
+
+    const { items } = this.state
+
+    let contents = (
+      <View style={{alignSelf: 'center', paddingBottom: 16}}>
+        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Product Count: {items.length}</Text>
+      </View>
+    )
+
+    return contents
+  }
+
 
   render() {
 
     const { items, isFilterModalVisible } = this.state;
     const emptyFlatlistVeiw = this.getEmptyFlatlistView()
+    const numberOfResultsDetail = this.getNumberOfResultsDetail()
 
     return (
       <View style={styles.container} >
@@ -138,6 +145,7 @@ class ProductReferenceScreen extends Component {
 
         <FlatList
           style={{ paddingTop: 16, }}
+          ListHeaderComponent={numberOfResultsDetail}
           ListEmptyComponent={emptyFlatlistVeiw}
           data={items}
           keyExtractor={item => item.id}
