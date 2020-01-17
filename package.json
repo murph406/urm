@@ -19,6 +19,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-modal": "^7.0.2",
     "react-native-snap-carousel": "^3.7.5",
+    "react-native-super-grid": "^3.1.2",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.11.0",
     "react-redux": "^6.0.0",

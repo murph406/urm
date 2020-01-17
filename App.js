@@ -50,7 +50,7 @@ export default class App extends Component {
     return new Promise((resolve, reject) => {
       getItemsAll(async (err, items) => {
         if (err) {
-          Alert.alert('Error Refreshing Data', 'Old data being used instead')
+          Alert.alert('Error Refreshing Data', 'Defaulted to previously loaded data')
           resolve(err)
         } else {
           try {

@@ -49,25 +49,12 @@ class ProductReferenceScreen extends Component {
 
   }
 
-  // setItems = () => {
-  //   getItemsAll((err, items) => {
-  //     if (err) {
-  //       console.log("API_ERR", err)
-  //       Alert.alert('Error', "Failed with status code " + err.request.status, [{ text: 'Cancel' }])
-  //       this.setState({ isActivityIndicatorVisible: false })
-  //     } else {
-  //       console.log("RETURNED_ITEMS", items)
-  //       this.setState({ items: items, isActivityIndicatorVisible: false })
-  //     }
-  //   })
-  // }
-
   async retrieveItems() {
     try {
       const retrievedItems = await AsyncStorage.getItem('data');
       const items = JSON.parse(retrievedItems);
 
-      console.log("RETURNED_ITEMS", items)
+      // console.log("RETURNED_ITEMS", items)
       this.setState({ items: items, isActivityIndicatorVisible: false })
 
     } catch (err) {
@@ -119,8 +106,8 @@ class ProductReferenceScreen extends Component {
     const { items } = this.state
 
     let contents = (
-      <View style={{alignSelf: 'center', paddingBottom: 16}}>
-        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Product Count: {items.length}</Text>
+      <View style={{ alignSelf: 'center', paddingBottom: 16 }}>
+        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {items.length}</Text>
       </View>
     )
 
@@ -159,6 +146,7 @@ class ProductReferenceScreen extends Component {
           transparent={false}
           visible={isFilterModalVisible}>
           <FilterModal
+            data={items}
             onExitModal={this.toggleFilterModal}
           />
         </Modal>

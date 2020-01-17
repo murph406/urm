@@ -52,48 +52,32 @@ export default class AnimatedTextBox extends PureComponent {
         let contents = (
             <>
                 <View style={styles.topButtonPosition}>
-                    <TouchableOpacity
-                        style={styles.buttonStyle}
-                        activeOpacity={1}
-                        onPress={this.goAnimatedTextBox}>
-                        <AnimatedColor
-                            isAnimationEnabled={true}
-                            // ^^^ New prop to add to animated functions
-                            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                            initialColor={SECONDARY}
-                            finalColor={RED}
-                            isActive={isAnimatedTextBoxActive}>
-                            <AnimatedRotation
-                                isAnimationEnabled={true}
-                                initialDeg={'45deg'}
-                                finalDeg={'0deg'}
-                                isActive={isAnimatedTextBoxActive}>
-                                <Image
-                                    source={require('../../../assets/icons/X-icon-white.png')}
-                                    style={{ height: iconSize, width: iconSize }} />
-                            </AnimatedRotation>
-                        </AnimatedColor>
-                    </TouchableOpacity>
+                    <AnimatedButton
+                        onPress={this.goAnimatedTextBox}
+                        initialColor={SECONDARY}
+                        finalColor={RED}
+                        initialDeg={'45deg'}
+                        finalDeg={'0deg'}
+                        iconSize={iconSize}
+                        isActive={isAnimatedTextBoxActive}
+                        iconSource={require('../../../assets/icons/X-icon-white.png')}
+                    />
                 </View>
 
                 <AnimatedPositionAbsolute
                     inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
                     outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 1.5 }}
                     isActive={isAnimatedTextBoxActive}>
-                    {/* Possibly Move to its own functional component 
-                        Could be done for animated button above. Give the component a prop isAnimatedRotation and isAnimatedColor. 
-                        Pass those props to the Animated Components 
-                    */}
-                    <TouchableOpacity
-                        style={[styles.buttonStyle, { backgroundColor: GREEN, justifyContent: 'center', alignItems: 'center', zIndex: 50 }]}
-                        activeOpacity={.7}
-                        onPress={() => console.log('hello')}>
-                        <Image
-                            source={require('../../../assets/icons/arrow-icon-white.png')}
-                            style={{ height: iconSize, width: iconSize }} />
-                    </TouchableOpacity>
-                    {/* ^^^ */}
-
+                    <AnimatedButton
+                        onPress={() => console.log('hello')}
+                        initialColor={SECONDARY}
+                        finalColor={GREEN}
+                        initialDeg={'45deg'}
+                        finalDeg={'0deg'}
+                        iconSize={iconSize}
+                        isActive={isAnimatedTextBoxActive}
+                        iconSource={require('../../../assets/icons/arrow-icon-white.png')}
+                    />
                 </AnimatedPositionAbsolute>
             </>
 
@@ -163,5 +147,32 @@ function TextDetail(props) {
             <Text style={[Fonts.subHeading, { color: BACKGROUND_DARK_GREY, flex: 1 }]} numberOfLines={2}> {value}</Text>
         </View>
 
+    )
+}
+
+function AnimatedButton(props) {
+
+    const { onPress, initialColor, finalColor, initialDeg, finalDeg, isActive, iconSource, iconSize } = props
+
+    return (
+        <TouchableOpacity
+            style={styles.buttonStyle}
+            activeOpacity={1}
+            onPress={onPress}>
+            <AnimatedColor
+                style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                initialColor={initialColor}
+                finalColor={finalColor}
+                isActive={isActive}>
+                <AnimatedRotation
+                    initialDeg={initialDeg}
+                    finalDeg={finalDeg}
+                    isActive={isActive}>
+                    <Image
+                        source={iconSource}
+                        style={{ height: iconSize, width: iconSize }} />
+                </AnimatedRotation>
+            </AnimatedColor>
+        </TouchableOpacity>
     )
 }

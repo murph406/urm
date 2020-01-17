@@ -37,7 +37,7 @@ function SpecialItemOrder(props) {
       isRightIconDisabled={true}
       leftOnPress={onDismiss}
       leftIconSource={require('../../assets/icons/X-icon-white.png')}
-      headerText={'Order Item              '}>
+      headerText={'Order Item'}>
 
       <ScrollView style={styles.scrollViewContainer}>
         <Field

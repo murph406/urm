@@ -16,22 +16,27 @@ export function ModalContainer(props) {
         <View style={styles.modalContainer}>
             <StatusBar hidden={true} />
             <View style={styles.headerContainer}>
-                <IconButton
-                    iconSource={leftIconSource}
-                    iconDimensions={filterIconSize}
-                    primaryColor={BACKGROUND_LIGHT_GREY}
-                    secondaryColor={BACKGROUND_DARK_GREY}
-                    onPress={leftOnPress}
-                />
-                <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY, paddingTop: 12 }]}>{headerText}</Text>
-                {(!isRightIconDisabled)
-                    ? <IconButton
-                        iconSource={rightIconSource}
+                <View style={[styles.buttonPositionAbsolute, { left: 16 }]}>
+                    <IconButton
+                        iconSource={leftIconSource}
                         iconDimensions={filterIconSize}
                         primaryColor={BACKGROUND_LIGHT_GREY}
                         secondaryColor={BACKGROUND_DARK_GREY}
-                        onPress={rightOnPress}
+                        onPress={leftOnPress}
                     />
+                </View>
+
+                <Text style={[Fonts.headline, { color: 'black', alignSelf: 'center' }]}>{headerText}</Text>
+                {(!isRightIconDisabled)
+                    ? <View style={[styles.buttonPositionAbsolute, { right: 16 }]}>
+                        <IconButton
+                            iconSource={rightIconSource}
+                            iconDimensions={filterIconSize}
+                            primaryColor={BACKGROUND_LIGHT_GREY}
+                            secondaryColor={BACKGROUND_DARK_GREY}
+                            onPress={rightOnPress}
+                        />
+                    </View>
                     : null}
 
             </View>
@@ -66,14 +71,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: BACKGROUND_GREY
     },
+    buttonPositionAbsolute: {
+        position: 'absolute',
+        top: 40,
+    },
     headerContainer: {
         width: DeviceWidth,
         height: HeaderHeight * 1.5,
         backgroundColor: BACKGROUND_GREY,
         paddingTop: HeaderHeight * .5,
         paddingHorizontal: 16,
-        flexDirection: "row",
-        justifyContent: 'space-between'
     },
     submitButton: {
         height: 54,
