@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
 
 import IconButton from '../ui-elements/icon-button';
-import FilterModal from '../modals/Filter-Modal'
+import FilterModal from '../modals/Filter-Modal-Component'
 import SearchField from '../ui-elements/search-field';
 
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_DARK_GREY, BACKGROUND_LIGHT_GREY } from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY } from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth } from '../theme/styling';
-
-import { getItemsAll } from '../api/api';
 
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
@@ -38,6 +36,7 @@ class ProductReferenceScreen extends Component {
 
     this.state = {
       items: [],
+      masterItemList: [],
       isFilterModalVisible: false,
       isActivityIndicatorVisible: true
     }
@@ -54,8 +53,8 @@ class ProductReferenceScreen extends Component {
       const retrievedItems = await AsyncStorage.getItem('data');
       const items = JSON.parse(retrievedItems);
 
-      // console.log("RETURNED_ITEMS", items)
-      this.setState({ items: items, isActivityIndicatorVisible: false })
+      // console.log(items)
+      this.setState({ items: items, masterItemList: items, isActivityIndicatorVisible: false })
 
     } catch (err) {
       console.log(err.message);
@@ -114,16 +113,67 @@ class ProductReferenceScreen extends Component {
     return contents
   }
 
+  filterBySearch = (text) => {
+    const { masterItemList } = this.state
+    text = text.toUpperCase()
+
+    let filteredItems = masterItemList.filter((x, index) => {
+      const name = (x.item_description == null) ? '' : x.item_description
+      const brand = (x.brand == null) ? '' : x.brand
+      const code = (x.item_code == null) ? '' : x.item_code
+      const group = (x.group_description == null) ? '' : x.group_description
+
+      if (name.includes(text) === true || brand.includes(text) === true || code.includes(text) === true || group.includes(text) === true) {
+        return true
+        // Refactor this ^^^
+      }
+      return false
+    })
+    this.setState({ items: filteredItems })
+  }
+
+  filterByOptions = (filterItemsArray) => {
+    const { masterItemList } = this.state
+    let filteredData = []
+
+
+    filterItemsArray.forEach((filterOption, index) => {
+
+      const { item, label } = filterOption
+
+      let filteredItems = masterItemList.filter((x, i) => {
+
+        const group = (x.group_description == null) ? '' : x.group_description
+        const brand = (x.brand == null) ? '' : x.brand
+
+        if (brand.includes(item) === true || group.includes(item) === true) {
+          return true
+        }
+        return false
+      })
+      filteredData = [...filteredData, ...filteredItems]
+    })
+
+    this.setState({ items: filteredData })
+  }
+
+  resetDefaultData = () => {
+    const { masterItemList } = this.state
+
+    this.setState({ items: masterItemList })
+  }
+
 
   render() {
 
-    const { items, isFilterModalVisible } = this.state;
+    const { items, isFilterModalVisible, masterItemList } = this.state;
     const emptyFlatlistVeiw = this.getEmptyFlatlistView()
     const numberOfResultsDetail = this.getNumberOfResultsDetail()
 
     return (
       <View style={styles.container} >
         <SearchField
+          onChangeText={this.filterBySearch}
           showCancelButton={true}
           placeHolderText={'Search Here...'}
           textColor={BACKGROUND_LIGHT_GREY}
@@ -131,9 +181,11 @@ class ProductReferenceScreen extends Component {
           secondaryColor={BACKGROUND_GREY} />
 
         <FlatList
-          style={{ paddingTop: 16, }}
+          style={{ paddingTop: 16 }}
           ListHeaderComponent={numberOfResultsDetail}
           ListEmptyComponent={emptyFlatlistVeiw}
+          ListFooterComponent={() => <View style={{flex: 1, height: 120}}/>}
+          ItemSeparatorComponent={() => <View style={{flex: 1, height: .5, margin: 8, }}/>}
           data={items}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
@@ -146,7 +198,9 @@ class ProductReferenceScreen extends Component {
           transparent={false}
           visible={isFilterModalVisible}>
           <FilterModal
-            data={items}
+            data={masterItemList}
+            onResetFilterOptions={this.resetDefaultData}
+            onFilterChanges={this.filterByOptions}
             onExitModal={this.toggleFilterModal}
           />
         </Modal>

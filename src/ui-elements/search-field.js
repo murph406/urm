@@ -7,10 +7,11 @@ import { Fonts } from '../theme/styling'
 function TextField(props) {
 
     const [search, updateSearch] = useState(0)
-    const { onFocus, primaryColor, secondaryColor, textColor, placeHolderText } = props
+    const { onFocus, primaryColor, secondaryColor, textColor, placeHolderText, onChangeText } = props
 
     function onChangeSearch(text) {
         updateSearch(text)
+        onChangeText(text)
     }
 
     return (

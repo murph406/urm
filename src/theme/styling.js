@@ -26,7 +26,7 @@ const Fonts = StyleSheet.create({
     headline: {
         fontFamily: 'bold',
         fontSize: (isScreenLarge)? 32 : 28,
-        color: 'white',
+        // color: 'white',
     },
     subHeading: {
         fontFamily: 'bold',

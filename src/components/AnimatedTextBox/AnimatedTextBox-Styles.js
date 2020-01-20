@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { DeviceHeight, DeviceWidth } from '../../theme/styling'
 import { SECONDARY, SECONDARY_DARK } from '../../theme/colors'
 
-const containerHeight = DeviceHeight * .18
+const containerHeight = DeviceHeight * .1
 const buttonDimensions = 50
 
 const styles = StyleSheet.create({
@@ -11,14 +11,15 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginLeft: 12,
         marginRight: 12,
-        marginBottom: 12,
         backgroundColor: 'white',
         flexDirection: 'row',
         padding: 16,
+        paddingTop: 16
     },
     textContainer: { 
         flex: 6,
-        paddingRight: 16
+        paddingRight: 16,
+        paddingTop: 14
     },
     buttonContainer: {
         flex: 1, 
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     topButtonPosition: {
         position: 'absolute', 
         top: 0,
-        bottom: 0, 
+        // bottom: 0, 
         right: 0, 
         left: 0, 
         zIndex: 100,

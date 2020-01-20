@@ -25,7 +25,7 @@ export default class AnimatedTextBox extends PureComponent {
 
     getLeftContent = () => {
 
-        const { brand, item_code, item_description } = this.props.data
+        const { item_description } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
 
         let contents = (
@@ -36,8 +36,7 @@ export default class AnimatedTextBox extends PureComponent {
                     isActive={isAnimatedTextBoxActive} >
                     {item_description}
                 </AnimatedText>
-                <TextDetail label={"Brand: "} value={brand} marginTop={32} />
-                <TextDetail label={"Code #: "} value={item_code} marginTop={8} />
+
             </View>
         )
 
@@ -64,21 +63,21 @@ export default class AnimatedTextBox extends PureComponent {
                     />
                 </View>
 
-                <AnimatedPositionAbsolute
-                    inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
-                    outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 1.5 }}
-                    isActive={isAnimatedTextBoxActive}>
-                    <AnimatedButton
-                        onPress={() => console.log('hello')}
-                        initialColor={SECONDARY}
-                        finalColor={GREEN}
-                        initialDeg={'45deg'}
-                        finalDeg={'0deg'}
-                        iconSize={iconSize}
-                        isActive={isAnimatedTextBoxActive}
-                        iconSource={require('../../../assets/icons/arrow-icon-white.png')}
-                    />
-                </AnimatedPositionAbsolute>
+                    <AnimatedPositionAbsolute
+                        inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
+                        outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 2.4 }}
+                        isActive={isAnimatedTextBoxActive}>
+                        <AnimatedButton
+                            onPress={() => console.log('hello')}
+                            initialColor={SECONDARY}
+                            finalColor={GREEN}
+                            initialDeg={'90deg'}
+                            finalDeg={'0deg'}
+                            iconSize={iconSize}
+                            isActive={isAnimatedTextBoxActive}
+                            iconSource={require('../../../assets/icons/arrow-icon-white.png')}
+                        />
+                    </AnimatedPositionAbsolute>
             </>
 
         )
@@ -88,7 +87,7 @@ export default class AnimatedTextBox extends PureComponent {
 
     getBottomContent = () => {
 
-        const { size, pack, group_description, unit_price } = this.props.data
+        const { size, pack, group_description, unit_price, brand, item_code } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
 
         contents = (
@@ -96,6 +95,8 @@ export default class AnimatedTextBox extends PureComponent {
                 inputRange={[.3, .7]}
                 outputRange={[0, 1]}
                 isActive={isAnimatedTextBoxActive} >
+                <TextDetail label={"Brand: "} value={brand} marginTop={32} />
+                <TextDetail label={"Code #: "} value={item_code} marginTop={8} />
                 <TextDetail value={size} marginTop={8} label={"Size: "} />
                 <TextDetail value={pack} marginTop={8} label={"Pack: "} />
                 <TextDetail value={unit_price} marginTop={8} label={"Unit Price: $"} />
@@ -115,7 +116,7 @@ export default class AnimatedTextBox extends PureComponent {
         return (
             <AnimatedContainer
                 minHeight={containerHeight}
-                maxHeight={(!isScreenLarge) ? (containerHeight * 1.6) : (containerHeight * 2.25)}
+                maxHeight={(!isScreenLarge) ? (containerHeight * 2) : (containerHeight * 4)}
                 isActive={isAnimatedTextBoxActive}>
 
                 <View style={styles.textContainer}>{LeftContent}{BottomContent}</View>

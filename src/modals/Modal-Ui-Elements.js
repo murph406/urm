@@ -60,7 +60,7 @@ export function TextButton(props) {
             onPressIn={toggleButtonBackground}
             onPressOut={toggleButtonBackground}>
             <View style={[styles.submitButton, { backgroundColor: (isIconPressed) ? secondaryColor : primaryColor }]}>
-                <Text style={Fonts.headline}>{text}</Text>
+                <Text style={[Fonts.headline, { color: 'white'}]}>{text}</Text>
             </View>
         </TouchableWithoutFeedback>
     )
