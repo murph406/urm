@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Animated, Easing, Text } from 'react-native';
 
-import { styles } from './AnimatedTextBox-Styles';
+import { styles } from '../components/AnimatedTextBox/AnimatedTextBox-Styles';
 
 export class AnimatedContainer extends PureComponent {
     constructor(props) {
@@ -234,10 +234,11 @@ export class AnimatedPositionAbsolute extends PureComponent {
 
     goAnimation(isActive) {
         let { animatedValue } = this.state
+        const { duration } = this.props
 
         Animated.timing(animatedValue, {
             toValue: isActive ? 1 : 0,
-            duration: 300,
+            duration: duration,
         }).start();
     }
 

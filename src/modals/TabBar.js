@@ -10,7 +10,7 @@ import {
 import { Fonts, DeviceWidth, isScreenLarge } from '../theme/styling';
 import { SECONDARY, BACKGROUND_LIGHT_GREY, BACKGROUND_GREY, RED } from '../theme/colors';
 
-const numberOfColumns = (!isScreenLarge)? 3 : 2
+const numberOfColumns = (isScreenLarge)? 3 : 2
 
 export function TabBar(props) {
   const { style, tabs, goToPage, activeTab } = props

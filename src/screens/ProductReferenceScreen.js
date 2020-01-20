@@ -5,9 +5,11 @@ import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal-Component'
 import SearchField from '../ui-elements/search-field';
 
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY } from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, RED } from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth } from '../theme/styling';
+import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
@@ -38,7 +40,9 @@ class ProductReferenceScreen extends Component {
       items: [],
       masterItemList: [],
       isFilterModalVisible: false,
-      isActivityIndicatorVisible: true
+      isItemSelected: false,
+      isActivityIndicatorVisible: true,
+      selectedItem: 'null'
     }
   }
 
@@ -53,7 +57,6 @@ class ProductReferenceScreen extends Component {
       const retrievedItems = await AsyncStorage.getItem('data');
       const items = JSON.parse(retrievedItems);
 
-      // console.log(items)
       this.setState({ items: items, masterItemList: items, isActivityIndicatorVisible: false })
 
     } catch (err) {
@@ -80,38 +83,7 @@ class ProductReferenceScreen extends Component {
     this.setState({ isFilterModalVisible: modalFlag })
   }
 
-  getEmptyFlatlistView() {
 
-    let { isActivityIndicatorVisible } = this.state
-
-    let contents = (
-      <View style={styles.emptyFlatlistContainer}>
-        {(isActivityIndicatorVisible)
-          ? <ActivityIndicator size={'large'} color={BACKGROUND_LIGHT_GREY} />
-          :
-          <>
-            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry</Text>
-            <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingTop: 8 }]}> Currently, there are no items</Text>
-          </>
-        }
-      </View>
-    )
-
-    return contents
-  }
-
-  getNumberOfResultsDetail() {
-
-    const { items } = this.state
-
-    let contents = (
-      <View style={{ alignSelf: 'center', paddingBottom: 16 }}>
-        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {items.length}</Text>
-      </View>
-    )
-
-    return contents
-  }
 
   filterBySearch = (text) => {
     const { masterItemList } = this.state
@@ -163,12 +135,105 @@ class ProductReferenceScreen extends Component {
     this.setState({ items: masterItemList })
   }
 
+  onSelectedItem = (item) => () => {
+    const { isItemSelected } = this.state
+
+    this.setState({ isItemSelected: !isItemSelected, selectedItem: item })
+  }
+
+
+  getLeftContent = () => {
+    const { items } = this.state
+    const numberOfResultsDetail = this.getNumberOfResultsDetail()
+    const emptyFlatlistVeiw = this.getEmptyFlatlistView()
+
+    const contents = (
+      <View style={{ flex: 1, width: DeviceWidth }}>
+        <FlatList
+          style={{ paddingTop: 16 }}
+          ListHeaderComponent={numberOfResultsDetail}
+          ListEmptyComponent={emptyFlatlistVeiw}
+          ListFooterComponent={() => <View style={{ flex: 1, height: 120 }} />}
+          ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
+          data={items}
+          keyExtractor={item => item.id}
+          renderItem={({ item, index }) => (
+            <AnimatedTextBox
+              onSelectedItem={this.onSelectedItem(item)}
+              data={item} />
+          )} />
+      </View>
+
+    )
+
+    return contents
+  }
+
+  getRightContent = () => {
+    const { selectedItem} = this.state
+    console.log(selectedItem)
+    let contents = (
+      <View style={{ flex: 1, width: DeviceWidth, paddingTop: 80 }}>
+        <View style={{
+          // flex: 1,
+          borderRadius: 8,
+          marginLeft: 12,
+          marginRight: 12,
+          backgroundColor: 'white',
+          flexDirection: 'row',
+          padding: 16,
+          paddingTop: 16
+        }}>
+          <TouchableOpacity style={{ height: 90, width: DeviceWidth }} onPress={() => this.setState({ isItemSelected: false })}>
+            <Text style={Fonts.headline, {color: 'black'}}>{selectedItem.item_description}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+
+    return contents
+  }
+
+  getEmptyFlatlistView() {
+
+    let { isActivityIndicatorVisible } = this.state
+
+    let contents = (
+      <View style={styles.emptyFlatlistContainer}>
+        {(isActivityIndicatorVisible)
+          ? <ActivityIndicator size={'large'} color={BACKGROUND_LIGHT_GREY} />
+          :
+          <>
+            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry</Text>
+            <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingTop: 8 }]}> Currently, there are no items</Text>
+          </>
+        }
+      </View>
+    )
+
+    return contents
+  }
+
+  getNumberOfResultsDetail() {
+
+    const { items } = this.state
+
+    let contents = (
+      <View style={{ alignSelf: 'center', paddingBottom: 16 }}>
+        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {items.length}</Text>
+      </View>
+    )
+
+    return contents
+  }
+
+
 
   render() {
 
-    const { items, isFilterModalVisible, masterItemList } = this.state;
-    const emptyFlatlistVeiw = this.getEmptyFlatlistView()
-    const numberOfResultsDetail = this.getNumberOfResultsDetail()
+    const { isFilterModalVisible, masterItemList, isItemSelected } = this.state;
+    const leftContent = this.getLeftContent()
+    const rightContent = this.getRightContent()
 
     return (
       <View style={styles.container} >
@@ -180,18 +245,21 @@ class ProductReferenceScreen extends Component {
           primaryColor={'white'}
           secondaryColor={BACKGROUND_GREY} />
 
-        <FlatList
-          style={{ paddingTop: 16 }}
-          ListHeaderComponent={numberOfResultsDetail}
-          ListEmptyComponent={emptyFlatlistVeiw}
-          ListFooterComponent={() => <View style={{flex: 1, height: 120}}/>}
-          ItemSeparatorComponent={() => <View style={{flex: 1, height: .5, margin: 8, }}/>}
-          data={items}
-          keyExtractor={item => item.id}
-          renderItem={({ item, index }) => (
-            <AnimatedTextBox
-              data={item} />
-          )} />
+        <AnimatedPositionAbsolute
+          duration={800}
+          inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: 40 }}
+          outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: 40 }}
+          isActive={isItemSelected}>
+          <View style={{ flex: 1, width: DeviceWidth }}>{leftContent}</View>
+        </AnimatedPositionAbsolute>
+
+        <AnimatedPositionAbsolute
+          duration={800}
+          inputRange={{ bottomInitial: 0, leftInitial: DeviceWidth, rightInitial: DeviceWidth * 2, topInitial: 40 }}
+          outputRange={{ bottomFinal: 0, leftFinal: 0, rightFinal: DeviceWidth, topFinal: 40 }}
+          isActive={isItemSelected}>
+          <View style={{ flex: 1, width: DeviceWidth }}>{rightContent}</View>
+        </AnimatedPositionAbsolute>
 
         <Modal
           animationType="slide"
@@ -213,7 +281,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   emptyFlatlistContainer: {
     height: DeviceHeight * .7,

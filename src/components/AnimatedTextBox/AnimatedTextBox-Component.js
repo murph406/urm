@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, Image, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { styles, containerHeight, } from './AnimatedTextBox-Styles'
-import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity, AnimatedText, AnimatedPositionAbsolute } from './Animated-Utility'
-import { Fonts, isScreenLarge } from '../../theme/styling'
+import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity, AnimatedText, AnimatedPositionAbsolute } from '../../util/Animated-Utility'
+import { Fonts, isScreenLarge, DeviceHeight } from '../../theme/styling'
 import { SECONDARY, BACKGROUND_DARK_GREY, RED, GREEN } from '../../theme/colors'
 
 export default class AnimatedTextBox extends PureComponent {
@@ -46,6 +46,7 @@ export default class AnimatedTextBox extends PureComponent {
     getRightContent = () => {
 
         const { isAnimatedTextBoxActive } = this.state
+        const { onSelectedItem } = this.props
         const iconSize = 24
 
         let contents = (
@@ -63,21 +64,22 @@ export default class AnimatedTextBox extends PureComponent {
                     />
                 </View>
 
-                    <AnimatedPositionAbsolute
-                        inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
-                        outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 2.4 }}
-                        isActive={isAnimatedTextBoxActive}>
-                        <AnimatedButton
-                            onPress={() => console.log('hello')}
-                            initialColor={SECONDARY}
-                            finalColor={GREEN}
-                            initialDeg={'90deg'}
-                            finalDeg={'0deg'}
-                            iconSize={iconSize}
-                            isActive={isAnimatedTextBoxActive}
-                            iconSource={require('../../../assets/icons/arrow-icon-white.png')}
-                        />
-                    </AnimatedPositionAbsolute>
+                <AnimatedPositionAbsolute
+                    duration={300}
+                    inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
+                    outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 2.4 }}
+                    isActive={isAnimatedTextBoxActive}>
+                    <AnimatedButton
+                        onPress={onSelectedItem}
+                        initialColor={SECONDARY}
+                        finalColor={GREEN}
+                        initialDeg={'90deg'}
+                        finalDeg={'0deg'}
+                        iconSize={iconSize}
+                        isActive={isAnimatedTextBoxActive}
+                        iconSource={require('../../../assets/icons/arrow-icon-white.png')}
+                    />
+                </AnimatedPositionAbsolute>
             </>
 
         )
@@ -112,11 +114,12 @@ export default class AnimatedTextBox extends PureComponent {
         const LeftContent = this.getLeftContent()
         const RightContent = this.getRightContent()
         const BottomContent = this.getBottomContent()
+        const maxHeight = (isScreenLarge === true)? containerHeight * 3.2 : containerHeight * 4
 
         return (
             <AnimatedContainer
                 minHeight={containerHeight}
-                maxHeight={(!isScreenLarge) ? (containerHeight * 2) : (containerHeight * 4)}
+                maxHeight={maxHeight}
                 isActive={isAnimatedTextBoxActive}>
 
                 <View style={styles.textContainer}>{LeftContent}{BottomContent}</View>
