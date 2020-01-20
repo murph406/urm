@@ -76,15 +76,6 @@ class ProductReferenceScreen extends Component {
     // ^^^ Connects the toggleFilterModal function to react-navigation's header functionally. 
   }
 
-  toggleFilterModal = () => {
-    const { isFilterModalVisible } = this.state
-    const modalFlag = !isFilterModalVisible
-
-    this.setState({ isFilterModalVisible: modalFlag })
-  }
-
-
-
   filterBySearch = (text) => {
     const { masterItemList } = this.state
     text = text.toUpperCase()
@@ -136,11 +127,27 @@ class ProductReferenceScreen extends Component {
   }
 
   onSelectedItem = (item) => () => {
-    const { isItemSelected } = this.state
+    this.toggleScreenPosition()
 
-    this.setState({ isItemSelected: !isItemSelected, selectedItem: item })
+    this.setState({ selectedItem: item })
   }
 
+  onSubmitOrder = () => {
+    this.toggleScreenPosition()
+  }
+
+  toggleScreenPosition = () => {
+    const { isItemSelected } = this.state
+
+    this.setState({ isItemSelected: !isItemSelected })
+  }
+
+  toggleFilterModal = () => {
+    const { isFilterModalVisible } = this.state
+    const modalFlag = !isFilterModalVisible
+
+    this.setState({ isFilterModalVisible: modalFlag })
+  }
 
   getLeftContent = () => {
     const { items } = this.state
@@ -170,22 +177,17 @@ class ProductReferenceScreen extends Component {
   }
 
   getRightContent = () => {
-    const { selectedItem} = this.state
+    const { selectedItem } = this.state
+
     console.log(selectedItem)
+
     let contents = (
       <View style={{ flex: 1, width: DeviceWidth, paddingTop: 80 }}>
-        <View style={{
-          // flex: 1,
-          borderRadius: 8,
-          marginLeft: 12,
-          marginRight: 12,
-          backgroundColor: 'white',
-          flexDirection: 'row',
-          padding: 16,
-          paddingTop: 16
-        }}>
-          <TouchableOpacity style={{ height: 90, width: DeviceWidth }} onPress={() => this.setState({ isItemSelected: false })}>
-            <Text style={Fonts.headline, {color: 'black'}}>{selectedItem.item_description}</Text>
+        <View style={styles.submitOrderContainer}>
+          <TouchableOpacity
+            style={{ height: 90, width: DeviceWidth }}
+            onPress={this.onSubmitOrder}>
+            <Text style={Fonts.headline, { color: 'black' }}>{selectedItem.item_description}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -281,13 +283,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY,
-    // justifyContent: 'center',
   },
   emptyFlatlistContainer: {
     height: DeviceHeight * .7,
     width: DeviceWidth,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  submitOrderContainer: {
+    borderRadius: 8,
+    marginLeft: 12,
+    marginRight: 12,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    padding: 16,
+    paddingTop: 16
   }
 })
 

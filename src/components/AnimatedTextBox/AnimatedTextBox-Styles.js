@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { DeviceHeight, DeviceWidth } from '../../theme/styling'
 import { SECONDARY, SECONDARY_DARK } from '../../theme/colors'
 
-const containerHeight = DeviceHeight * .1
+const containerHeight = DeviceHeight * .12
 const buttonDimensions = 50
 
 const styles = StyleSheet.create({

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { styles, containerHeight, } from './AnimatedTextBox-Styles'
 import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity, AnimatedText, AnimatedPositionAbsolute } from '../../util/Animated-Utility'
-import { Fonts, isScreenLarge, DeviceHeight } from '../../theme/styling'
+import { Fonts, isScreenLarge } from '../../theme/styling'
 import { SECONDARY, BACKGROUND_DARK_GREY, RED, GREEN } from '../../theme/colors'
 
 export default class AnimatedTextBox extends PureComponent {
@@ -16,7 +16,6 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     goAnimatedTextBox = () => {
-
         const { isAnimatedTextBoxActive } = this.state
         const toggleAnimation = !isAnimatedTextBoxActive
 
@@ -24,19 +23,11 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getLeftContent = () => {
-
         const { item_description } = this.props.data
-        const { isAnimatedTextBoxActive } = this.state
 
         let contents = (
             <View>
-                <AnimatedText
-                    fontStyle={Fonts.headline}
-                    textColor={'black'}
-                    isActive={isAnimatedTextBoxActive} >
-                    {item_description}
-                </AnimatedText>
-
+                <Text style={[Fonts.headline, { color: 'black' }]} numberOfLines={(isScreenLarge)? 1 : 2}>{item_description}</Text>
             </View>
         )
 
@@ -44,7 +35,6 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getRightContent = () => {
-
         const { isAnimatedTextBoxActive } = this.state
         const { onSelectedItem } = this.props
         const iconSize = 24
@@ -88,7 +78,6 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getBottomContent = () => {
-
         const { size, pack, group_description, unit_price, brand, item_code } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
 
@@ -114,7 +103,7 @@ export default class AnimatedTextBox extends PureComponent {
         const LeftContent = this.getLeftContent()
         const RightContent = this.getRightContent()
         const BottomContent = this.getBottomContent()
-        const maxHeight = (isScreenLarge === true)? containerHeight * 3.2 : containerHeight * 4
+        const maxHeight = (isScreenLarge === true) ? containerHeight * 3.2 : containerHeight * 4.2
 
         return (
             <AnimatedContainer
