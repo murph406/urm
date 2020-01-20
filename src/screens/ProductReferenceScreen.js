@@ -206,8 +206,8 @@ class ProductReferenceScreen extends Component {
           ? <ActivityIndicator size={'large'} color={BACKGROUND_LIGHT_GREY} />
           :
           <>
-            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry</Text>
-            <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingTop: 8 }]}> Currently, there are no items</Text>
+            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry, No Results</Text>
+            {/* <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingTop: 8 }]}>No Results</Text> */}
           </>
         }
       </View>
@@ -217,7 +217,6 @@ class ProductReferenceScreen extends Component {
   }
 
   getNumberOfResultsDetail() {
-
     const { items } = this.state
 
     let contents = (
@@ -228,8 +227,6 @@ class ProductReferenceScreen extends Component {
 
     return contents
   }
-
-
 
   render() {
 
@@ -285,7 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_GREY,
   },
   emptyFlatlistContainer: {
-    height: DeviceHeight * .7,
+    height: DeviceHeight * .6,
     width: DeviceWidth,
     justifyContent: 'center',
     alignItems: 'center',

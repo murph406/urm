@@ -5,7 +5,6 @@ import IconButton from '../ui-elements/icon-button'
 import { DeviceWidth, DeviceHeight, HeaderHeight, isScreenLarge, Fonts } from '../theme/styling';
 import { BACKGROUND_GREY, BACKGROUND_DARK_GREY, BACKGROUND_LIGHT_GREY, SECONDARY } from '../theme/colors'
 
-
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
 export function ModalContainer(props) {
@@ -26,7 +25,7 @@ export function ModalContainer(props) {
                     />
                 </View>
 
-                <Text style={[Fonts.headline, { color: 'black', alignSelf: 'center' }]}>{headerText}</Text>
+                <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>{headerText}</Text>
                 {(!isRightIconDisabled)
                     ? <View style={[styles.buttonPositionAbsolute, { right: 16 }]}>
                         <IconButton
@@ -37,8 +36,8 @@ export function ModalContainer(props) {
                             onPress={rightOnPress}
                         />
                     </View>
-                    : null}
-
+                    : null
+                }
             </View>
 
             {children}
@@ -60,7 +59,7 @@ export function TextButton(props) {
             onPressIn={toggleButtonBackground}
             onPressOut={toggleButtonBackground}>
             <View style={[styles.submitButton, { backgroundColor: (isIconPressed) ? secondaryColor : primaryColor }]}>
-                <Text style={[Fonts.headline, { color: 'white'}]}>{text}</Text>
+                <Text style={[Fonts.headline, { color: 'white' }]}>{text}</Text>
             </View>
         </TouchableWithoutFeedback>
     )
