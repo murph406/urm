@@ -6,6 +6,7 @@ import { styles, containerHeight, } from './AnimatedTextBox-Styles'
 import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity, AnimatedText, AnimatedPositionAbsolute } from '../../util/Animated-Utility'
 import { Fonts, isScreenLarge } from '../../theme/styling'
 import { SECONDARY, BACKGROUND_DARK_GREY, RED, GREEN, SECONDARY_LIGHT } from '../../theme/colors'
+import * as Colors from '../../theme/colors';
 
 export default class AnimatedTextBox extends PureComponent {
     constructor() {
@@ -26,7 +27,7 @@ export default class AnimatedTextBox extends PureComponent {
         const { item_description, brand, unit_price, size, pack } = this.props.data
         const ORANGE = '#f57c00'
         return(
-            <View style={{ backgroundColor: RED, borderRadius: 8, paddingTop: 8, paddingLeft: 8, paddingBottom: 16, borderBottomColor: 'rgba(100,100,100,0.5)', borderBottomWidth: 4 }}>
+            <View style={{ backgroundColor: 'rgb(180,180,180)', borderRadius: 8, paddingTop: 8, paddingLeft: 8, paddingBottom: 16, borderBottomColor: 'rgba(100,100,100,0.5)', borderBottomWidth: 4 }}>
                 <Text
                     style={[Fonts.headline, { color: 'white', fontSize: 24 }]} 
                     numberOfLines={(isScreenLarge)? 1 : 2}>{item_description}
@@ -115,8 +116,9 @@ export default class AnimatedTextBox extends PureComponent {
                     </View>
 
                     {/* This is the right view where u can choose to go to order */}
-                    <TouchableOpacity style={{flex:1, backgroundColor: SECONDARY, justifyContent: 'center', alignItems: 'center', zIndex: 1000}} onPress={this.props.onSelectedItem}>  
+                    <TouchableOpacity style={{flex:1, backgroundColor: Colors.BLUE_LIGHT, justifyContent: 'center', alignItems: 'center', zIndex: 1000}} onPress={this.props.onSelectedItem}>  
                         <Image style={{tintColor: 'white'}} source={require('../../../assets/icons/order.png')} />
+                        <Text style={{textAlign:'center',fontFamily:'bold',fontSize:24, marginTop: 16,color:'white' }}>Order</Text>
                     </TouchableOpacity>
                 </View>
 

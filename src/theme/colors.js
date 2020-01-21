@@ -14,5 +14,12 @@ export const GREEN = '#388e3c';
 export const GREEN_DARK = '#00600f';
 
 export const RED = '#d32f2f'
-export const RED_DARK = '#d32f2f'
+export const RED_DARK = '#9a0007'
+export const RED_LIGHT = '#ff6659'
+
+export const BLUE = '#1976d2'
+export const BLUE_DARK = '#004ba0'
+export const BLUE_LIGHT = '#63a4ff'
+
+
 

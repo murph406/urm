@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
+import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage, TouchableOpacity } from 'react-native';
 
 import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal-Component'
 import SearchField from '../ui-elements/search-field';
 
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, RED } from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY } from '../theme/colors';
+import * as Colors from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth } from '../theme/styling';
 import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
@@ -22,7 +22,7 @@ class ProductReferenceScreen extends Component {
           <IconButton
             iconSource={require('../../assets/icons/filter-icon.png')}
             iconDimensions={filterIconSize}
-            primaryColor={SECONDARY}
+            primaryColor={Colors.RED_LIGHT}
             secondaryColor={SECONDARY_DARK}
             onPress={() => {
               navigation.getParam('toggleFilterModal')();
@@ -99,13 +99,10 @@ class ProductReferenceScreen extends Component {
     const { masterItemList } = this.state
     let filteredData = []
 
-
     filterItemsArray.forEach((filterOption, index) => {
-
-      const { item, label } = filterOption
+      const { item } = filterOption
 
       let filteredItems = masterItemList.filter((x, i) => {
-
         const group = (x.group_description == null) ? '' : x.group_description
         const brand = (x.brand == null) ? '' : x.brand
 
@@ -179,7 +176,7 @@ class ProductReferenceScreen extends Component {
   getRightContent = () => {
     const { selectedItem } = this.state
 
-    console.log(selectedItem)
+    let text = selectedItem?.item_description?.toLowerCase()
 
     let contents = (
       <View style={{ flex: 1, width: DeviceWidth, paddingTop: 80 }}>
@@ -187,7 +184,7 @@ class ProductReferenceScreen extends Component {
           <TouchableOpacity
             style={{ height: 90, width: DeviceWidth }}
             onPress={this.onSubmitOrder}>
-            <Text style={Fonts.headline, { color: 'black' }}>{selectedItem.item_description}</Text>
+            <Text style={Fonts.headline, { color: 'black' }}>{text}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -207,7 +204,6 @@ class ProductReferenceScreen extends Component {
           :
           <>
             <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry, No Results</Text>
-            {/* <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingTop: 8 }]}>No Results</Text> */}
           </>
         }
       </View>
@@ -219,9 +215,11 @@ class ProductReferenceScreen extends Component {
   getNumberOfResultsDetail() {
     const { items } = this.state
 
+    let text = items?.length
+
     let contents = (
       <View style={{ alignSelf: 'center', paddingBottom: 16 }}>
-        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {items?.length}</Text>
+        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {text}</Text>
       </View>
     )
 

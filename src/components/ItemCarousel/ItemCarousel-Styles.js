@@ -28,6 +28,12 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 4,
         borderBottomRightRadius: 4,
       },
+      emptyFlatlistContainer: {
+        height: DeviceHeight * .6,
+        width: DeviceWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }
 });
 
 export { styles, DeviceHeight, DeviceWidth }
