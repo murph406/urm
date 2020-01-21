@@ -167,7 +167,7 @@ export class AnimatedOpacity extends PureComponent {
 
         return (
             <Animated.View
-                style={{ opacity: AnimatedOpacityStyle }}>
+                style={{ opacity: AnimatedOpacityStyle, justfyContent: 'center' }}>
                 {children}
             </Animated.View>
         )

@@ -23,10 +23,13 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    setTimeout(() => {
+      this.navigate('productReference')
+    }, 1000)
   }
 
 
-  navigate = (screen) => () => {
+  navigate = (screen) => {
     this.props.navigation.navigate(screen);
   }
 

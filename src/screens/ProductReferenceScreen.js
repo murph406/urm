@@ -221,7 +221,7 @@ class ProductReferenceScreen extends Component {
 
     let contents = (
       <View style={{ alignSelf: 'center', paddingBottom: 16 }}>
-        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {items.length}</Text>
+        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {items?.length}</Text>
       </View>
     )
 

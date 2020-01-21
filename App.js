@@ -50,7 +50,7 @@ export default class App extends Component {
     return new Promise((resolve, reject) => {
       getItemsAll(async (err, items) => {
         if (err) {
-          Alert.alert('Error Refreshing Data', 'Defaulted to previously loaded data')
+          // Alert.alert('Error Refreshing Data', 'Defaulted to previously loaded data')
           resolve(err)
         } else {
           try {
@@ -82,6 +82,7 @@ export default class App extends Component {
       require('./assets/icons/minus.png'),
       require('./assets/icons/add.png'),
       require('./assets/icons/reset-icon-white.png'),
+      require('./assets/icons/order.png')
     ]
 
     await Asset.loadAsync(icons);
