@@ -43,29 +43,41 @@ class PromoItemsScreen extends Component {
     })
   }
 
-  _onSelectItemGroup = (item)  => {
+  _onSelectItemGroup = (item) => {
     console.log("SELECTED", item)
+
     this.setState({
       selectedItemGroup: item,
       isOrderModalPresented: true
     })
   }
 
-  // _onSubmit(items, store) {
-  //   this.state.selectedItemGroup.items = items
-  //   this.props.dispatch({ type: OrderActions.SET_ITEMGROUP_ITEMS, items: items })
-  //   this.setState({ isOrderModalPresented: false }, () => {
-  //     let order = {
-  //       user_id: this.props.user._id,
-  // Old redux functionality removed ^ ^ ^
-  //       buyer: 'Test',
-  //       store: store,
-  //       items: this.formatItemsForOrder(this.state.selectedItemGroup)
-  //     }
+  _onSubmit(items, store) {
 
-  //     this.createOrder(order)
-  //   })
-  // }
+
+    const { selectedItemGroup } = this.state
+
+    console.log("ITEM", items, "STORE", store)
+
+    let order = {
+      buyer: 'Test',
+      store: store,
+      items: this.formatItemsForOrder(selectedItemGroup)
+    }
+    this.createOrder(order)
+
+    //   this.state.selectedItemGroup.items = items
+    //   this.props.dispatch({ type: OrderActions.SET_ITEMGROUP_ITEMS, items: items })
+    //   this.setState({ isOrderModalPresented: false }, () => {
+    //     let order = {
+    //       user_id: this.props.user._id,
+    //       buyer: 'Test',
+    //       store: store,
+    //       items: this.formatItemsForOrder(this.state.selectedItemGroup)
+    //     }
+    //     this.createOrder(order)
+    //   })
+  }
 
   createOrder(order) {
     API.createOrder(order, (err, result) => {
@@ -102,8 +114,7 @@ class PromoItemsScreen extends Component {
           visible={isOrderModalPresented}>
           <SpecialItemOrderModal
             items={selectedItemGroup.items}
-            // onSubmit={(items, store) => this._onSubmit(items, store)}
-            onSubmit={(item, store) => console.log(item, store)}
+            onSubmit={this._onSubmit}
             onDismiss={this.closeOrderModal} />
         </Modal>
       </View>

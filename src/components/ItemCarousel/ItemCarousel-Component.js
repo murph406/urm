@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 
-import { styles, DeviceHeight, DeviceWidth } from './ItemCarousel-Styles'
+import { BACKGROUND_LIGHT_GREY } from '../../theme/colors'
+import { styles, DeviceWidth } from './ItemCarousel-Styles'
 import { Fonts } from '../../theme/styling'
-import { SECONDARY, BACKGROUND_DARK_GREY, RED } from '../../theme/colors'
 
 export default class ItemCarouselComponent extends PureComponent {
     constructor(props) {
@@ -17,6 +17,15 @@ export default class ItemCarouselComponent extends PureComponent {
     onSelectItem = (item) => () => {
         const { onSelect } = this.props
         onSelect(item)
+    }
+
+    getEmptyFlatlistView() {
+        let contents = (
+            <View style={styles.emptyFlatlistContainer}>
+                <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry, No Results</Text>
+            </View>
+        )
+        return contents
     }
 
     renderItems = ({ item, index }) => {
@@ -36,7 +45,7 @@ export default class ItemCarouselComponent extends PureComponent {
                     />
                 </View>
                 <View style={styles.bottomView}>
-                    <Text style={Fonts.headline}>{item.brand}</Text>
+                    <Text style={[Fonts.headline, { color: 'white'}]}>{item.brand}</Text>
                     <Text style={[Fonts.subHeading, { color: 'white' }]}>{brand}</Text>
                     <Text style={[Fonts.subHeading, { color: 'white' }]}>{items.length} Variations</Text>
                 </View>
@@ -48,11 +57,13 @@ export default class ItemCarouselComponent extends PureComponent {
     render() {
 
         const { items } = this.props
+        const emptyFlatlistVeiw = this.getEmptyFlatlistView()
 
         return (
             <Carousel
                 ref={(c) => { this._carousel = c; }}
                 data={items}
+                ListEmptyComponent={emptyFlatlistVeiw}
                 renderItem={this.renderItems}
                 sliderWidth={DeviceWidth}
                 itemWidth={DeviceWidth}

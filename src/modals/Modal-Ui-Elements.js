@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableWithoutFeedback, StatusBar, Text } from 'react-native';
 
 import IconButton from '../ui-elements/icon-button'
-import { DeviceWidth, DeviceHeight, HeaderHeight, isScreenLarge, Fonts } from '../theme/styling';
+import { DeviceWidth, HeaderHeight, isScreenLarge, Fonts } from '../theme/styling';
 import { BACKGROUND_GREY, BACKGROUND_DARK_GREY, BACKGROUND_LIGHT_GREY, SECONDARY } from '../theme/colors'
 
 const filterIconSize = (isScreenLarge) ? 32 : 28

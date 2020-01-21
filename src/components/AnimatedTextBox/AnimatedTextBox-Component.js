@@ -134,10 +134,12 @@ function TextDetail(props) {
 
     const { label, value, marginTop } = props
 
+    let textValue = value
+
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: marginTop, }}>
             <Text style={[Fonts.subHeading, { color: 'black', fontWeight: 'bold' }]}>{label}</Text>
-            <Text style={[Fonts.subHeading, { color: BACKGROUND_DARK_GREY, flex: 1 }]} numberOfLines={2}> {value}</Text>
+            <Text style={[Fonts.subHeading, { color: BACKGROUND_DARK_GREY, flex: 1 }]} numberOfLines={2}>{textValue}</Text>
         </View>
 
     )
