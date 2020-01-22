@@ -1,6 +1,6 @@
-import * as Colors from '../theme/colors';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import { Fonts, HeaderHeight } from '../theme/styling';
+import { RED, SECONDARY } from '../theme/colors';
 
 import HomeScreen from '../screens/HomeScreen';
 import PromoItemScreen from '../screens/PromoItemScreen';
@@ -15,7 +15,7 @@ const navigator = createStackNavigator({
   initialRouteName: 'home',
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: Colors.RED,
+      backgroundColor: SECONDARY,
       height: HeaderHeight,
       marginRight: 0
     },

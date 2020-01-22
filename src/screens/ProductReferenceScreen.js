@@ -4,9 +4,10 @@ import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, Asyn
 import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal-Component'
 import SearchField from '../ui-elements/search-field';
+import SpecialItemSelector from '../components/special-item-selector';
+import OrderCard from '../components/order-card';
 
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY } from '../theme/colors';
-import * as Colors from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_DARK, GREEN } from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth } from '../theme/styling';
 import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
@@ -22,7 +23,7 @@ class ProductReferenceScreen extends Component {
           <IconButton
             iconSource={require('../../assets/icons/filter-icon.png')}
             iconDimensions={filterIconSize}
-            primaryColor={Colors.RED_LIGHT}
+            primaryColor={SECONDARY}
             secondaryColor={SECONDARY_DARK}
             onPress={() => {
               navigation.getParam('toggleFilterModal')();
@@ -42,7 +43,7 @@ class ProductReferenceScreen extends Component {
       isFilterModalVisible: false,
       isItemSelected: false,
       isActivityIndicatorVisible: true,
-      selectedItem: 'null'
+      selectedItem: []
     }
   }
 
@@ -124,9 +125,12 @@ class ProductReferenceScreen extends Component {
   }
 
   onSelectedItem = (item) => () => {
+    const { selectedItem } = this.state
     this.toggleScreenPosition()
 
-    this.setState({ selectedItem: item })
+    let array = [...selectedItem, item]
+
+    this.setState({ selectedItem: array })
   }
 
   onSubmitOrder = () => {
@@ -144,6 +148,17 @@ class ProductReferenceScreen extends Component {
     const modalFlag = !isFilterModalVisible
 
     this.setState({ isFilterModalVisible: modalFlag })
+  }
+
+  removeItem = (itemIndex) => () => {
+    const { selectedItem } = this.state
+    console.log(itemIndex, "INDEX")
+    const array = selectedItem
+
+    array.splice(itemIndex, 1)
+
+    this.setState({ selectedItem: array })
+
   }
 
   getLeftContent = () => {
@@ -176,17 +191,50 @@ class ProductReferenceScreen extends Component {
   getRightContent = () => {
     const { selectedItem } = this.state
 
-    let text = selectedItem?.item_description?.toLowerCase()
-
     let contents = (
-      <View style={{ flex: 1, width: DeviceWidth, paddingTop: 80 }}>
-        <View style={styles.submitOrderContainer}>
+      <View style={{ flex: 1, width: DeviceWidth, }}>
+
+        <FlatList
+          style={{ paddingTop: 16 }}
+          ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
+          ListHeaderComponent={() => <View style={{ flex: 1, height: 64 }}><Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>Your Cart</Text></View>}
+          ListFooterComponent={() => <View style={{ flex: 1, height: 160 }} />}
+          data={selectedItem}
+          keyExtractor={item => item.id}
+          renderItem={({ item, index }) => {
+            return (
+              <View style={styles.orderItemContainer}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={[Fonts.display, { color: 'black' }]}>{item.item_description}</Text>
+                  <TouchableOpacity
+                    onPress={this.removeItem(index)}
+                  >
+                    <Text style={[Fonts.display, { color: SECONDARY }]}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <SpecialItemSelector
+                  item={item}
+                // onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }} 
+                />
+              </View>
+            )
+          }} />
+
+        <View style={styles.orderItemsButtonContainer}>
+
           <TouchableOpacity
-            style={{ height: 90, width: DeviceWidth }}
+            style={[styles.orderItemsButton, { backgroundColor: BLUE_DARK }]}
             onPress={this.onSubmitOrder}>
-            <Text style={Fonts.headline, { color: 'black' }}>{text}</Text>
+            <Text style={[Fonts.display, { color: 'white' }]}>Go Back</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.orderItemsButton, { backgroundColor: GREEN }]}
+            onPress={this.onSubmitOrder}>
+            <Text style={[Fonts.display, { color: 'white' }]}>Submit Order</Text>
           </TouchableOpacity>
         </View>
+
       </View>
     )
 
@@ -243,7 +291,7 @@ class ProductReferenceScreen extends Component {
           secondaryColor={BACKGROUND_GREY} />
 
         <AnimatedPositionAbsolute
-          duration={800}
+          duration={500}
           inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: 40 }}
           outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: 40 }}
           isActive={isItemSelected}>
@@ -251,7 +299,7 @@ class ProductReferenceScreen extends Component {
         </AnimatedPositionAbsolute>
 
         <AnimatedPositionAbsolute
-          duration={800}
+          duration={500}
           inputRange={{ bottomInitial: 0, leftInitial: DeviceWidth, rightInitial: DeviceWidth * 2, topInitial: 40 }}
           outputRange={{ bottomFinal: 0, leftFinal: 0, rightFinal: DeviceWidth, topFinal: 40 }}
           isActive={isItemSelected}>
@@ -293,6 +341,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     paddingTop: 16
+  },
+  orderItemContainer: {
+    backgroundColor: 'white',
+    flex: 1,
+    padding: 32,
+    shadowOpacity: .5,
+    shadowColor: BACKGROUND_DARK_GREY,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 6,
+    borderRadius: 8,
+    marginHorizontal: 16
+  },
+  orderItemsButton: {
+    height: 90,
+    width: (DeviceWidth - 200) / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16
+  },
+  orderItemsButtonContainer: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    top: DeviceHeight * .74
   }
 })
 

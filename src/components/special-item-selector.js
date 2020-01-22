@@ -10,6 +10,7 @@ const subtractIcon = require('../../assets/icons/minus.png')
 
 function IncrementButton(props) {
   let { icon, onPress } = props
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -24,6 +25,8 @@ function IncrementButton(props) {
 
 function InfoLabel(props) {
   let { label, value } = props
+  console.log(props)
+
   return (
     <View style={styles.labelValue}>
       <Text style={Fonts.subHeading}>{label}</Text>
@@ -46,7 +49,7 @@ function SpecialItemSelector(props) {
     setCount(++count)
     onIncrement(count)
   }
-
+console.log(props.item)
   return (
     <View style={styles.container} >
       <View style={styles.descriptionContainer}>
