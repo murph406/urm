@@ -15,15 +15,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         shadowOpacity: .5,
         shadowColor: BACKGROUND_DARK_GREY,
-        shadowOffset: { width: 0, height: 1 },
-        shadowRadius: 6,  
-
+        shadowOffset: { width: 0, height: 8 },
+        shadowRadius: 4
     },
     titleContainer: {
         flex: 1
     },
     textContainer: { 
-        flex: 8,
+        flex: 1,
         borderRadius: 8,
         alignItems: 'stretch'
     },

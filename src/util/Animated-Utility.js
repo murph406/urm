@@ -38,7 +38,7 @@ export class AnimatedContainer extends PureComponent {
 
         return (
             <Animated.View
-                style={[styles.container, { height: animatedValueStyle }]}>
+                style={[styles.container, { height: animatedValueStyle, overflow: 'hidden' }]}>
                 {children}
             </Animated.View>
         )

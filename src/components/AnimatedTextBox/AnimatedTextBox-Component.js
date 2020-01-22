@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Animated, StyleSheet, ColorPropType } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { styles, containerHeight, } from './AnimatedTextBox-Styles'
@@ -7,7 +7,7 @@ import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity } f
 import { Fonts, isScreenLarge, DeviceWidth } from '../../theme/styling'
 import { SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT } from '../../theme/colors'
 import IconButton from '../../ui-elements/icon-button'
-
+import * as Colors from '../../theme/colors';
 
 export default class AnimatedTextBox extends PureComponent {
     constructor() {
@@ -28,7 +28,10 @@ export default class AnimatedTextBox extends PureComponent {
         const { item_description, brand, unit_price, size, pack } = this.props.data
 
         return (
-            <View style={{ backgroundColor: 'white', borderRadius: 8, paddingLeft: 16, paddingVertical: 16 }}>
+            <View style={{ 
+                backgroundColor: Colors.RED_LIGHT, borderTopRightRadius: 4, borderTopLeftRadius:4, paddingLeft: 16, paddingVertical: 16,
+                shadowOpacity: .5, shadowColor: 'rgb(180,180,180)', shadowOffset: { width: 0, height: 4 }, shadowRadius: 4
+                }}>
                 <Text style={[Fonts.display, { color: 'black', width: DeviceWidth * .6 }]} numberOfLines={(isScreenLarge) ? 1 : 2}>{item_description}</Text>
 
                 <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>{brand}</Text>
@@ -54,35 +57,13 @@ export default class AnimatedTextBox extends PureComponent {
                 outputRange={[0, 1]}
                 isActive={isAnimatedTextBoxActive}
             >
-                {/* <View style={{ height: 236, paddingTop: 32 }}>
-
-                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'space-evenly' }}>
-                        <TextDetail label={"Brand "} value={brand} marginTop={8} />
-                        <TextDetail value={pack} marginTop={8} label={"Pack "} />
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'space-evenly' }}>
-                        <TextDetail value={size} marginTop={8} label={"Size "} />
-                        <TextDetail label={"Code "} value={'#' + item_code} marginTop={8} />
-                    </View>
-
-                    <TouchableOpacity
-                        activeOpacity={.7}
-                        style={{ backgroundColor: SECONDARY, height: 60, width: DeviceWidth * .65, borderRadius: 20, marginTop: 64, alignSelf: 'center', justifyContent: 'center' }}
-                        onPress={onSelectedItem}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={require('../../../assets/icons/cart-icon.png')} style={{ height: iconDimension, width: iconDimension }} />
-                            <View style={{ height: 1, width: 32 }} />
-                            <Text style={[Fonts.display, { textAlign: 'center', color: 'white' }]}>ADD TO CART</Text>
-                        </View>
-                    </TouchableOpacity> */}
-
-                    <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row'}}>
                     <View style={{flex: 2}}>
-                        <View style={{ flexDirection: 'row', justifyContent:'space-around', alignItems: 'center', padding: 16}}>
+                        <View style={{ flexDirection: 'row', justifyContent:'space-around', alignItems: 'space-around', padding: 16}}>
                             <TextDetail label={"Brand "} value={brand} marginTop={32} />
                             <TextDetail label={"Item Code "} value={'#' + item_code} marginTop={8} />
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent:'space-around', alignItems: 'center', padding: 16}}>
+                        <View style={{ flexDirection: 'row', justifyContent:'space-around', alignItems: 'space-between', padding: 16}}>
                             <TextDetail value={size} marginTop={8} label={"Size "} />
                             <TextDetail value={pack} marginTop={8} label={"Pack "} />
                         </View>
@@ -90,7 +71,7 @@ export default class AnimatedTextBox extends PureComponent {
 
                     {/* This is the right view where u can choose to go to order */}
                     <TouchableOpacity style={{flex:1, backgroundColor: BLUE_LIGHT, justifyContent: 'center', alignItems: 'center', zIndex: 1000}} onPress={this.props.onSelectedItem}>  
-                        <Image style={{tintColor: 'white'}} source={require('../../../assets/icons/order.png')} />
+                        <Image style={{tintColor: 'white', height: 64, width: 64, }} source={require('../../../assets/icons/order.png')} />
                         <Text style={{textAlign:'center',fontFamily:'bold',fontSize:24, marginTop: 16,color:'white' }}>Order</Text>
                     </TouchableOpacity>
 
@@ -132,9 +113,9 @@ function TextDetail(props) {
     const { label, value, marginTop } = props
 
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: marginTop }}>
-            <Text style={[Fonts.display, { color: 'black', fontWeight: 'bold' }]}>{label} </Text>
-            <Text style={[Fonts.display, { color: BACKGROUND_DARK_GREY, }]} numberOfLines={2}>{value}</Text>
+        <View style={{ padding: 8 }}>
+            <Text style={{ fontSize: 16, color: 'rgba(50,50,50,0.7)', fontFamily: 'regular'}}>{label}</Text>
+            <Text style={{ fontSize: 24, fontFamily:'bold', color:'black', }}>{value}</Text>
         </View>
 
     )

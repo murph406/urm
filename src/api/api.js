@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let IS_DEV = false;
+let IS_DEV = true;
 let BASE_URL = 'http://localhost:8888/api'
 
 if (!IS_DEV) {
