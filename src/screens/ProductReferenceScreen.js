@@ -5,6 +5,7 @@ import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal-Component'
 import SearchField from '../ui-elements/search-field';
 import SpecialItemSelector from '../components/special-item-selector';
+import ItemSelector from '../components/item-selector'
 import OrderCard from '../components/order-card';
 
 import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_DARK, GREEN } from '../theme/colors';
@@ -207,16 +208,14 @@ class ProductReferenceScreen extends Component {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text style={[Fonts.display, { color: 'black' }]}>{item.item_description}</Text>
                   <TouchableOpacity
-                    onPress={this.removeItem(index)}
-                  >
+                    onPress={this.removeItem(index)}>
                     <Text style={[Fonts.display, { color: SECONDARY }]}>Delete</Text>
                   </TouchableOpacity>
                 </View>
-
-                <SpecialItemSelector
-                  item={item}
-                // onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }} 
-                />
+                <OrderCard />
+                <View style={{position: 'absolute', right: 0, left: 0, bottom: 0}}>
+                  <ItemSelector item={item} />
+                </View>
               </View>
             )
           }} />
