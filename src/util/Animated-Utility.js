@@ -112,7 +112,7 @@ export class AnimatedRotation extends PureComponent {
     }
 
     render() {
-        const { style, imageSource, initialDeg, finalDeg, children } = this.props
+        const { style, initialDeg, finalDeg, children } = this.props
         const { animatedValue } = this.state
 
         const AnimatedRotationStyle = animatedValue.interpolate({
@@ -122,7 +122,6 @@ export class AnimatedRotation extends PureComponent {
 
         return (
             <Animated.View
-                // source={imageSource}
                 style={[style, { transform: [{ rotate: AnimatedRotationStyle }] }]}>
                 {children}
             </Animated.View>
@@ -248,7 +247,7 @@ export class AnimatedPositionAbsolute extends PureComponent {
 
         const { bottomInitial, rightInitial, leftInitial, topInitial } = inputRange
         const { bottomFinal, rightFinal, leftFinal, topFinal } = outputRange
-        
+
         const animatedBottom = animatedValue.interpolate({
             inputRange: [0, 1],
             outputRange: [bottomInitial, bottomFinal],
