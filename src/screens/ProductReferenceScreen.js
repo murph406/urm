@@ -282,13 +282,15 @@ class ProductReferenceScreen extends Component {
 
     return (
       <View style={styles.container} >
-        <SearchField
-          onChangeText={this.filterBySearch}
-          showCancelButton={true}
-          placeHolderText={'Search Here...'}
-          textColor={BACKGROUND_LIGHT_GREY}
-          primaryColor={'white'}
-          secondaryColor={BACKGROUND_GREY} />
+        <View style={styles.searchBarContainer}>
+          <SearchField
+            onChangeText={this.filterBySearch}
+            showCancelButton={true}
+            placeHolderText={'Search Here...'}
+            textColor={BACKGROUND_LIGHT_GREY}
+            primaryColor={'white'}
+            secondaryColor={BACKGROUND_GREY} />
+        </View>
 
         <AnimatedPositionAbsolute
           duration={500}
