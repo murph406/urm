@@ -1,12 +1,15 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
-let IS_DEV = true;
+let IS_DEV = false;
 let BASE_URL = 'http://localhost:8888/api'
 
 if (!IS_DEV) {
   BASE_URL = 'https://urm-api.herokuapp.com/api';
 }
-
+// AsyncStorage.getItem('@key:my_orders', (err, result) => {
+//   console.log('yeeeeah', result)
+// })
 // const GET_STORE_BY_CODE = '/store/get-one/';
 // const GET_ITEMS_BY_STORE = '/get-items/';
 
@@ -44,6 +47,52 @@ export function createOrder(order, callback) {
   axios.post(BASE_URL + CREATE_ORDER, sender)
     .then(response => callback(null, response.data))
     .catch(e => callback(e))
+}
+
+
+const ORDERS_KEY = '@key:my_orders';
+export function order(order) {
+  console.log('ORDERRRRR', order)
+  let sender = {
+    order: order
+  }
+
+  return new Promise((resolve, reject) => {
+    axios.post(BASE_URL + CREATE_ORDER, sender)
+      .then(response => {
+        resolve(response)
+      })
+      .catch(async(e) => {
+        let orders = await AsyncStorage.getItem(ORDERS_KEY)
+
+        // if no orders were saved, i.e. this is first order thats gonna be saved, then
+        // create the model thats gonna be stored. Which is 
+        /**
+         * [
+         *  {
+         *    date_created, order: [], status
+         *  }
+         * ]
+         */
+        // So array of objects where the order lives on the array
+        if(orders == null) {
+          orders = []          
+        } else {
+          // otherwise, there are other orders saved, so lets parse them so we can add to it
+          orders = JSON.parse(orders)
+        }
+        
+        orders.push({
+          date_created: new Date(),
+          order: order,
+          status: 'pending'
+        })
+
+        let status = await AsyncStorage.setItem(ORDERS_KEY, JSON.stringify(orders))
+
+        resolve({ status: 'order saved'})
+      })
+  })
 }
 
 // export function getStoreByCode(code, callback) {

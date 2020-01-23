@@ -26,7 +26,7 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getTopContent = () => {
-        const { item_description, brand, unit_price, size, pack } = this.props.data
+        const { item_description, brand, unit_price, billing_price, size, pack } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
         const iconDimension = 34
         return (
@@ -49,8 +49,8 @@ export default class AnimatedTextBox extends PureComponent {
                 </View>
 
                 <View style={{ position: 'absolute', right: 32, top: 32, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={[Fonts.display, { color: 'black' }]}> ${unit_price}</Text>
-                    <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, marginTop: 4 }]}>{pack} @ {size}</Text>
+                    <Text style={[Fonts.display, { color: 'black' }]}> ${billing_price}</Text>
+                    <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, marginTop: 4 }]}>{pack} @ ${unit_price}</Text>
                 </View>
             </View>
         )
@@ -100,10 +100,6 @@ export default class AnimatedTextBox extends PureComponent {
         const { isAnimatedTextBoxActive } = this.state
         const TopContent = this.getTopContent()
         const BottomContent = this.getBottomContent()
-        // let maxHeight = (isScreenLarge === true) ? containerHeight * 2.6 : containerHeight * 3.8
-        console.log(maxHeight)
-
-        // maxHeight = 340
 
         return (
             <AnimatedContainer

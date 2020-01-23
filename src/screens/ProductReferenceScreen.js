@@ -8,6 +8,7 @@ import SpecialItemSelector from '../components/special-item-selector';
 import ItemSelector from '../components/item-selector'
 import OrderCard from '../components/order-card';
 
+import { order } from '../api/api';
 import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT, GREEN } from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
@@ -32,9 +33,10 @@ class ProductReferenceScreen extends Component {
       isFilterModalVisible: false,
       isItemSelected: false,
       isActivityIndicatorVisible: true,
-      selectedItem: [],
-
+      selectedItems: []
     }
+
+    this.order = order.bind(this)
   }
 
   componentDidMount() {
@@ -113,17 +115,40 @@ class ProductReferenceScreen extends Component {
     this.setState({ items: masterItemList })
   }
 
-  onSelectedItem = (item) => () => {
-    const { selectedItem } = this.state
+  onSelectItem = (item) => () => {
+    const { selectedItems } = this.state
     this.toggleScreenPosition()
 
-    let array = [...selectedItem, item]
+    // If the selected item has already been selected, dont add to array
+    for(let i = 0; i < selectedItems.length; i++) {
+      if(selectedItems[i]._id == item._id) {
+        return;
+      }
+    }
+  
+    // add a count variable onto the item
+    let array = [
+      ...selectedItems, 
+      {
+        ...item,
+        count: 0
+      }
+    ]
 
-    this.setState({ selectedItem: array })
+    this.setState({ selectedItems: array })
   }
 
   onSubmitOrder = () => {
     this.toggleScreenPosition()
+
+    this.order(this.state.selectedItems)
+    .then((status) => {
+      console.log(status)
+      this.props.navigation.goBack()
+    })
+    .catch((e) => {
+      Alert.alert('couldnt save your order for some reason idk try again')
+    })
   }
 
   toggleScreenPosition = () => {
@@ -140,13 +165,12 @@ class ProductReferenceScreen extends Component {
   }
 
   removeItem = (itemIndex) => () => {
-    const { selectedItem } = this.state
-    console.log(itemIndex, "INDEX")
-    const array = selectedItem
+    const { selectedItems } = this.state
+    const array = selectedItems
 
     array.splice(itemIndex, 1)
 
-    this.setState({ selectedItem: array })
+    this.setState({ selectedItems: array })
 
   }
 
@@ -164,10 +188,10 @@ class ProductReferenceScreen extends Component {
           ListFooterComponent={() => <View style={{ flex: 1, height: 120 }} />}
           ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
           data={items}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
           renderItem={({ item, index }) => (
             <AnimatedTextBox
-              onSelectedItem={this.onSelectedItem(item)}
+              onSelectedItem={this.onSelectItem(item)}
               data={item} />
           )} />
       </View>
@@ -178,45 +202,30 @@ class ProductReferenceScreen extends Component {
   }
 
   getRightContent = () => {
-    const { selectedItem } = this.state
+    const { selectedItems } = this.state
 
-    let contents = (
+    return(
       <View style={{ flex: 1, width: DeviceWidth }}>
 
         <FlatList
           ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
           ListHeaderComponent={() => <View style={{ flex: 1, height: 96, justifyContent: 'center' }}><Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>Your Cart</Text></View>}
           ListFooterComponent={() => <View style={{ flex: 1, height: 160 }} />}
-          data={selectedItem}
-          keyExtractor={item => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <View style={[styles.orderItemContainer, { height: 300 }]}>
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
-                  <Text style={[Fonts.headline, { color: 'black' }]}>{item.item_description}</Text>
-                  <TouchableOpacity
-                    onPress={this.removeItem(index)}>
-                    <Text style={[Fonts.display, { color: SECONDARY }]}>Delete</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ paddingTop: 64 }}>
-                  <OrderCard />
-                </View>
-                <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }}>
-                  <ItemSelector
-                    onIncrement={(value) => console.log("VALUE", value)}
-                    item={item} />
-                </View>
-              </View>
-            )
-          }} />
+          data={selectedItems}
+          keyExtractor={item => item._id}
+          renderItem={({ item, index }) => (
+              <ItemSelector 
+                item={item}
+                onIncrement={(count) => this.onIncrementItem(count, item)}
+                removeItem={() => this.removeItem(index)}
+              />
+            )} />
 
         <View style={styles.orderItemsButtonContainer}>
 
           <TouchableOpacity
             style={[styles.orderItemsButton, { backgroundColor: BLUE_LIGHT }]}
-            onPress={this.onSubmitOrder}>
+            onPress={this.toggleScreenPosition}>
             <Text style={[Fonts.display, { color: 'white' }]}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -228,8 +237,19 @@ class ProductReferenceScreen extends Component {
 
       </View>
     )
+  }
 
-    return contents
+  onIncrementItem(count, item) {
+    let { selectedItems } = this.state;
+
+    // find index of selected
+    let index = selectedItems.findIndex((_i) => {
+      return _i._id == item._id
+    })
+
+    selectedItems[index].count = count;
+
+    this.setState({ selectedItems: selectedItems })
   }
 
   getEmptyFlatlistView() {
@@ -256,13 +276,11 @@ class ProductReferenceScreen extends Component {
 
     let text = items?.length
 
-    let contents = (
+    return (
       <View style={{ alignSelf: 'flex-end', paddingBottom: 16, paddingRight: 16 }}>
         <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>{text} Results</Text>
       </View>
     )
-
-    return contents
   }
 
 
@@ -290,9 +308,7 @@ class ProductReferenceScreen extends Component {
       <View style={styles.container} >
 
         <View style={{ height: HeaderHeight + 32, backgroundColor: SECONDARY, justifyContent: 'center' }}>
-          <Text style={{
-            ...Fonts.headline, color: 'white', textAlign: 'center', height: 32
-          }}>Products</Text>
+          <Text style={{ ...Fonts.headline, color: 'white', textAlign: 'center', height: 32 }}>Products</Text>
           <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
             <IconButton
               iconSource={require('../../assets/icons/arrow-icon-white.png')}

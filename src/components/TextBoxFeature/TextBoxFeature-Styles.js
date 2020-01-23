@@ -25,7 +25,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: (isScreenLarge)? DeviceWidth * .2 : DeviceWidth * .25,
-        height: containerHeight,
+        // height: containerHeight,
         borderTopRightRadius: 4,
         borderBottomRightRadius: 4,
     },

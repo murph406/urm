@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -6,7 +6,9 @@ import { SECONDARY } from '../theme/colors';
 import { Fonts } from '../theme/styling';
 
 function OrderCard(props) {
-  let { cost } = props
+  let { billing_price, unit_price } = props;
+  let [total, setTotal] = useState(0.00);
+
   return (
     <View style={styles.card}>
       <Text style={[Fonts.headline, { color: 'black'}]}>Total:</Text>
