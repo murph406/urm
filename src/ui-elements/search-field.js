@@ -21,16 +21,18 @@ function TextField(props) {
                 round={true}
                 searchIcon={{
                     color: textColor,
-                    size: 24
+                    marginLeft: 12,
+                    size: 32
                 }}
                 clearIcon={{
                     color: textColor,
-                    size: 24
+                    marginRight: 32,
+                    size: 32
                 }}
                 onFocus={onFocus}
                 cancelButtonTitle="Cancel"
                 placeholderTextColor={textColor}
-                inputContainerStyle={{ backgroundColor: primaryColor }}
+                inputContainerStyle={{ backgroundColor: primaryColor, height: 64, borderRadius: 32 }}
                 containerStyle={[styles.searchContainer, { backgroundColor: secondaryColor }]}
                 inputStyle={Fonts.subHeading}
                 onChangeText={onChangeSearch}
@@ -41,12 +43,13 @@ function TextField(props) {
 }
 
 const styles = StyleSheet.create({
-
     searchContainer: {
-        borderWidth: 0,
-        shadowColor: 'white',
         borderBottomColor: 'transparent',
-        borderTopColor: 'transparent'
+        borderTopColor: 'transparent',
+        shadowOpacity: .5,
+        shadowColor: 'rgb(180,180,180)',
+        shadowOffset: { width: 0, height: 8 },
+        shadowRadius: 4
     }
 })
 

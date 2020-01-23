@@ -9,28 +9,16 @@ import OrderCard from '../components/order-card';
 
 import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_DARK, GREEN } from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
-import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth } from '../theme/styling';
+import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
 import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
 
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
 class ProductReferenceScreen extends Component {
   static navigationOptions = ({ navigation }) => {
+    console.log(navigation)
     return {
-      headerTitle: 'Reference',
-      headerRight: (
-        <View style={{ marginRight: 16 }}>
-          <IconButton
-            iconSource={require('../../assets/icons/filter-icon.png')}
-            iconDimensions={filterIconSize}
-            primaryColor={SECONDARY}
-            secondaryColor={SECONDARY_DARK}
-            onPress={() => {
-              navigation.getParam('toggleFilterModal')();
-            }}
-          />
-        </View>
-      ),
+      header: null
     }
   };
 
@@ -50,7 +38,6 @@ class ProductReferenceScreen extends Component {
   componentDidMount() {
     this.setNavigationParams()
     this.retrieveItems()
-
   }
 
   async retrieveItems() {
@@ -274,6 +261,21 @@ class ProductReferenceScreen extends Component {
     return contents
   }
 
+
+  renderSearch() {
+      return(
+        <View style={styles.searchBarContainer}>
+          <SearchField
+            onChangeText={this.filterBySearch}
+            showCancelButton={true}
+            placeHolderText={'Search Here...'}
+            textColor={BACKGROUND_LIGHT_GREY}
+            primaryColor={'white'}
+            secondaryColor={'transparent'} />
+        </View>
+      )
+  }
+
   render() {
 
     const { isFilterModalVisible, masterItemList, isItemSelected } = this.state;
@@ -282,28 +284,51 @@ class ProductReferenceScreen extends Component {
 
     return (
       <View style={styles.container} >
-        <View style={styles.searchBarContainer}>
-          <SearchField
-            onChangeText={this.filterBySearch}
-            showCancelButton={true}
-            placeHolderText={'Search Here...'}
-            textColor={BACKGROUND_LIGHT_GREY}
-            primaryColor={'white'}
-            secondaryColor={BACKGROUND_GREY} />
+
+        <View style={{ height: HeaderHeight + 32, backgroundColor: SECONDARY, justifyContent:'center' }}>
+            <Text style={{
+              ...Fonts.headline, color: 'white', textAlign: 'center', height: 32
+            }}>Products</Text>
+            <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
+            <IconButton
+              iconSource={require('../../assets/icons/arrow-icon-white.png')}
+              iconDimensions={filterIconSize}
+              primaryColor={SECONDARY}
+              secondaryColor={SECONDARY_DARK}
+              onPress={() => {
+                this.props.navigation.goBack()
+              }}
+            />
+          </View>
+          <View style={{ position: 'absolute', right: 16, top: (HeaderHeight / 4) }}>
+            <IconButton
+              iconSource={require('../../assets/icons/filter-icon.png')}
+              iconDimensions={filterIconSize}
+              primaryColor={SECONDARY}
+              secondaryColor={SECONDARY_DARK}
+              onPress={() => {
+                this.setState({ isFilterModalVisible: true })
+              }}
+            />
+          </View>
+
         </View>
+
+        {this.renderSearch()}
+
 
         <AnimatedPositionAbsolute
           duration={500}
-          inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: 40 }}
-          outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: 40 }}
+          inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: HeaderHeight + 64 }}
+          outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: HeaderHeight + 32 }}
           isActive={isItemSelected}>
           <View style={{ flex: 1, width: DeviceWidth }}>{leftContent}</View>
         </AnimatedPositionAbsolute>
 
         <AnimatedPositionAbsolute
           duration={500}
-          inputRange={{ bottomInitial: 0, leftInitial: DeviceWidth, rightInitial: DeviceWidth * 2, topInitial: 40 }}
-          outputRange={{ bottomFinal: 0, leftFinal: 0, rightFinal: DeviceWidth, topFinal: 40 }}
+          inputRange={{ bottomInitial: 0, leftInitial: DeviceWidth, rightInitial: DeviceWidth * 2, topInitial: HeaderHeight + 32 }}
+          outputRange={{ bottomFinal: 0, leftFinal: 0, rightFinal: DeviceWidth, topFinal: HeaderHeight + 32 }}
           isActive={isItemSelected}>
           <View style={{ flex: 1, width: DeviceWidth }}>{rightContent}</View>
         </AnimatedPositionAbsolute>
@@ -328,6 +353,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY,
+  },
+  searchBarContainer: {
+    position: 'absolute',
+    top: HeaderHeight - 12, left: 16, right: 16,
+    zIndex: 10008,
+    backgroundColor: 'transparent'
   },
   emptyFlatlistContainer: {
     height: DeviceHeight * .6,
