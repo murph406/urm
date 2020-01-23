@@ -8,6 +8,8 @@ import { Fonts, isScreenLarge, DeviceWidth } from '../../theme/styling'
 import { SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT } from '../../theme/colors'
 import IconButton from '../../ui-elements/icon-button'
 
+let maxHeight = (isScreenLarge === true) ? containerHeight * 3 : containerHeight * 3.8
+
 export default class AnimatedTextBox extends PureComponent {
     constructor() {
         super();
@@ -67,7 +69,7 @@ export default class AnimatedTextBox extends PureComponent {
                 outputRange={[0, 1]}
                 isActive={isAnimatedTextBoxActive}
             >
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', height: maxHeight - containerHeight }}>
                     <View style={{ flex: 2 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-around', padding: 16 }}>
                             <TextDetail label={"Brand "} value={brand} marginTop={32} />
@@ -98,7 +100,10 @@ export default class AnimatedTextBox extends PureComponent {
         const { isAnimatedTextBoxActive } = this.state
         const TopContent = this.getTopContent()
         const BottomContent = this.getBottomContent()
-        const maxHeight = (isScreenLarge === true) ? containerHeight * 2.6 : containerHeight * 3.8
+        // let maxHeight = (isScreenLarge === true) ? containerHeight * 2.6 : containerHeight * 3.8
+        console.log(maxHeight)
+
+        // maxHeight = 340
 
         return (
             <AnimatedContainer
