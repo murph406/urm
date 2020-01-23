@@ -51,16 +51,14 @@ function ItemSelector(props) {
     }
     console.log(props.item)
     return (
-        <View style={styles.container} >
-            <View style={styles.incrementContainer} >
-                <IncrementButton
-                    icon={subtractIcon}
-                    onPress={onSubtractValue} />
-                <Text style={[Fonts.headline, { color: 'white' }]}>{count}</Text>
-                <IncrementButton
-                    icon={addIcon}
-                    onPress={onAddValue} />
-            </View>
+        <View style={styles.incrementContainer} >
+            <IncrementButton
+                icon={subtractIcon}
+                onPress={onSubtractValue} />
+            <Text style={[Fonts.headline, { color: 'white' }]}>{count}</Text>
+            <IncrementButton
+                icon={addIcon}
+                onPress={onAddValue} />
         </View>
     )
 }
@@ -79,38 +77,15 @@ ItemSelector.propTypes = {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        height: 250,
-        borderRadius: 8,
-        marginBottom: 32,
-    },
-    descriptionContainer: {
-        height: 48,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    infoContainer: {
-        flex: 3,
-        justifyContent: 'center'
-    },
-    labelValue: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    infoPair: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 16,
-    },
     incrementContainer: {
         height: 64,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: SECONDARY,
-        borderRadius: 8
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+        overflow: 'hidden'
     },
     incrementButton: {
         height: 64,

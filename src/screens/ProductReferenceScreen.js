@@ -8,7 +8,7 @@ import SpecialItemSelector from '../components/special-item-selector';
 import ItemSelector from '../components/item-selector'
 import OrderCard from '../components/order-card';
 
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_DARK, GREEN } from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT, GREEN } from '../theme/colors';
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
 import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
@@ -32,7 +32,8 @@ class ProductReferenceScreen extends Component {
       isFilterModalVisible: false,
       isItemSelected: false,
       isActivityIndicatorVisible: true,
-      selectedItem: []
+      selectedItem: [],
+
     }
   }
 
@@ -180,28 +181,32 @@ class ProductReferenceScreen extends Component {
     const { selectedItem } = this.state
 
     let contents = (
-      <View style={{ flex: 1, width: DeviceWidth, }}>
+      <View style={{ flex: 1, width: DeviceWidth }}>
 
         <FlatList
-          style={{ paddingTop: 16 }}
           ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
-          ListHeaderComponent={() => <View style={{ flex: 1, height: 64 }}><Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>Your Cart</Text></View>}
+          ListHeaderComponent={() => <View style={{ flex: 1, height: 96, justifyContent: 'center' }}><Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>Your Cart</Text></View>}
           ListFooterComponent={() => <View style={{ flex: 1, height: 160 }} />}
           data={selectedItem}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => {
             return (
-              <View style={styles.orderItemContainer}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={[Fonts.display, { color: 'black' }]}>{item.item_description}</Text>
+              <View style={[styles.orderItemContainer, { height: 300 }]}>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                  <Text style={[Fonts.headline, { color: 'black' }]}>{item.item_description}</Text>
                   <TouchableOpacity
                     onPress={this.removeItem(index)}>
                     <Text style={[Fonts.display, { color: SECONDARY }]}>Delete</Text>
                   </TouchableOpacity>
                 </View>
-                <OrderCard />
-                <View style={{position: 'absolute', right: 0, left: 0, bottom: 0}}>
-                  <ItemSelector item={item} />
+                <View style={{ paddingTop: 64 }}>
+                  <OrderCard />
+                </View>
+                <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }}>
+                  <ItemSelector
+                    onIncrement={(value) => console.log("VALUE", value)}
+                    item={item} />
                 </View>
               </View>
             )
@@ -210,12 +215,12 @@ class ProductReferenceScreen extends Component {
         <View style={styles.orderItemsButtonContainer}>
 
           <TouchableOpacity
-            style={[styles.orderItemsButton, { backgroundColor: BLUE_DARK }]}
+            style={[styles.orderItemsButton, { backgroundColor: BLUE_LIGHT }]}
             onPress={this.onSubmitOrder}>
             <Text style={[Fonts.display, { color: 'white' }]}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.orderItemsButton, { backgroundColor: GREEN }]}
+            style={[styles.orderItemsButton, { backgroundColor: SECONDARY }]}
             onPress={this.onSubmitOrder}>
             <Text style={[Fonts.display, { color: 'white' }]}>Submit Order</Text>
           </TouchableOpacity>
@@ -252,8 +257,8 @@ class ProductReferenceScreen extends Component {
     let text = items?.length
 
     let contents = (
-      <View style={{ alignSelf: 'center', paddingBottom: 16 }}>
-        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>Number of Results: {text}</Text>
+      <View style={{ alignSelf: 'flex-end', paddingBottom: 16, paddingRight: 16 }}>
+        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>{text} Results</Text>
       </View>
     )
 
@@ -262,17 +267,17 @@ class ProductReferenceScreen extends Component {
 
 
   renderSearch() {
-      return(
-        <View style={styles.searchBarContainer}>
-          <SearchField
-            onChangeText={this.filterBySearch}
-            showCancelButton={true}
-            placeHolderText={'Search Here...'}
-            textColor={BACKGROUND_LIGHT_GREY}
-            primaryColor={'white'}
-            secondaryColor={'transparent'} />
-        </View>
-      )
+    return (
+      <View style={styles.searchBarContainer}>
+        <SearchField
+          onChangeText={this.filterBySearch}
+          showCancelButton={true}
+          placeHolderText={'Search Here...'}
+          textColor={BACKGROUND_LIGHT_GREY}
+          primaryColor={'white'}
+          secondaryColor={'transparent'} />
+      </View>
+    )
   }
 
   render() {
@@ -284,11 +289,11 @@ class ProductReferenceScreen extends Component {
     return (
       <View style={styles.container} >
 
-        <View style={{ height: HeaderHeight + 32, backgroundColor: SECONDARY, justifyContent:'center' }}>
-            <Text style={{
-              ...Fonts.headline, color: 'white', textAlign: 'center', height: 32
-            }}>Products</Text>
-            <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
+        <View style={{ height: HeaderHeight + 32, backgroundColor: SECONDARY, justifyContent: 'center' }}>
+          <Text style={{
+            ...Fonts.headline, color: 'white', textAlign: 'center', height: 32
+          }}>Products</Text>
+          <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
             <IconButton
               iconSource={require('../../assets/icons/arrow-icon-white.png')}
               iconDimensions={filterIconSize}
@@ -313,7 +318,7 @@ class ProductReferenceScreen extends Component {
 
         </View>
 
-        {this.renderSearch()}
+        {!isItemSelected && this.renderSearch()}
 
 
         <AnimatedPositionAbsolute
@@ -386,7 +391,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   },
   orderItemsButton: {
-    height: 90,
+    height: 60,
     width: (DeviceWidth - 200) / 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -399,7 +404,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
-    top: DeviceHeight * .74
+    top: DeviceHeight * .8
   }
 })
 
