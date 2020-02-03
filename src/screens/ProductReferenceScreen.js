@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native';
 
 import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal-Component'
@@ -120,15 +120,15 @@ class ProductReferenceScreen extends Component {
     this.toggleScreenPosition()
 
     // If the selected item has already been selected, dont add to array
-    for(let i = 0; i < selectedItems.length; i++) {
-      if(selectedItems[i]._id == item._id) {
+    for (let i = 0; i < selectedItems.length; i++) {
+      if (selectedItems[i]._id == item._id) {
         return;
       }
     }
-  
+
     // add a count variable onto the item
     let array = [
-      ...selectedItems, 
+      ...selectedItems,
       {
         ...item,
         count: 0
@@ -142,13 +142,13 @@ class ProductReferenceScreen extends Component {
     this.toggleScreenPosition()
 
     this.order(this.state.selectedItems)
-    .then((status) => {
-      console.log(status)
-      this.props.navigation.goBack()
-    })
-    .catch((e) => {
-      Alert.alert('couldnt save your order for some reason idk try again')
-    })
+      .then((status) => {
+        console.log(status)
+        this.props.navigation.goBack()
+      })
+      .catch((e) => {
+        Alert.alert('couldnt save your order for some reason idk try again')
+      })
   }
 
   toggleScreenPosition = () => {
@@ -176,6 +176,7 @@ class ProductReferenceScreen extends Component {
 
   getLeftContent = () => {
     const { items } = this.state
+    const FlatlistItemHeight = DeviceHeight * .1
     const numberOfResultsDetail = this.getNumberOfResultsDetail()
     const emptyFlatlistVeiw = this.getEmptyFlatlistView()
 
@@ -187,7 +188,11 @@ class ProductReferenceScreen extends Component {
           ListEmptyComponent={emptyFlatlistVeiw}
           ListFooterComponent={() => <View style={{ flex: 1, height: 120 }} />}
           ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
-          data={items}
+          getItemLayout={(data, index) => (
+            {length: FlatlistItemHeight, offset: FlatlistItemHeight * index, index}
+          )}
+          maxToRenderPerBatch={5}
+          data={items.slice(0, 26)}
           keyExtractor={item => item._id}
           renderItem={({ item, index }) => (
             <AnimatedTextBox
@@ -204,7 +209,7 @@ class ProductReferenceScreen extends Component {
   getRightContent = () => {
     const { selectedItems } = this.state
 
-    return(
+    return (
       <View style={{ flex: 1, width: DeviceWidth }}>
 
         <FlatList
@@ -214,24 +219,25 @@ class ProductReferenceScreen extends Component {
           data={selectedItems}
           keyExtractor={item => item._id}
           renderItem={({ item, index }) => (
-              <ItemSelector 
-                item={item}
-                onIncrement={(count) => this.onIncrementItem(count, item)}
-                removeItem={() => this.removeItem(index)}
-              />
-            )} />
+            <ItemSelector
+              item={item}
+              onIncrement={(count) => this.onIncrementItem(count, item)}
+              removeItem={() => this.removeItem(index)}
+            />
+          )} />
 
         <View style={styles.orderItemsButtonContainer}>
-
           <TouchableOpacity
+            activeOpacity={.7}
             style={[styles.orderItemsButton, { backgroundColor: BLUE_LIGHT }]}
             onPress={this.toggleScreenPosition}>
-            <Text style={[Fonts.display, { color: 'white' }]}>Go Back</Text>
+            <Text style={[Fonts.subHeading, { color: 'white' }]}>Go Back</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={.7}
             style={[styles.orderItemsButton, { backgroundColor: SECONDARY }]}
             onPress={this.onSubmitOrder}>
-            <Text style={[Fonts.display, { color: 'white' }]}>Submit Order</Text>
+            <Text style={[Fonts.subHeading, { color: 'white' }]}>Submit Order</Text>
           </TouchableOpacity>
         </View>
 
@@ -306,12 +312,13 @@ class ProductReferenceScreen extends Component {
 
     return (
       <View style={styles.container} >
+        <StatusBar hidden={true} />
 
         <View style={{ height: HeaderHeight + 32, backgroundColor: SECONDARY, justifyContent: 'center' }}>
           <Text style={{ ...Fonts.headline, color: 'white', textAlign: 'center', height: 32 }}>Products</Text>
           <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
             <IconButton
-              iconSource={require('../../assets/icons/arrow-icon-white.png')}
+              iconSource={require('../../assets/icons/X-icon-white.png')}
               iconDimensions={filterIconSize}
               primaryColor={SECONDARY}
               secondaryColor={SECONDARY_DARK}
@@ -340,7 +347,7 @@ class ProductReferenceScreen extends Component {
         <AnimatedPositionAbsolute
           duration={500}
           inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: HeaderHeight + 64 }}
-          outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: HeaderHeight + 32 }}
+          outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: HeaderHeight + 64 }}
           isActive={isItemSelected}>
           <View style={{ flex: 1, width: DeviceWidth }}>{leftContent}</View>
         </AnimatedPositionAbsolute>
@@ -417,10 +424,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 0,
+    bottom: 32,
     right: 0,
     left: 0,
-    top: DeviceHeight * .8
+    top: DeviceHeight * .78
   }
 })
 

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { DeviceHeight, DeviceWidth } from '../../theme/styling'
-import { SECONDARY, SECONDARY_DARK, BACKGROUND_DARK_GREY } from '../../theme/colors'
+import { DeviceHeight } from '../../theme/styling'
+import { SECONDARY, BACKGROUND_DARK_GREY } from '../../theme/colors'
 
 const containerHeight = DeviceHeight * .1
 const buttonDimensions = 50
@@ -9,8 +9,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         borderRadius: 8,
-        marginLeft: 12,
-        marginRight: 12,
+        marginHorizontal: 16,
         backgroundColor: 'white',
         flexDirection: 'row',
         shadowOpacity: .5,

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { styles, containerHeight, } from './AnimatedTextBox-Styles'
 import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity } from '../../util/Animated-Utility'
 import { Fonts, isScreenLarge, DeviceWidth } from '../../theme/styling'
-import { SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT } from '../../theme/colors'
+import { SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BLUE_LIGHT } from '../../theme/colors'
 import IconButton from '../../ui-elements/icon-button'
 
 let maxHeight = (isScreenLarge === true) ? containerHeight * 3 : containerHeight * 3.8
@@ -18,6 +18,8 @@ export default class AnimatedTextBox extends PureComponent {
         }
     }
 
+
+
     goAnimatedTextBox = () => {
         const { isAnimatedTextBoxActive } = this.state
         const toggleAnimation = !isAnimatedTextBoxActive
@@ -26,9 +28,9 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getTopContent = () => {
-        const { item_description, brand, unit_price, billing_price, size, pack } = this.props.data
+        const { item_description, brand, unit_price, billing_price, pack } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
-        const iconDimension = 34
+        const iconDimension = 28
         return (
             <View style={{ paddingVertical: 32, paddingHorizontal: 32, borderBottomWidth: 4, borderBottomColor: '#f5f5f5' }}>
                 <View style={{ flexDirection: 'row', }}>
@@ -57,11 +59,8 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getBottomContent = () => {
-        const { size, pack, group_description, unit_price, brand, item_code } = this.props.data
-        const { onSelectedItem } = this.props
+        const { size, pack,brand, item_code } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
-
-        const iconDimension = (isScreenLarge) ? 42 : 32
 
         return (
             <AnimatedOpacity
@@ -124,7 +123,7 @@ export default class AnimatedTextBox extends PureComponent {
 
 function TextDetail(props) {
 
-    const { label, value, marginTop } = props
+    const { label, value } = props
 
     return (
         <View style={{ padding: 8,  alignItems: 'center' }}>
