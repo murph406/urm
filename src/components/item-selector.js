@@ -30,7 +30,7 @@ function InfoLabel(props) {
     return (
         <View style={styles.labelValue}>
             <Text style={Fonts.subHeading}>{label}</Text>
-            <Text style={Fonts.subHeading, { color: 'black', fontWeight: 'bold', paddingVertical: 8 }}>{value}</Text>
+            <Text style={[Fonts.subHeading, { color: 'black', fontWeight: 'bold', paddingVertical: 8 }]}>{value}</Text>
         </View>
     )
 }

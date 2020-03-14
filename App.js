@@ -104,7 +104,7 @@ export default class App extends Component {
         <View
           style={styles.container}>
           {(isErrorOnLoading)
-            ? <Text style={Fonts.headline, { color: BACKGROUND_DARK_GREY }}>Error Loading App</Text>
+            ? <Text style={[Fonts.headline, { color: BACKGROUND_DARK_GREY }]}>Error Loading App</Text>
             : <ActivityIndicator size='large' />}
         </View>
       )

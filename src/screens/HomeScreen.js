@@ -17,7 +17,7 @@ class HomeScreen extends Component {
     this.state = {
       screens: [
         { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items', featureText: '1', subtitle: 'Items with deals' },
-        { title: 'Product Reference', screenToSend: 'productReference', feature: '0', featureLabel: 'Items', featureText: '481', subtitle: 'Search products by Reference' }
+        { title: 'Order Guide', screenToSend: 'productReference', feature: '0', featureLabel: 'Items', featureText: '481', subtitle: 'Search products by Reference' }
       ],
     }
   }

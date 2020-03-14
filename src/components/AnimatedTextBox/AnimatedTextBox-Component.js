@@ -52,7 +52,7 @@ export default class AnimatedTextBox extends PureComponent {
 
                 <View style={{ position: 'absolute', right: 32, top: 32, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={[Fonts.display, { color: 'black' }]}> ${billing_price}</Text>
-                    <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, marginTop: 4 }]}>{pack} @ ${unit_price}</Text>
+                    <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, marginTop: 4 }]}>{pack} @ ${unit_price.toFixed(2)}</Text>
                 </View>
             </View>
         )
@@ -70,8 +70,8 @@ export default class AnimatedTextBox extends PureComponent {
             >
                 <View style={{ flexDirection: 'row', height: maxHeight - containerHeight }}>
                     <View style={{ flex: 2 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-around', padding: 16 }}>
-                            <TextDetail label={"Brand "} value={brand} marginTop={32} />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-between', padding: 16 }}>
+                            <TextDetail label={"Brand "} value={brand.trim()} marginTop={32} />
                             <TextDetail label={"Item Code "} value={'#' + item_code} marginTop={8} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-between', padding: 16 }}>
@@ -81,13 +81,14 @@ export default class AnimatedTextBox extends PureComponent {
                     </View>
 
                     {/* This is the right view where u can choose to go to order */}
-                    <TouchableOpacity
+                    {/*<TouchableOpacity
                         activeOpacity={.7}
                         style={{ flex: 1, backgroundColor: BLUE_LIGHT, justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}
                         onPress={this.props.onSelectedItem}>
                         <Image style={{ tintColor: 'white', height: 64, width: 64, }} source={require('../../../assets/icons/order.png')} />
                         <Text style={{ textAlign: 'center', fontFamily: 'bold', fontSize: 24, marginTop: 16, color: 'white' }}>Order</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+
 
                 </View>
 
@@ -126,9 +127,9 @@ function TextDetail(props) {
     const { label, value } = props
 
     return (
-        <View style={{ padding: 8,  alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, color: 'rgba(50,50,50,0.7)', fontFamily: 'regular' }}>{label}</Text>
-            <Text style={{ fontSize: 24, fontFamily: 'bold', color: 'black', }}>{value}</Text>
+        <View style={{ padding: 8,  alignItems: 'center', flex: 1 }}>
+            <Text style={{ fontSize: 20, color: 'rgba(50,50,50,0.7)', fontFamily: 'regular' }}>{label}</Text>
+            <Text style={{ fontSize: 28, fontFamily: 'bold', color: 'black', }}>{value}</Text>
         </View>
 
     )

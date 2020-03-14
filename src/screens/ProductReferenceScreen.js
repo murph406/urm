@@ -192,7 +192,7 @@ class ProductReferenceScreen extends Component {
             {length: FlatlistItemHeight, offset: FlatlistItemHeight * index, index}
           )}
           maxToRenderPerBatch={5}
-          data={items.slice(0, 26)}
+          data={items.slice(0, 20)}
           keyExtractor={item => item._id}
           renderItem={({ item, index }) => (
             <AnimatedTextBox
@@ -280,7 +280,11 @@ class ProductReferenceScreen extends Component {
   getNumberOfResultsDetail() {
     const { items } = this.state
 
-    let text = items?.length
+    // let text = items?.length
+    let text = ''
+    if(!items.length) {
+      text
+    }
 
     return (
       <View style={{ alignSelf: 'flex-end', paddingBottom: 16, paddingRight: 16 }}>
@@ -344,21 +348,23 @@ class ProductReferenceScreen extends Component {
         {!isItemSelected && this.renderSearch()}
 
 
-        <AnimatedPositionAbsolute
+        {/* <AnimatedPositionAbsolute
           duration={500}
           inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: HeaderHeight + 64 }}
           outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: HeaderHeight + 64 }}
-          isActive={isItemSelected}>
+          isActive={false}>
           <View style={{ flex: 1, width: DeviceWidth }}>{leftContent}</View>
-        </AnimatedPositionAbsolute>
+        </AnimatedPositionAbsolute> */}
 
-        <AnimatedPositionAbsolute
+        {leftContent}
+
+        {/* <AnimatedPositionAbsolute
           duration={500}
           inputRange={{ bottomInitial: 0, leftInitial: DeviceWidth, rightInitial: DeviceWidth * 2, topInitial: HeaderHeight + 32 }}
           outputRange={{ bottomFinal: 0, leftFinal: 0, rightFinal: DeviceWidth, topFinal: HeaderHeight + 32 }}
           isActive={isItemSelected}>
           <View style={{ flex: 1, width: DeviceWidth }}>{rightContent}</View>
-        </AnimatedPositionAbsolute>
+        </AnimatedPositionAbsolute> */}
 
         <Modal
           animationType="slide"
