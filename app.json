@@ -8,9 +8,9 @@
       "ios",
       "android"
     ],
-    "version": "1.5.0",
+    "version": "2.0.2",
     "orientation": "portrait",
-    "icon": "./assets/orange-bg-no-alpha.png",
+    "icon": "./assets/icons/urm-logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,6 +25,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.no.urm"
+    },
+    "android": {
+      "package": "com.urm.android",
+      "versionCode": 7
     }
   }
 }

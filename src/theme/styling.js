@@ -20,13 +20,13 @@ const isScreenLarge = (DeviceHeight > 1000) ? true : false
     // ^^^ if screen is larger than a Iphone X (height = 896) than it is considered a large device.
 
 const Fonts = StyleSheet.create({
-    display: {
-
-    },
     headline: {
         fontFamily: 'bold',
         fontSize: (isScreenLarge)? 32 : 28,
-        // color: 'white',
+    },
+    display: {
+        fontFamily: 'bold',
+        fontSize: (isScreenLarge)? 24 : 20,
     },
     subHeading: {
         fontFamily: 'bold',
@@ -42,9 +42,6 @@ const Fonts = StyleSheet.create({
         color: BACKGROUND_DARK_GREY,
         fontSize: (isScreenLarge)? 14 : 10,
         fontFamily: 'bold'
-    },
-    label: {
-
     },
 })
 

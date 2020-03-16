@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Fonts } from '../../theme/styling'
 import { SECONDARY, PRIMARY, SECONDARY_DARK } from '../../theme/colors'
+import * as Colors from '../../theme/colors';
 import styles from './TextBoxFeature-Styles'
 
 export default class TextBoxFeature extends PureComponent {
@@ -27,12 +28,13 @@ export default class TextBoxFeature extends PureComponent {
         const { featureType } = this.props
         const { featureText, featureLabel } = this.props.data
         //         ^^      Feature Text is undefined and does not live on this.props and not declared on HomeScreen
+        console.log(this.props)
         const content = (
             <View style={styles.featureContainer}>
                 {(featureType === 'text')
                     ?
                     <>
-                        <Text style={[Fonts.subHeading, { color: SECONDARY_DARK }]}>{featureText}</Text>
+                        <Text style={[Fonts.headline, { marginBottom: 8, color: SECONDARY_DARK }]}>{featureText}</Text>
                         <Text style={[Fonts.subHeading, { color: SECONDARY_DARK }]}>{featureLabel}</Text>
                     </>
                     :

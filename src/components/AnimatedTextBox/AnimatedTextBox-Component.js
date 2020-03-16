@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Animated, StyleSheet, ColorPropType } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { styles, containerHeight, } from './AnimatedTextBox-Styles'
-import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity, AnimatedText, AnimatedPositionAbsolute } from '../../util/Animated-Utility'
-import { Fonts, isScreenLarge } from '../../theme/styling'
-import { SECONDARY, BACKGROUND_DARK_GREY, RED, GREEN } from '../../theme/colors'
+import { AnimatedContainer, AnimatedColor, AnimatedRotation, AnimatedOpacity } from '../../util/Animated-Utility'
+import { Fonts, isScreenLarge, DeviceWidth } from '../../theme/styling'
+import { SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BLUE_LIGHT } from '../../theme/colors'
+import IconButton from '../../ui-elements/icon-button'
+
+let maxHeight = (isScreenLarge === true) ? containerHeight * 3 : containerHeight * 3.8
 
 export default class AnimatedTextBox extends PureComponent {
     constructor() {
@@ -15,6 +18,8 @@ export default class AnimatedTextBox extends PureComponent {
         }
     }
 
+
+
     goAnimatedTextBox = () => {
         const { isAnimatedTextBoxActive } = this.state
         const toggleAnimation = !isAnimatedTextBoxActive
@@ -22,88 +27,79 @@ export default class AnimatedTextBox extends PureComponent {
         this.setState({ isAnimatedTextBoxActive: toggleAnimation })
     }
 
-    getLeftContent = () => {
-        const { item_description } = this.props.data
-
-        let contents = (
-            <View>
-                <Text style={[Fonts.headline, { color: 'black' }]} numberOfLines={(isScreenLarge)? 1 : 2}>{item_description}</Text>
-            </View>
-        )
-
-        return contents
-    }
-
-    getRightContent = () => {
+    getTopContent = () => {
+        const { item_description, brand, unit_price, billing_price, pack } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
-        const { onSelectedItem } = this.props
-        const iconSize = 24
-
-        let contents = (
-            <>
-                <View style={styles.topButtonPosition}>
-                    <AnimatedButton
-                        onPress={this.goAnimatedTextBox}
-                        initialColor={SECONDARY}
-                        finalColor={RED}
-                        initialDeg={'45deg'}
-                        finalDeg={'0deg'}
-                        iconSize={iconSize}
+        const iconDimension = 28
+        return (
+            <View style={{ paddingVertical: 32, paddingHorizontal: 32, borderBottomWidth: 4, borderBottomColor: '#f5f5f5' }}>
+                <View style={{ flexDirection: 'row', }}>
+                    <AnimatedRotation
                         isActive={isAnimatedTextBoxActive}
-                        iconSource={require('../../../assets/icons/X-icon-white.png')}
-                    />
+                        initialDeg={'45deg'}
+                        finalDeg={'0deg'}>
+                        <Image
+                            style={{ height: iconDimension, width: iconDimension, tintColor: 'black' }}
+                            source={require('../../../assets/icons/X-icon-white.png')}
+                        />
+                    </AnimatedRotation>
+
+                    <View style={{ marginLeft: 32 }}>
+                        <Text style={[Fonts.display, { color: 'black', width: DeviceWidth * .6 }]} numberOfLines={(isScreenLarge) ? 1 : 2}>{item_description}</Text>
+                        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, marginTop: 4 }]}>{brand}</Text>
+                    </View>
                 </View>
 
-                <AnimatedPositionAbsolute
-                    duration={300}
-                    inputRange={{ bottomInitial: 0, rightInitial: 0, leftInitial: 0, topInitial: 0 }}
-                    outputRange={{ bottomFinal: 0, rightFinal: 0, leftFinal: 0, topFinal: containerHeight * 2.4 }}
-                    isActive={isAnimatedTextBoxActive}>
-                    <AnimatedButton
-                        onPress={onSelectedItem}
-                        initialColor={SECONDARY}
-                        finalColor={GREEN}
-                        initialDeg={'90deg'}
-                        finalDeg={'0deg'}
-                        iconSize={iconSize}
-                        isActive={isAnimatedTextBoxActive}
-                        iconSource={require('../../../assets/icons/arrow-icon-white.png')}
-                    />
-                </AnimatedPositionAbsolute>
-            </>
-
+                <View style={{ position: 'absolute', right: 32, top: 32, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={[Fonts.display, { color: 'black' }]}> ${billing_price}</Text>
+                    <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, marginTop: 4 }]}>{pack} @ ${unit_price.toFixed(2)}</Text>
+                </View>
+            </View>
         )
-
-        return contents
     }
 
     getBottomContent = () => {
-        const { size, pack, group_description, unit_price, brand, item_code } = this.props.data
+        const { size, pack,brand, item_code } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
 
-        contents = (
+        return (
             <AnimatedOpacity
                 inputRange={[.3, .7]}
                 outputRange={[0, 1]}
-                isActive={isAnimatedTextBoxActive} >
-                <TextDetail label={"Brand: "} value={brand} marginTop={32} />
-                <TextDetail label={"Code #: "} value={item_code} marginTop={8} />
-                <TextDetail value={size} marginTop={8} label={"Size: "} />
-                <TextDetail value={pack} marginTop={8} label={"Pack: "} />
-                <TextDetail value={unit_price} marginTop={8} label={"Unit Price: $"} />
-                <TextDetail value={group_description} marginTop={8} label={"Group Description: "} />
+                isActive={isAnimatedTextBoxActive}
+            >
+                <View style={{ flexDirection: 'row', height: maxHeight - containerHeight }}>
+                    <View style={{ flex: 2 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-between', padding: 16 }}>
+                            <TextDetail label={"Brand "} value={brand.trim()} marginTop={32} />
+                            <TextDetail label={"Item Code "} value={'#' + item_code} marginTop={8} />
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-between', padding: 16 }}>
+                            <TextDetail value={size} marginTop={8} label={"Size "} />
+                            <TextDetail value={pack} marginTop={8} label={"Pack "} />
+                        </View>
+                    </View>
+
+                    {/* This is the right view where u can choose to go to order */}
+                    {/*<TouchableOpacity
+                        activeOpacity={.7}
+                        style={{ flex: 1, backgroundColor: BLUE_LIGHT, justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}
+                        onPress={this.props.onSelectedItem}>
+                        <Image style={{ tintColor: 'white', height: 64, width: 64, }} source={require('../../../assets/icons/order.png')} />
+                        <Text style={{ textAlign: 'center', fontFamily: 'bold', fontSize: 24, marginTop: 16, color: 'white' }}>Order</Text>
+                    </TouchableOpacity> */}
+
+
+                </View>
+
             </AnimatedOpacity>
         )
-
-        return contents
     }
 
     render() {
         const { isAnimatedTextBoxActive } = this.state
-        const LeftContent = this.getLeftContent()
-        const RightContent = this.getRightContent()
+        const TopContent = this.getTopContent()
         const BottomContent = this.getBottomContent()
-        const maxHeight = (isScreenLarge === true) ? containerHeight * 3.2 : containerHeight * 4.2
 
         return (
             <AnimatedContainer
@@ -111,37 +107,34 @@ export default class AnimatedTextBox extends PureComponent {
                 maxHeight={maxHeight}
                 isActive={isAnimatedTextBoxActive}>
 
-                <View style={styles.textContainer}>{LeftContent}{BottomContent}</View>
-                <View style={styles.buttonContainer}>{RightContent}</View>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={styles.textContainer}
+                    onPress={this.goAnimatedTextBox}>
+                    {TopContent}
+                    {BottomContent}
+                </TouchableOpacity>
 
             </AnimatedContainer>
         )
     }
 }
 
-
-AnimatedTextBox.propTypes = {
-
-}
-
-AnimatedTextBox.defaultProps = {
-
-}
-
 // COMPONENT SPECIFIC UI-ELEMENTS 
 
 function TextDetail(props) {
 
-    const { label, value, marginTop } = props
+    const { label, value } = props
 
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: marginTop, }}>
-            <Text style={[Fonts.subHeading, { color: 'black', fontWeight: 'bold' }]}>{label}</Text>
-            <Text style={[Fonts.subHeading, { color: BACKGROUND_DARK_GREY, flex: 1 }]} numberOfLines={2}> {value}</Text>
+        <View style={{ padding: 8,  alignItems: 'center', flex: 1 }}>
+            <Text style={{ fontSize: 20, color: 'rgba(50,50,50,0.7)', fontFamily: 'regular' }}>{label}</Text>
+            <Text style={{ fontSize: 28, fontFamily: 'bold', color: 'black', }}>{value}</Text>
         </View>
 
     )
 }
+
 
 function AnimatedButton(props) {
 

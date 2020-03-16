@@ -6,11 +6,12 @@ import { SECONDARY } from '../theme/colors';
 import { Fonts } from '../theme/styling';
 
 function OrderCard(props) {
-  let { cost } = props
+  let { cost } = props;
+
   return (
     <View style={styles.card}>
-      <Text style={[Fonts.headline, { color: 'black'}]}>Total:</Text>
-      <Text style={[Fonts.headline, { color: SECONDARY}]}>${cost}</Text>
+      <Text style={[Fonts.headline, { color: 'black' }]}>Total:</Text>
+      <Text style={[Fonts.headline, { color: SECONDARY }]}>${cost}</Text>
     </View>
   )
 }

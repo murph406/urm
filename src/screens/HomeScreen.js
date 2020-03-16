@@ -16,17 +16,14 @@ class HomeScreen extends Component {
 
     this.state = {
       screens: [
-        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items', subtitle: 'Items with deals' },
-        { title: 'Product Reference', screenToSend: 'productReference', feature: '0', featureLabel: 'Items', subtitle: 'Search products by Reference' }
+        { title: 'Promo Items', screenToSend: 'promoList', feature: '0', featureLabel: 'Items', featureText: '1', subtitle: 'Items with deals' },
+        { title: 'Order Guide', screenToSend: 'productReference', feature: '0', featureLabel: 'Items', featureText: '481', subtitle: 'Search products by Reference' }
       ],
     }
   }
 
-  componentDidMount() {
-  }
 
-
-  navigate = (screen) => () => {
+  navigate = (screen) => {
     this.props.navigation.navigate(screen);
   }
 
@@ -44,7 +41,7 @@ class HomeScreen extends Component {
           renderItem={({ item }) => (
             <TextBoxFeature
               data={item}
-              onPress={this.navigate(item.screenToSend)}
+              onPress={() => this.navigate(item.screenToSend)}
             />
           )} />
       </View>

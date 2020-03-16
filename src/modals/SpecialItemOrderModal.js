@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { View, ScrollView, StyleSheet, FlatList, Text } from 'react-native';
 
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_DARK_GREY } from '../theme/colors';
-import { Fonts, isScreenLarge, DeviceWidth, HeaderHeight } from '../theme/styling'
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK } from '../theme/colors';
+import { isScreenLarge } from '../theme/styling'
 import { ModalContainer, TextButton } from './Modal-Ui-Elements'
 
 import SpecialItemSelector from '../components/special-item-selector';
 import Field from '../ui-elements/field.js';
 import OrderCard from '../components/order-card';
-import IconButton from '../ui-elements/icon-button'
 
 function SpecialItemOrder(props) {
 
   let [store, setStore] = useState('')
   let [quantity, setQuantity] = useState(0)
+
   const { items, onDismiss, onSubmit } = props
 
   calculateTotal = () => {
     let total = 0
-
     items.forEach((item) => {
       if (item.quantity > 0) {
         total += (item.quantity * Number(item.case_cost))
@@ -30,6 +29,7 @@ function SpecialItemOrder(props) {
 
   onSubmitOrder = () => {
     onSubmit(items, store)
+    onDismiss()
   }
 
   return (
@@ -49,15 +49,13 @@ function SpecialItemOrder(props) {
 
         <FlatList
           data={items}
-          renderItem={(item, index) => (
+          renderItem={({ item, index }) => (
             <SpecialItemSelector
               item={item}
-              onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }}
-            />
+              onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }} />
           )} />
 
-        <OrderCard
-          cost={quantity.toFixed(2)} />
+        <OrderCard cost={ quantity.toFixed(2)} />
 
         <View style={{ marginBottom: 160 }} />
       </ScrollView>
@@ -92,14 +90,15 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY,
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: (isScreenLarge) ? 16 * 8 : 16
   },
   submitButtonPosition: {
     position: 'absolute',
     bottom: 32,
     right: 32,
     left: 32
-}
+  }
 })
 
 export default SpecialItemOrder;

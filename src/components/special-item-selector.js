@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -10,9 +10,10 @@ const subtractIcon = require('../../assets/icons/minus.png')
 
 function IncrementButton(props) {
   let { icon, onPress } = props
+
   return (
     <TouchableOpacity
-      activeOpacity={.7}
+      activeOpacity={1}
       style={styles.incrementButton}
       onPress={onPress}>
       <Image
@@ -24,9 +25,11 @@ function IncrementButton(props) {
 
 function InfoLabel(props) {
   let { label, value } = props
+  console.log(props)
+
   return (
     <View style={styles.labelValue}>
-      <Text style={Fonts.subHeading }>{label}</Text>
+      <Text style={Fonts.subHeading}>{label}</Text>
       <Text style={Fonts.subHeading, { color: 'black', fontWeight: 'bold', paddingVertical: 8 }}>{value}</Text>
     </View>
   )
@@ -35,21 +38,18 @@ function InfoLabel(props) {
 function SpecialItemSelector(props) {
   let [count, setCount] = useState(0)
   const { onIncrement } = props
-  const { description, pack_size, case_cost, net_case, net_unit } = props.item.item
-
-
-  useEffect(() => {
-    onIncrement(count)
-  })
+  const { description, pack_size, case_cost, net_case, net_unit } = props.item
 
   onSubtractValue = () => {
     setCount((count === 0) ? count : --count)
+    onIncrement(count)
   }
 
   onAddValue = () => {
     setCount(++count)
+    onIncrement(count)
   }
-
+console.log(props.item)
   return (
     <View style={styles.container} >
       <View style={styles.descriptionContainer}>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   infoPair: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 16, 
+    marginHorizontal: 16,
   },
   incrementContainer: {
     height: 64,
