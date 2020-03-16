@@ -43,6 +43,7 @@ class ProductReferenceScreen extends Component {
     this.setNavigationParams()
     this.retrieveItems()
   }
+  
 
   async retrieveItems() {
     try {

@@ -21,6 +21,27 @@ const GET_ITEM_GROUPS = '/special/get-all-groups';
 
 const CREATE_ORDER = '/order/create';
 
+const GET_BY_CATEGORY = '/item/get-by-category/';
+
+export const categories = [
+ 'bakeries', 'dairies', 'gmhbcs', 
+ 'groceries', 'grocerydelis', 'groceryfrozens',
+ 'meatdelis', 'meatfrozens', 'meats'
+];
+
+
+export function getByCategory(category) {
+
+  return new Promise((resolve, reject) => {
+    axios.get(BASE_URL + GET_BY_CATEGORY + category).then(({ data }) => {
+      // put in async storage
+      data = JSON.stringify(data);
+      AsyncStorage.setItem(category, data).then((value) => { resolve(value) })
+      .catch(reject)
+    })
+    .catch(reject)
+  })
+}
 
 export function getNewItems(callback) {
   axios.get(BASE_URL + GET_NEW_ITEMS)

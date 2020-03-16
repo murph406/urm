@@ -14,8 +14,10 @@ import MainReducer from './src/reducers/main-reducer';
 import AppNavigator from './src/navigation/app-navigator';
 
 import { BACKGROUND_DARK_LIGHT_GREY } from './src/theme/colors';
-import { getItemsAll } from './src/api/api'
+import { getItemsAll, getByCategory } from './src/api/api'
 import { Fonts } from './src/theme/styling';
+import { categories } from './src/api/api';
+
 
 export default class App extends Component {
 
@@ -34,18 +36,39 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
+   
     try {
       await this.loadFonts()
       await this.loadIcons()
-      await this.getData()
-      this.setState({ isAppReady: true });
+      this.getData()
+      
+      
     } catch (err) {
       console.log(err)
       this.setState({ isErrorOnLoading: true })
     }
   }
 
+  getData = () => {
+    promiseArray = [];
+    console.log(categories)
+    categories.forEach(element => {
+      promiseArray.push(getByCategory(element));
+    });
 
+
+    Promise.all(promiseArray)
+    .then(value => {
+      //AsyncStorage.getItem('dairies').then((value) => console.log('VALUES', value));
+      this.setState({ isAppReady: true });
+    })
+    .catch(err => console.log('Error: ', err)); 
+
+    
+    
+  }
+
+  /*
   getData = async () => {
     return new Promise((resolve, reject) => {
       getItemsAll(async (err, items) => {
@@ -63,6 +86,7 @@ export default class App extends Component {
       })
     })
   }
+  */
 
   loadFonts = async () => {
     await Font.loadAsync({
