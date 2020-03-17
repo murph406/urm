@@ -13,6 +13,7 @@ import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACK
 import { AnimatedTextBox } from '../components/index';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
 import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
+import { categories } from '../api/api';
 
 const filterIconSize = (isScreenLarge) ? 32 : 28
 
@@ -32,7 +33,7 @@ class ProductReferenceScreen extends Component {
       masterItemList: [],
       isFilterModalVisible: false,
       isItemSelected: false,
-      isActivityIndicatorVisible: true,
+      isActivityIndicatorVisible: false,
       selectedItems: []
     }
 
@@ -41,11 +42,14 @@ class ProductReferenceScreen extends Component {
 
   componentDidMount() {
     this.setNavigationParams()
-    this.retrieveItems()
+    this.filterBySearch('');
+    //this.retrieveItems()
   }
   
 
-  async retrieveItems() {
+ 
+
+ /* async retrieveItems() {
     try {
       const retrievedItems = await AsyncStorage.getItem('data');
       const items = JSON.parse(retrievedItems);
@@ -58,7 +62,7 @@ class ProductReferenceScreen extends Component {
       Alert.alert('Error', "Problem retrieving data", [{ text: 'Ok' }])
       this.setState({ isActivityIndicatorVisible: false })
     }
-  }
+  }*/
 
   setNavigationParams = () => {
     const { navigation } = this.props
@@ -70,6 +74,44 @@ class ProductReferenceScreen extends Component {
   }
 
   filterBySearch = (text) => {
+    this.setState({ isActivityIndicatorVisible: true });
+    let promiseArray = [];
+    let itemsMatchingSearch = [];
+    categories.forEach( category => 
+      promiseArray.push(AsyncStorage.getItem(category)
+      .then(value => {
+        const items = this.search(text, JSON.parse(value));
+        itemsMatchingSearch = itemsMatchingSearch.concat(items);
+      })
+      .catch(error => console.log('ERROR: ', error)))
+    );
+
+    Promise.all(promiseArray).then(() => {
+      this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false });
+    })
+
+  }
+
+  search = (text, items) => {
+    text = text.toUpperCase()
+    let filteredItems = items.filter((x, index) => {
+      const name = (x.item_description == null) ? '' : x.item_description
+      const brand = (x.brand == null) ? '' : x.brand
+      const code = (x.item_code == null) ? '' : x.item_code
+      const group = (x.group_description == null) ? '' : x.group_description
+      
+      if (name.includes(text) === true || brand.includes(text) === true || group.includes(text) === true) {
+        return true;
+        // Refactor this ^^^
+      }
+      return false;
+    })
+
+    return filteredItems;
+  }
+
+
+  /*filterBySearch = (text) => {
     const { masterItemList } = this.state
     text = text.toUpperCase()
 
@@ -86,16 +128,16 @@ class ProductReferenceScreen extends Component {
       return false
     })
     this.setState({ items: filteredItems })
-  }
+  }*/
 
   filterByOptions = (filterItemsArray) => {
-    const { masterItemList } = this.state
+    const { items } = this.state
     let filteredData = []
 
     filterItemsArray.forEach((filterOption, index) => {
       const { item } = filterOption
 
-      let filteredItems = masterItemList.filter((x, i) => {
+      let filteredItems = items.filter((x, i) => {
         const group = (x.group_description == null) ? '' : x.group_description
         const brand = (x.brand == null) ? '' : x.brand
 
@@ -111,9 +153,7 @@ class ProductReferenceScreen extends Component {
   }
 
   resetDefaultData = () => {
-    const { masterItemList } = this.state
-
-    this.setState({ items: masterItemList })
+    this.filterBySearch('');
   }
 
   onSelectItem = (item) => () => {
@@ -148,7 +188,7 @@ class ProductReferenceScreen extends Component {
         this.props.navigation.goBack()
       })
       .catch((e) => {
-        Alert.alert('couldnt save your order for some reason idk try again')
+        Alert.alert('couldnt save your order for some reason, try again')
       })
   }
 
@@ -161,7 +201,6 @@ class ProductReferenceScreen extends Component {
   toggleFilterModal = () => {
     const { isFilterModalVisible } = this.state
     const modalFlag = !isFilterModalVisible
-
     this.setState({ isFilterModalVisible: modalFlag })
   }
 
@@ -283,8 +322,12 @@ class ProductReferenceScreen extends Component {
 
     // let text = items?.length
     let text = ''
-    if(!items.length) {
-      text
+    if(items != null){
+      if(!items.length) {
+        text
+      } else {
+        text = items.length.toString();
+      }
     }
 
     return (
@@ -311,7 +354,7 @@ class ProductReferenceScreen extends Component {
 
   render() {
 
-    const { isFilterModalVisible, masterItemList, isItemSelected } = this.state;
+    const { isFilterModalVisible, items, isItemSelected } = this.state;
     const leftContent = this.getLeftContent()
     const rightContent = this.getRightContent()
 
@@ -319,7 +362,7 @@ class ProductReferenceScreen extends Component {
       <View style={styles.container} >
         <StatusBar hidden={true} />
 
-        <View style={{ height: HeaderHeight + 32, backgroundColor: SECONDARY, justifyContent: 'center' }}>
+        <View style={{ height: HeaderHeight + 46, backgroundColor: SECONDARY, justifyContent: 'center' }}>
           <Text style={{ ...Fonts.headline, color: 'white', textAlign: 'center', height: 32 }}>Products</Text>
           <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
             <IconButton
@@ -339,7 +382,7 @@ class ProductReferenceScreen extends Component {
               primaryColor={SECONDARY}
               secondaryColor={SECONDARY_DARK}
               onPress={() => {
-                this.setState({ isFilterModalVisible: true })
+                this.toggleFilterModal();
               }}
             />
           </View>
@@ -372,7 +415,7 @@ class ProductReferenceScreen extends Component {
           transparent={false}
           visible={isFilterModalVisible}>
           <FilterModal
-            data={masterItemList}
+            data={items}
             onResetFilterOptions={this.resetDefaultData}
             onFilterChanges={this.filterByOptions}
             onExitModal={this.toggleFilterModal}
