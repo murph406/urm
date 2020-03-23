@@ -42,7 +42,7 @@ class ProductReferenceScreen extends Component {
 
   componentDidMount() {
     this.setNavigationParams()
-    this.filterBySearch('');
+    // this.filterBySearch('');
     //this.retrieveItems()
   }
   
@@ -74,21 +74,29 @@ class ProductReferenceScreen extends Component {
   }
 
   filterBySearch = (text) => {
+    if(text.length < 3) return;
+    console.log('we in hereee')
     this.setState({ isActivityIndicatorVisible: true });
     let promiseArray = [];
     let itemsMatchingSearch = [];
-    categories.forEach( category => 
-      promiseArray.push(AsyncStorage.getItem(category)
-      .then(value => {
-        const items = this.search(text, JSON.parse(value));
-        itemsMatchingSearch = itemsMatchingSearch.concat(items);
+    categories.forEach(category => {
+      AsyncStorage.getItem(category, (err, value) => {
+        if(!err) {
+          const items = this.search(text, JSON.parse(value));
+          itemsMatchingSearch = itemsMatchingSearch.concat(items);
+          
+          // Only put the top 100 on the list
+          if(itemsMatchingSearch.length <= 100) {
+            this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false })
+          }
+        }
       })
-      .catch(error => console.log('ERROR: ', error)))
-    );
 
-    Promise.all(promiseArray).then(() => {
-      this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false });
-    })
+    });
+
+    // Promise.all(promiseArray).then(() => {
+    //   this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false });
+    // })
 
   }
 
