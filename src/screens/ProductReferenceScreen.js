@@ -43,13 +43,13 @@ class ProductReferenceScreen extends Component {
   componentDidMount() {
     this.setNavigationParams()
     // this.filterBySearch('');
-    //this.retrieveItems()
+    this.retrieveItems()
   }
   
 
  
 
- /* async retrieveItems() {
+  async retrieveItems() {
     try {
       const retrievedItems = await AsyncStorage.getItem('data');
       const items = JSON.parse(retrievedItems);
@@ -62,7 +62,7 @@ class ProductReferenceScreen extends Component {
       Alert.alert('Error', "Problem retrieving data", [{ text: 'Ok' }])
       this.setState({ isActivityIndicatorVisible: false })
     }
-  }*/
+  }
 
   setNavigationParams = () => {
     const { navigation } = this.props
