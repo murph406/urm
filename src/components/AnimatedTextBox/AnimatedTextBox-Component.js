@@ -28,7 +28,7 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getTopContent = () => {
-        const { item_description, brand, unit_price, billing_price, pack } = this.props.data
+        const { item_description, brand, unit_price, billing_price, pack} = this.props.data
         const { isAnimatedTextBoxActive } = this.state
         const iconDimension = 28
         return (
@@ -59,7 +59,7 @@ export default class AnimatedTextBox extends PureComponent {
     }
 
     getBottomContent = () => {
-        const { size, pack,brand, item_code } = this.props.data
+        const { size, pack,brand, item_code, check_digit } = this.props.data
         const { isAnimatedTextBoxActive } = this.state
 
         return (
@@ -77,6 +77,7 @@ export default class AnimatedTextBox extends PureComponent {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'space-between', padding: 16 }}>
                             <TextDetail value={size} marginTop={8} label={"Size "} />
                             <TextDetail value={pack} marginTop={8} label={"Pack "} />
+                            <TextDetail value={check_digit} marginTop={8} label={"Check Digit "} />
                         </View>
                     </View>
 

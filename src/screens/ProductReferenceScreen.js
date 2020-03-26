@@ -85,6 +85,7 @@ class ProductReferenceScreen extends Component {
           const items = this.search(text, JSON.parse(value));
           itemsMatchingSearch = itemsMatchingSearch.concat(items);
           
+          itemsMatchingSearch.sort(this.alphabetize);
           // Only put the top 100 on the list
           if(itemsMatchingSearch.length <= 100) {
             this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false })
@@ -94,6 +95,9 @@ class ProductReferenceScreen extends Component {
 
     });
 
+
+
+    console.log('ITEM', this.state.items[0]);
     // Promise.all(promiseArray).then(() => {
     //   this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false });
     // })
@@ -108,14 +112,24 @@ class ProductReferenceScreen extends Component {
       const code = (x.item_code == null) ? '' : x.item_code
       const group = (x.group_description == null) ? '' : x.group_description
       
-      if (name.includes(text) === true || brand.includes(text) === true || group.includes(text) === true) {
+      if (name.includes(text) === true || brand.includes(text) === true || group.includes(text) === true || code.toString().includes(text) === true) {
         return true;
         // Refactor this ^^^
       }
       return false;
     })
 
+    
+
     return filteredItems;
+  }
+
+  alphabetize( a, b ) {
+    if (a.item_description < b.item_description)
+      return -1;
+    if ( a.item_description > b.item_description)
+      return 1;
+    return 0;
   }
 
 
