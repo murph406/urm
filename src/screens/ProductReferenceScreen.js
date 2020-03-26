@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native';
 
-import IconButton from '../ui-elements/icon-button';
 import FilterModal from '../modals/Filter-Modal-Component'
+import IconButton from '../ui-elements/icon-button';
 import SearchField from '../ui-elements/search-field';
-import SpecialItemSelector from '../components/special-item-selector';
-import ItemSelector from '../components/item-selector'
-import OrderCard from '../components/order-card';
 
 import { order } from '../api/api';
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT, GREEN } from '../theme/colors';
-import { AnimatedTextBox } from '../components/index';
-import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
 import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
+import { AnimatedTextBox } from '../components/index';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT } from '../theme/colors';
+import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
 import { categories } from '../api/api';
 
-const filterIconSize = (isScreenLarge) ? 32 : 28
 
 class ProductReferenceScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -43,12 +39,10 @@ class ProductReferenceScreen extends Component {
   componentDidMount() {
     this.setNavigationParams()
     // this.filterBySearch('');
-    this.retrieveItems()
+    // this.retrieveItems()
   }
-  
 
- 
-
+/*
   async retrieveItems() {
     try {
       const retrievedItems = await AsyncStorage.getItem('data');
@@ -63,6 +57,7 @@ class ProductReferenceScreen extends Component {
       this.setState({ isActivityIndicatorVisible: false })
     }
   }
+  */
 
   setNavigationParams = () => {
     const { navigation } = this.props
@@ -74,34 +69,26 @@ class ProductReferenceScreen extends Component {
   }
 
   filterBySearch = (text) => {
-    if(text.length < 3) return;
+    if (text.length < 3) return;
     console.log('we in hereee')
     this.setState({ isActivityIndicatorVisible: true });
     let promiseArray = [];
     let itemsMatchingSearch = [];
     categories.forEach(category => {
       AsyncStorage.getItem(category, (err, value) => {
-        if(!err) {
+        if (!err) {
           const items = this.search(text, JSON.parse(value));
           itemsMatchingSearch = itemsMatchingSearch.concat(items);
-          
+
           itemsMatchingSearch.sort(this.alphabetize);
           // Only put the top 100 on the list
-          if(itemsMatchingSearch.length <= 100) {
-            this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false })
-          }
+          // if(itemsMatchingSearch.length <= 100) {
+          this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false })
+          // }
         }
       })
-
     });
-
-
-
     console.log('ITEM', this.state.items[0]);
-    // Promise.all(promiseArray).then(() => {
-    //   this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false });
-    // })
-
   }
 
   search = (text, items) => {
@@ -111,7 +98,7 @@ class ProductReferenceScreen extends Component {
       const brand = (x.brand == null) ? '' : x.brand
       const code = (x.item_code == null) ? '' : x.item_code
       const group = (x.group_description == null) ? '' : x.group_description
-      
+
       if (name.includes(text) === true || brand.includes(text) === true || group.includes(text) === true || code.toString().includes(text) === true) {
         return true;
         // Refactor this ^^^
@@ -119,15 +106,13 @@ class ProductReferenceScreen extends Component {
       return false;
     })
 
-    
-
     return filteredItems;
   }
 
-  alphabetize( a, b ) {
+  alphabetize(a, b) {
     if (a.item_description < b.item_description)
       return -1;
-    if ( a.item_description > b.item_description)
+    if (a.item_description > b.item_description)
       return 1;
     return 0;
   }
@@ -182,7 +167,7 @@ class ProductReferenceScreen extends Component {
     const { selectedItems } = this.state
     this.toggleScreenPosition()
 
-    // If the selected item has already been selected, dont add to array
+    // If the selected item has already been selected, do NOT add to array
     for (let i = 0; i < selectedItems.length; i++) {
       if (selectedItems[i]._id == item._id) {
         return;
@@ -197,7 +182,6 @@ class ProductReferenceScreen extends Component {
         count: 0
       }
     ]
-
     this.setState({ selectedItems: array })
   }
 
@@ -210,7 +194,7 @@ class ProductReferenceScreen extends Component {
         this.props.navigation.goBack()
       })
       .catch((e) => {
-        Alert.alert('couldnt save your order for some reason, try again')
+        Alert.alert('Could not save your order, please try again')
       })
   }
 
@@ -231,9 +215,7 @@ class ProductReferenceScreen extends Component {
     const array = selectedItems
 
     array.splice(itemIndex, 1)
-
     this.setState({ selectedItems: array })
-
   }
 
   getLeftContent = () => {
@@ -251,7 +233,7 @@ class ProductReferenceScreen extends Component {
           ListFooterComponent={() => <View style={{ flex: 1, height: 120 }} />}
           ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
           getItemLayout={(data, index) => (
-            {length: FlatlistItemHeight, offset: FlatlistItemHeight * index, index}
+            { length: FlatlistItemHeight, offset: FlatlistItemHeight * index, index }
           )}
           maxToRenderPerBatch={5}
           data={items.slice(0, 20)}
@@ -262,7 +244,6 @@ class ProductReferenceScreen extends Component {
               data={item} />
           )} />
       </View>
-
     )
 
     return contents
@@ -302,7 +283,7 @@ class ProductReferenceScreen extends Component {
             <Text style={[Fonts.subHeading, { color: 'white' }]}>Submit Order</Text>
           </TouchableOpacity>
         </View>
-
+        
       </View>
     )
   }
@@ -321,7 +302,6 @@ class ProductReferenceScreen extends Component {
   }
 
   getEmptyFlatlistView() {
-
     let { isActivityIndicatorVisible } = this.state
 
     let contents = (
@@ -330,7 +310,7 @@ class ProductReferenceScreen extends Component {
           ? <ActivityIndicator size={'large'} color={BACKGROUND_LIGHT_GREY} />
           :
           <>
-            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Sorry, No Results</Text>
+            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Start by Searching for Products</Text>
           </>
         }
       </View>
@@ -342,10 +322,9 @@ class ProductReferenceScreen extends Component {
   getNumberOfResultsDetail() {
     const { items } = this.state
 
-    // let text = items?.length
     let text = ''
-    if(items != null){
-      if(!items.length) {
+    if (items != null) {
+      if (!items.length) {
         text
       } else {
         text = items.length.toString();
@@ -353,7 +332,7 @@ class ProductReferenceScreen extends Component {
     }
 
     return (
-      <View style={{ alignSelf: 'flex-end', paddingBottom: 16, paddingRight: 16 }}>
+      <View style={{ alignSelf: 'flex-end', paddingVertical: 16, paddingRight: 16 }}>
         <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>{text} Results</Text>
       </View>
     )
@@ -375,10 +354,10 @@ class ProductReferenceScreen extends Component {
   }
 
   render() {
-
     const { isFilterModalVisible, items, isItemSelected } = this.state;
     const leftContent = this.getLeftContent()
-    const rightContent = this.getRightContent()
+    // const rightContent = this.getRightContent()
+    const filterIconSize = (isScreenLarge) ? 32 : 28
 
     return (
       <View style={styles.container} >
@@ -455,7 +434,9 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     position: 'absolute',
-    top: HeaderHeight - 12, left: 16, right: 16,
+    top: HeaderHeight - 12, 
+    left: 16, 
+    right: 16,
     zIndex: 10008,
     backgroundColor: 'transparent'
   },
@@ -464,26 +445,6 @@ const styles = StyleSheet.create({
     width: DeviceWidth,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  submitOrderContainer: {
-    borderRadius: 8,
-    marginLeft: 12,
-    marginRight: 12,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    padding: 16,
-    paddingTop: 16
-  },
-  orderItemContainer: {
-    backgroundColor: 'white',
-    flex: 1,
-    padding: 32,
-    shadowOpacity: .5,
-    shadowColor: BACKGROUND_DARK_GREY,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 6,
-    borderRadius: 8,
-    marginHorizontal: 16
   },
   orderItemsButton: {
     height: 60,

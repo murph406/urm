@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import { BACKGROUND_GREY, BACKGROUND_LIGHT_GREY, SECONDARY_DARK, SECONDARY, RED } from '../theme/colors';
+import { BACKGROUND_GREY, BACKGROUND_LIGHT_GREY, SECONDARY_DARK, SECONDARY } from '../theme/colors';
 import { HeaderHeight, DeviceWidth } from '../theme/styling'
 import { ModalContainer, TextButton } from './Modal-Ui-Elements'
 import { TabBar, TabRoute } from './TabBar'
@@ -96,7 +96,6 @@ class FilterModal extends Component {
 
         if (filterOptionsLength != 0) {
             onFilterChanges(selectedFilterOptions)
-
         }
         onExitModal()
     }
@@ -136,7 +135,6 @@ class FilterModal extends Component {
                         data={typeData}
                         filterButtonOnPress={(filter) => this.setFilterOption({ label: 'group_description', ...filter })}
                     />
-
                 </ScrollableTabView>
 
                 <View style={styles.submitButtonPosition}>
@@ -177,7 +175,6 @@ const styles = StyleSheet.create({
         right: 32,
         left: 32
     },
-
 })
 
 export default FilterModal;

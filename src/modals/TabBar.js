@@ -21,7 +21,6 @@ export function TabBar(props) {
 
         let isActive = activeTab === i
 
-
         onPressTab = () => {
           goToPage(i)
         }

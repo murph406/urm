@@ -7,39 +7,34 @@ let BASE_URL = 'http://localhost:8888/api'
 if (!IS_DEV) {
   BASE_URL = 'https://urm-api.herokuapp.com/api';
 }
-// AsyncStorage.getItem('@key:my_orders', (err, result) => {
-//   console.log('yeeeeah', result)
-// })
+
 // const GET_STORE_BY_CODE = '/store/get-one/';
 // const GET_ITEMS_BY_STORE = '/get-items/';
+// const UPDATE_ITEM_STATUS = '/item/update-status';
 
 const GET_NEW_ITEMS = '/item/get-new-items';
-// const UPDATE_ITEM_STATUS = '/item/update-status';
 const GET_ITEMS_ALL = '/item/get-all';
-
 const GET_ITEM_GROUPS = '/special/get-all-groups';
-
 const CREATE_ORDER = '/order/create';
-
 const GET_BY_CATEGORY = '/item/get-by-category/';
 
 export const categories = [
- 'bakeries', 'dairies', 'gmhbcs', 
- 'groceries', 'grocerydelis', 'groceryfrozens',
- 'meatdelis', 'meatfrozens', 'meats'
+  'bakeries', 'dairies', 'gmhbcs',
+  'groceries', 'grocerydelis', 'groceryfrozens',
+  'meatdelis', 'meatfrozens', 'meats'
 ];
-
 
 export function getByCategory(category) {
 
   return new Promise((resolve, reject) => {
-    axios.get(BASE_URL + GET_BY_CATEGORY + category).then(({ data }) => {
-      // put in async storage
-      data = JSON.stringify(data);
-      AsyncStorage.setItem(category, data).then((value) => { resolve(value) })
+    axios.get(BASE_URL + GET_BY_CATEGORY + category)
+      .then(({ data }) => {
+        // Put on asyncStorage
+        data = JSON.stringify(data);
+        AsyncStorage.setItem(category, data).then((value) => { resolve(value) })
+          .catch(reject)
+      })
       .catch(reject)
-    })
-    .catch(reject)
   })
 }
 
@@ -83,7 +78,7 @@ export function order(order) {
       .then(response => {
         resolve(response)
       })
-      .catch(async(e) => {
+      .catch(async (e) => {
         let orders = await AsyncStorage.getItem(ORDERS_KEY)
 
         // if no orders were saved, i.e. this is first order thats gonna be saved, then
@@ -96,13 +91,13 @@ export function order(order) {
          * ]
          */
         // So array of objects where the order lives on the array
-        if(orders == null) {
-          orders = []          
+        if (orders == null) {
+          orders = []
         } else {
           // otherwise, there are other orders saved, so lets parse them so we can add to it
           orders = JSON.parse(orders)
         }
-        
+
         orders.push({
           date_created: new Date(),
           order: order,
@@ -111,7 +106,7 @@ export function order(order) {
 
         let status = await AsyncStorage.setItem(ORDERS_KEY, JSON.stringify(orders))
 
-        resolve({ status: 'order saved'})
+        resolve({ status: 'order saved' })
       })
   })
 }
@@ -135,4 +130,3 @@ export function order(order) {
 //     callback(e, null)
 //   })
 // }
-

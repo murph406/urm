@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator, AsyncStorage, Alert } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Provider } from 'react-redux';
 import { Asset } from 'expo-asset'
 import { createStore, applyMiddleware } from 'redux';
@@ -8,24 +8,22 @@ import thunk from 'redux-thunk';
 import * as Font from 'expo-font';
 import FontAwesome from './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome.ttf';
 import MaterialIcons from './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf';
-//     ^^^ Needed to be required so to not throw an error with react-native-elements 
+//     ^^^ Needs to be required so to not throw an error with react-native-elements 
 
 import MainReducer from './src/reducers/main-reducer';
 import AppNavigator from './src/navigation/app-navigator';
 
+import { getByCategory } from './src/api/api'
 import { BACKGROUND_DARK_LIGHT_GREY } from './src/theme/colors';
-import { getItemsAll, getByCategory } from './src/api/api'
 import { Fonts } from './src/theme/styling';
 import { categories } from './src/api/api';
 
-
 export default class App extends Component {
-
   constructor() {
     super();
     this.state = {
       isAppReady: false,
-      isErrorOnLoading: false
+      errorLoadingApp: false
     }
   }
 
@@ -36,16 +34,14 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
-   
     try {
       await this.loadFonts()
       await this.loadIcons()
       this.getData()
       
-      
     } catch (err) {
       console.log(err)
-      this.setState({ isErrorOnLoading: true })
+      this.setState({ errorLoadingApp: true })
     }
   }
 
@@ -59,34 +55,10 @@ export default class App extends Component {
 
     Promise.all(promiseArray)
     .then(value => {
-      //AsyncStorage.getItem('dairies').then((value) => console.log('VALUES', value));
       this.setState({ isAppReady: true });
     })
     .catch(err => console.log('Error: ', err)); 
-
-    
-    
   }
-
-  /*
-  getData = async () => {
-    return new Promise((resolve, reject) => {
-      getItemsAll(async (err, items) => {
-        if (err) {
-          // Alert.alert('Error Refreshing Data', 'Defaulted to previously loaded data')
-          resolve(err)
-        } else {
-          try {
-            await AsyncStorage.setItem('data', JSON.stringify(items));
-            resolve(items)
-          } catch (err) {
-            reject(err)
-          }
-        }
-      })
-    })
-  }
-  */
 
   loadFonts = async () => {
     await Font.loadAsync({
@@ -98,7 +70,6 @@ export default class App extends Component {
   }
 
   loadIcons = async () => {
-
     const icons = [
       require('./assets/icons/filter-icon.png'),
       require('./assets/icons/arrow-icon-white.png'),
@@ -113,9 +84,8 @@ export default class App extends Component {
     await Asset.loadAsync(icons);
   }
 
-
   render() {
-    let { isAppReady, isErrorOnLoading } = this.state
+    let { isAppReady, errorLoadingApp } = this.state
 
     if (isAppReady) {
       return (
@@ -127,7 +97,7 @@ export default class App extends Component {
       return (
         <View
           style={styles.container}>
-          {(isErrorOnLoading)
+          {(errorLoadingApp)
             ? <Text style={[Fonts.headline, { color: BACKGROUND_DARK_GREY }]}>Error Loading App</Text>
             : <ActivityIndicator size='large' />}
         </View>
