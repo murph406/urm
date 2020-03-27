@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { Asset } from 'expo-asset'
 import { createStore, applyMiddleware } from 'redux';
@@ -37,28 +37,57 @@ export default class App extends Component {
     try {
       await this.loadFonts()
       await this.loadIcons()
-      this.getData()
-      
+      // this.getData()
+      this.setState({ isAppReady: true })
     } catch (err) {
       console.log(err)
       this.setState({ errorLoadingApp: true })
     }
   }
 
-  getData = () => {
-    promiseArray = [];
-    console.log(categories)
-    categories.forEach(element => {
-      promiseArray.push(getByCategory(element));
-    });
+  // getData = () => {
+  //   AsyncStorage.getItem('key:last_updated', (err, val) => {
+  //     console.log(val)
+  //     // if last update was a while ago or if hasnt ever been updated
+  //     if(!val || Date.now() - parseInt(val) >= 1000000) {
+  //       promiseArray = [];
+  //       console.log(categories)
+  //       categories.forEach(element => {
+  //         promiseArray.push(getByCategory(element));
+  //       });
+
+  //       Promise.all(promiseArray)
+  //       .then((value) => {
+  //         // let numItems = 0;
+  //         // for(let i = 0; i < value.length; i++) {
+  //         //   console.log(value)
+  //         //   numItems += value[i].length;
+  //         // }
+  //         // console.log(numItems)
+  //         AsyncStorage.setItem('key:last_updated', Date.now().toString(), (err) => {
+  //           this.setState({ isAppReady: true });
+  //         })
+  //       })
+  //       .catch(err => console.log('Error: ', err)); 
+  //     } else {
+  //       this.setState({ isAppReady: true })
+  //     }
+  //   })
+  //   // promiseArray = [];
+  //   // console.log(categories)
+  //   // categories.forEach(element => {
+  //   //   promiseArray.push(getByCategory(element));
+  //   // });
 
 
-    Promise.all(promiseArray)
-    .then((value) => {
-      this.setState({ isAppReady: true });
-    })
-    .catch(err => console.log('Error: ', err)); 
-  }
+  //   // Promise.all(promiseArray)
+  //   // .then((value) => {
+  //   //   AsyncStorage.setItem('key:last_updated', Date.now().toString(), (err) => {
+  //   //     this.setState({ isAppReady: true });
+  //   //   })
+  //   // })
+  //   // .catch(err => console.log('Error: ', err)); 
+  // }
 
   loadFonts = async () => {
     await Font.loadAsync({

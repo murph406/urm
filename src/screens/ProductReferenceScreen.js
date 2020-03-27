@@ -125,14 +125,14 @@ class ProductReferenceScreen extends Component {
     })
 
     Promise.all(promiseArray)
-      .then((value) => {
-        value.forEach((data, e) => {
-          itemsMatchingSearch = itemsMatchingSearch.concat(data);
-        })
-        itemsMatchingSearch.sort(this.alphabetize);
-        this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
+    .then((value) => {
+      value.forEach((data, e) => {
+        itemsMatchingSearch = itemsMatchingSearch.concat(data);
       })
-      .catch(err => console.log('Error: ', err))
+      itemsMatchingSearch.sort(this.alphabetize);
+      this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
+    })
+    .catch(err => console.log('Error: ', err))
   }
 
   resetDefaultData = () => {
