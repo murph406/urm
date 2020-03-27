@@ -8,13 +8,12 @@ import {
 } from 'react-native';
 
 import { Fonts, DeviceWidth, isScreenLarge } from '../theme/styling';
-import { SECONDARY, BACKGROUND_LIGHT_GREY, BACKGROUND_GREY, RED } from '../theme/colors';
+import { SECONDARY, BACKGROUND_LIGHT_GREY, BACKGROUND_GREY } from '../theme/colors';
 
-const numberOfColumns = (isScreenLarge)? 3 : 2
+const numberOfColumns = (isScreenLarge) ? 3 : 2
 
 export function TabBar(props) {
   const { style, tabs, goToPage, activeTab } = props
-
   return (
     <View style={[styles.tabContainer, style, goToPage]}>
       {tabs.map((tabName, i) => {
@@ -47,18 +46,28 @@ export function TabRoute(props) {
   }
 
   return (
-    <View style={{ flex: 1, paddingBottom: 120 }}>
+    <View style={{ flex: 1, paddingBottom: 120, }}>
       <FlatList
-        style={{ paddingTop: 64, }}
+        style={{ paddingTop: 64, flex: 1, }}
         data={data}
-        ListFooterComponent={() => <View style={{flex: 1, height: 80}}/>}
+        ListFooterComponent={() => <View style={{ flex: 1, height: 80 }} />}
         numColumns={numberOfColumns}
         keyExtractor={item => item}
-        renderItem={({ item, index }) => (
-          <FilterButton
-            data={item}
-            onPress={(isSelected) => onFilterButtonPress({ isSelected: isSelected, item: item })} />
-        )} />
+        renderItem={({ item, index }) => {
+          let text = item
+          { (text === 'dairies') ? text = 'dairy' : null }
+          { (text === 'bakeries') ? text = 'Baked Goods' : null }
+          { (text === 'meatdelis') ? text = 'Deli Meats' : null }
+          { (text === 'meatfrozens') ? text = 'Frozen Meats' : null }
+          { (text === 'groceryfrozens') ? text = 'Frozen Grocery' : null }
+          { (text === 'grocerydelis') ? text = 'Frozen Deli' : null }
+          
+          return (
+            <FilterButton
+              data={text}
+              onPress={(isSelected) => onFilterButtonPress({ isSelected: isSelected, item: item })} />
+          )
+        }} />
     </View>
   )
 }
@@ -77,7 +86,7 @@ export function FilterButton(props) {
       onPress={toggleActiveButton}
       activeOpacity={.7}
       style={[styles.filterButton, { backgroundColor: (isButtonSelected) ? SECONDARY : BACKGROUND_GREY }]}>
-      <Text style={[Fonts.subHeadingWhite, { color: (isButtonSelected) ? 'white' : BACKGROUND_LIGHT_GREY, alignSelf: 'center' }]}>{data}</Text>
+      <Text style={[Fonts.subHeadingWhite, { color: (isButtonSelected) ? 'white' : BACKGROUND_LIGHT_GREY, alignSelf: 'center', textTransform: 'capitalize' }]}>{data}</Text>
     </TouchableOpacity>
   )
 }
@@ -96,7 +105,8 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   filterButton: {
-    width: (DeviceWidth - ((numberOfColumns + 2) * 32)) / numberOfColumns,
+    // width: (DeviceWidth - ((numberOfColumns + 2) * 32)) / numberOfColumns,
+    flex: 1,
     height: 40,
     paddingHorizontal: 24,
     paddingVertical: 4,

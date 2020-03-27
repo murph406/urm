@@ -7,9 +7,10 @@ import { Fonts } from '../theme/styling'
 function TextField(props) {
 
     const [search, updateSearch] = useState(0)
-    const { onFocus, primaryColor, secondaryColor, textColor, placeHolderText, onChangeText } = props
+    const { onFocus, primaryColor, secondaryColor, textColor, placeHolderText, onChangeText, onClear, isTextFieldPopulated } = props
 
     function onChangeSearch(text) {
+        isTextFieldPopulated((text.length > 0) ? true : false)
         updateSearch(text)
         onChangeText(text)
     }
@@ -22,7 +23,7 @@ function TextField(props) {
                 searchIcon={{
                     color: textColor,
                     marginLeft: 12,
-                    size: 32
+                    size: 32,
                 }}
                 clearIcon={{
                     color: textColor,
@@ -30,6 +31,7 @@ function TextField(props) {
                     size: 32
                 }}
                 onFocus={onFocus}
+                onClear={onClear}
                 cancelButtonTitle="Cancel"
                 placeholderTextColor={textColor}
                 inputContainerStyle={{ backgroundColor: primaryColor, height: 64, borderRadius: 32 }}

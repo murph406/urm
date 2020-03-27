@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BACKGROUND_GREY,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   carouselContainer: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   }
 })
 

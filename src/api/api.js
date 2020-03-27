@@ -31,7 +31,8 @@ export function getByCategory(category) {
       .then(({ data }) => {
         // Put on asyncStorage
         data = JSON.stringify(data);
-        AsyncStorage.setItem(category, data).then((value) => { resolve(value) })
+        AsyncStorage.setItem(category, data)
+          .then((value) => { resolve(value) })
           .catch(reject)
       })
       .catch(reject)

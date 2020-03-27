@@ -38,27 +38,29 @@ function SpecialItemOrder(props) {
       leftOnPress={onDismiss}
       leftIconSource={require('../../assets/icons/X-icon-white.png')}
       headerText={'Order Item'}>
+      <View style={styles.scrollViewContainer}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Field
+            label={'Store Number :'}
+            placeholder={'Ex. 1234'}
+            keyboard={'numeric'}
+            updateState={setStore}
+            text={store} />
+ 
+          <FlatList
+            data={items}
+            renderItem={({ item, index }) => (
+              <SpecialItemSelector
+                item={item}
+                onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }} />
+            )} />
 
-      <ScrollView style={styles.scrollViewContainer}>
-        <Field
-          label={'Store Number :'}
-          placeholder={'Ex. 1234'}
-          keyboard={'numeric'}
-          updateState={setStore}
-          text={store} />
+          <OrderCard cost={quantity.toFixed(2)} />
 
-        <FlatList
-          data={items}
-          renderItem={({ item, index }) => (
-            <SpecialItemSelector
-              item={item}
-              onIncrement={(quantity) => { item.quantity = quantity; calculateTotal() }} />
-          )} />
+          <View style={{ marginBottom: 160 }} />
+        </ScrollView>
+      </View>
 
-        <OrderCard cost={ quantity.toFixed(2)} />
-
-        <View style={{ marginBottom: 160 }} />
-      </ScrollView>
       <View style={styles.submitButtonPosition}>
         <TextButton
           text={'Submit'}

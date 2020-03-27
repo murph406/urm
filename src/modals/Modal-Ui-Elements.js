@@ -15,32 +15,29 @@ export function ModalContainer(props) {
         <View style={styles.modalContainer}>
             <StatusBar hidden={true} />
             <View style={styles.headerContainer}>
-                <View style={[styles.buttonPositionAbsolute, { left: 16 }]}>
-                    <IconButton
-                        iconSource={leftIconSource}
+                <IconButton
+                    iconSource={leftIconSource}
+                    iconDimensions={filterIconSize}
+                    primaryColor={BACKGROUND_LIGHT_GREY}
+                    secondaryColor={BACKGROUND_DARK_GREY}
+                    onPress={leftOnPress}
+                />
+                <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>{headerText}</Text>
+                {(!isRightIconDisabled)
+                    ? <IconButton
+                        iconSource={rightIconSource}
                         iconDimensions={filterIconSize}
                         primaryColor={BACKGROUND_LIGHT_GREY}
                         secondaryColor={BACKGROUND_DARK_GREY}
-                        onPress={leftOnPress}
+                        onPress={rightOnPress}
                     />
-                </View>
-
-                <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>{headerText}</Text>
-                {(!isRightIconDisabled)
-                    ? <View style={[styles.buttonPositionAbsolute, { right: 16 }]}>
-                        <IconButton
-                            iconSource={rightIconSource}
-                            iconDimensions={filterIconSize}
-                            primaryColor={BACKGROUND_LIGHT_GREY}
-                            secondaryColor={BACKGROUND_DARK_GREY}
-                            onPress={rightOnPress}
-                        />
-                    </View>
-                    : null
+                    : <View style={{ height: 42, width: 42}}/>
                 }
-            </View>
 
-            {children}
+            </View>
+            <View style={{ flex: 1 }}>
+                {children}
+            </View>
         </View>
     )
 }
@@ -75,11 +72,12 @@ const styles = StyleSheet.create({
         top: 40,
     },
     headerContainer: {
-        width: DeviceWidth,
-        height: HeaderHeight * 1.5,
-        backgroundColor: BACKGROUND_GREY,
-        paddingTop: HeaderHeight * .5,
+        height: HeaderHeight,
+        paddingTop: HeaderHeight * .1,
         paddingHorizontal: 16,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     submitButton: {
         height: 54,

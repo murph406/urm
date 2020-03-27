@@ -12,7 +12,7 @@ class FilterModal extends Component {
         super(props)
         this.state = {
             brandData: [],
-            typeData: [],
+            categoryData: [],
             selectedFilterOptions: []
         }
     }
@@ -22,17 +22,16 @@ class FilterModal extends Component {
     }
 
     async setData() {
+        const { brands, categories } = this.props
+        console.log(categories, brands)
 
-        const { data } = this.props
+        // const categoryData = this.filterDataByGroup(categories)
+        // const brandData = this.filterDataByBrand(brands)
 
-        const typeData = this.filterDataByGroup(data)
-        const brandData = this.filterDataByBrand(data)
+        // const filteredCategoryData = await this.filterDuplicates(categoryData)
+        // const filteredBrandData = await this.filterDuplicates(brandData)
 
-        const filteredTypeData = await this.filterDuplicates(typeData)
-        const filteredBrandData = await this.filterDuplicates(brandData)
-
-        this.setState({ brandData: filteredBrandData, typeData: filteredTypeData })
-
+        this.setState({  categoryData: categories })
     }
 
     filterDataByBrand(data) {
@@ -53,9 +52,9 @@ class FilterModal extends Component {
         let initialData = []
 
         data.forEach((item) => {
-            const { group_description } = item
+            const { category } = item
 
-            initialData.push(group_description)
+            initialData.push(category)
         });
 
         return initialData
@@ -68,7 +67,7 @@ class FilterModal extends Component {
         }))
     }
 
-    setFilterOption = async (item) => {
+    setFilterCategories = async (item) => {
 
         const { selectedFilterOptions } = this.state
 
@@ -109,7 +108,7 @@ class FilterModal extends Component {
 
     render() {
         const { onExitModal } = this.props
-        const { typeData, brandData } = this.state
+        const { categoryData, brandData } = this.state
 
         return (
             <ModalContainer
@@ -120,20 +119,20 @@ class FilterModal extends Component {
                 headerText={'Filter'}>
 
                 <ScrollableTabView
-                    style={{ marginTop: 20, marginHorizontal: 32, }}
+                    style={{ marginTop: 20, marginHorizontal: 32,  }}
                     initialPage={0}
                     renderTabBar={() =>
                         <TabBar />
                     }>
-                    <TabRoute
-                        tabLabel={'Brand'}
+                    {/* <TabRoute
+                        tabLabel={'Brands'}
                         data={brandData}
                         filterButtonOnPress={(filter) => this.setFilterOption({ label: 'brand', ...filter })}
-                    />
+                    /> */}
                     <TabRoute
-                        tabLabel={'Type'}
-                        data={typeData}
-                        filterButtonOnPress={(filter) => this.setFilterOption({ label: 'group_description', ...filter })}
+                        tabLabel={'Categories'}
+                        data={categoryData}
+                        filterButtonOnPress={(filter) => this.setFilterCategories({ label: 'category', ...filter })}
                     />
                 </ScrollableTabView>
 

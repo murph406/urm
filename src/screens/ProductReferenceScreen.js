@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native';
+import { View, StyleSheet, FlatList, Modal, Text, ActivityIndicator, Alert, AsyncStorage, TouchableOpacity, StatusBar, KeyboardAvoidingView } from 'react-native';
 
 import FilterModal from '../modals/Filter-Modal-Component'
 import IconButton from '../ui-elements/icon-button';
 import SearchField from '../ui-elements/search-field';
 
 import { order } from '../api/api';
-import { AnimatedPositionAbsolute } from '../util/Animated-Utility'
 import { AnimatedTextBox } from '../components/index';
-import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY, BACKGROUND_DARK_GREY, BLUE_LIGHT } from '../theme/colors';
+import { BACKGROUND_GREY, SECONDARY, SECONDARY_DARK, BACKGROUND_LIGHT_GREY } from '../theme/colors';
 import { isScreenLarge, Fonts, DeviceHeight, DeviceWidth, HeaderHeight } from '../theme/styling';
 import { categories } from '../api/api';
 
@@ -27,10 +26,13 @@ class ProductReferenceScreen extends Component {
     this.state = {
       items: [],
       masterItemList: [],
+      selectedItems: [],
+      searchBarText: '',
       isFilterModalVisible: false,
       isItemSelected: false,
       isActivityIndicatorVisible: false,
-      selectedItems: []
+      isSearchBarPopulated: false,
+      numberOfResults: 0
     }
 
     this.order = order.bind(this)
@@ -38,26 +40,7 @@ class ProductReferenceScreen extends Component {
 
   componentDidMount() {
     this.setNavigationParams()
-    // this.filterBySearch('');
-    // this.retrieveItems()
   }
-
-/*
-  async retrieveItems() {
-    try {
-      const retrievedItems = await AsyncStorage.getItem('data');
-      const items = JSON.parse(retrievedItems);
-
-      this.setState({ items: items, masterItemList: items, isActivityIndicatorVisible: false })
-
-    } catch (err) {
-      console.log(err.message);
-
-      Alert.alert('Error', "Problem retrieving data", [{ text: 'Ok' }])
-      this.setState({ isActivityIndicatorVisible: false })
-    }
-  }
-  */
 
   setNavigationParams = () => {
     const { navigation } = this.props
@@ -68,40 +51,54 @@ class ProductReferenceScreen extends Component {
     // ^^^ Connects the toggleFilterModal function to react-navigation's header functionally. 
   }
 
-  filterBySearch = (text) => {
-    if (text.length < 3) return;
-    console.log('we in hereee')
-    this.setState({ isActivityIndicatorVisible: true });
-    let promiseArray = [];
-    let itemsMatchingSearch = [];
-    categories.forEach(category => {
-      AsyncStorage.getItem(category, (err, value) => {
-        if (!err) {
-          const items = this.search(text, JSON.parse(value));
-          itemsMatchingSearch = itemsMatchingSearch.concat(items);
+  getDataAsync = (category, text) => {
 
-          itemsMatchingSearch.sort(this.alphabetize);
-          // Only put the top 100 on the list
-          // if(itemsMatchingSearch.length <= 100) {
-          this.setState({ items: itemsMatchingSearch, isActivityIndicatorVisible: false })
-          // }
+    return new Promise(async (resolve, reject) => {
+      await AsyncStorage.getItem(category, (err, value) => {
+        if (!err) {
+          const items = this.removeDuplicates(text, JSON.parse(value));
+
+          resolve(items)
         }
       })
-    });
-    console.log('ITEM', this.state.items[0]);
+    })
   }
 
-  search = (text, items) => {
+  filterBySearch = () => {
+    let promiseArray = []
+    let itemsMatchingSearch = []
+    let { searchBarText } = this.state
+
+
+    this.setState({ isActivityIndicatorVisible: true })
+
+    categories.forEach(category => {
+      promiseArray.push(this.getDataAsync(category, searchBarText));
+    });
+
+    Promise.all(promiseArray)
+      .then((value) => {
+        value.forEach((data, e) => {
+          itemsMatchingSearch = itemsMatchingSearch.concat(data);
+        })
+
+        itemsMatchingSearch.sort(this.alphabetize);
+        this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
+      })
+      .catch(err => console.log('Error: ', err))
+  }
+
+  removeDuplicates = (text, items) => {
     text = text.toUpperCase()
+
     let filteredItems = items.filter((x, index) => {
       const name = (x.item_description == null) ? '' : x.item_description
       const brand = (x.brand == null) ? '' : x.brand
       const code = (x.item_code == null) ? '' : x.item_code
-      const group = (x.group_description == null) ? '' : x.group_description
+      const group = (x.category == null) ? '' : x.category
 
       if (name.includes(text) === true || brand.includes(text) === true || group.includes(text) === true || code.toString().includes(text) === true) {
         return true;
-        // Refactor this ^^^
       }
       return false;
     })
@@ -118,49 +115,29 @@ class ProductReferenceScreen extends Component {
   }
 
 
-  /*filterBySearch = (text) => {
-    const { masterItemList } = this.state
-    text = text.toUpperCase()
+  filterByCategories = (filterItemsArray) => {
+    let itemsMatchingSearch = []
+    let promiseArray = []
 
-    let filteredItems = masterItemList.filter((x, index) => {
-      const name = (x.item_description == null) ? '' : x.item_description
-      const brand = (x.brand == null) ? '' : x.brand
-      const code = (x.item_code == null) ? '' : x.item_code
-      const group = (x.group_description == null) ? '' : x.group_description
-
-      if (name.includes(text) === true || brand.includes(text) === true || code.includes(text) === true || group.includes(text) === true) {
-        return true
-        // Refactor this ^^^
-      }
-      return false
+    this.setState({ isActivityIndicatorVisible: true })
+    filterItemsArray.forEach((category, index) => {
+      promiseArray.push(this.getDataAsync(category.item, ''));
     })
-    this.setState({ items: filteredItems })
-  }*/
 
-  filterByOptions = (filterItemsArray) => {
-    const { items } = this.state
-    let filteredData = []
-
-    filterItemsArray.forEach((filterOption, index) => {
-      const { item } = filterOption
-
-      let filteredItems = items.filter((x, i) => {
-        const group = (x.group_description == null) ? '' : x.group_description
-        const brand = (x.brand == null) ? '' : x.brand
-
-        if (brand.includes(item) === true || group.includes(item) === true) {
-          return true
-        }
-        return false
+    Promise.all(promiseArray)
+      .then((value) => {
+        value.forEach((data, e) => {
+          itemsMatchingSearch = itemsMatchingSearch.concat(data);
+        })
+        itemsMatchingSearch.sort(this.alphabetize);
+        this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
       })
-      filteredData = [...filteredData, ...filteredItems]
-    })
-
-    this.setState({ items: filteredData })
+      .catch(err => console.log('Error: ', err))
   }
 
   resetDefaultData = () => {
-    this.filterBySearch('');
+    this.setState({ items: [] })
+    // this.filterBySearch();
   }
 
   onSelectItem = (item) => () => {
@@ -173,7 +150,6 @@ class ProductReferenceScreen extends Component {
         return;
       }
     }
-
     // add a count variable onto the item
     let array = [
       ...selectedItems,
@@ -218,76 +194,6 @@ class ProductReferenceScreen extends Component {
     this.setState({ selectedItems: array })
   }
 
-  getLeftContent = () => {
-    const { items } = this.state
-    const FlatlistItemHeight = DeviceHeight * .1
-    const numberOfResultsDetail = this.getNumberOfResultsDetail()
-    const emptyFlatlistVeiw = this.getEmptyFlatlistView()
-
-    const contents = (
-      <View style={{ flex: 1, width: DeviceWidth }}>
-        <FlatList
-          style={{ paddingTop: 16 }}
-          ListHeaderComponent={numberOfResultsDetail}
-          ListEmptyComponent={emptyFlatlistVeiw}
-          ListFooterComponent={() => <View style={{ flex: 1, height: 120 }} />}
-          ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
-          getItemLayout={(data, index) => (
-            { length: FlatlistItemHeight, offset: FlatlistItemHeight * index, index }
-          )}
-          maxToRenderPerBatch={5}
-          data={items.slice(0, 20)}
-          keyExtractor={item => item._id}
-          renderItem={({ item, index }) => (
-            <AnimatedTextBox
-              onSelectedItem={this.onSelectItem(item)}
-              data={item} />
-          )} />
-      </View>
-    )
-
-    return contents
-  }
-
-  getRightContent = () => {
-    const { selectedItems } = this.state
-
-    return (
-      <View style={{ flex: 1, width: DeviceWidth }}>
-
-        <FlatList
-          ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
-          ListHeaderComponent={() => <View style={{ flex: 1, height: 96, justifyContent: 'center' }}><Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>Your Cart</Text></View>}
-          ListFooterComponent={() => <View style={{ flex: 1, height: 160 }} />}
-          data={selectedItems}
-          keyExtractor={item => item._id}
-          renderItem={({ item, index }) => (
-            <ItemSelector
-              item={item}
-              onIncrement={(count) => this.onIncrementItem(count, item)}
-              removeItem={() => this.removeItem(index)}
-            />
-          )} />
-
-        <View style={styles.orderItemsButtonContainer}>
-          <TouchableOpacity
-            activeOpacity={.7}
-            style={[styles.orderItemsButton, { backgroundColor: BLUE_LIGHT }]}
-            onPress={this.toggleScreenPosition}>
-            <Text style={[Fonts.subHeading, { color: 'white' }]}>Go Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={.7}
-            style={[styles.orderItemsButton, { backgroundColor: SECONDARY }]}
-            onPress={this.onSubmitOrder}>
-            <Text style={[Fonts.subHeading, { color: 'white' }]}>Submit Order</Text>
-          </TouchableOpacity>
-        </View>
-        
-      </View>
-    )
-  }
-
   onIncrementItem(count, item) {
     let { selectedItems } = this.state;
 
@@ -300,6 +206,8 @@ class ProductReferenceScreen extends Component {
 
     this.setState({ selectedItems: selectedItems })
   }
+
+
 
   getEmptyFlatlistView() {
     let { isActivityIndicatorVisible } = this.state
@@ -319,10 +227,19 @@ class ProductReferenceScreen extends Component {
     return contents
   }
 
-  getNumberOfResultsDetail() {
-    const { items } = this.state
+  setNextResults = (value) => () => {
+    let { numberOfResults } = this.state
+    if (numberOfResults === 0 && value === -25) {
+      return
+    }
+    this.setState({ numberOfResults: numberOfResults + value })
+  }
 
+  getNumberOfResultsDetail() {
+    const { items, numberOfResults } = this.state
+    let counter = numberOfResults + 25
     let text = ''
+
     if (items != null) {
       if (!items.length) {
         text
@@ -332,18 +249,29 @@ class ProductReferenceScreen extends Component {
     }
 
     return (
-      <View style={{ alignSelf: 'flex-end', paddingVertical: 16, paddingRight: 16 }}>
-        <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY }]}>{text} Results</Text>
+      <View style={styles.numberOfResultsContainer}>
+        {(items.length != 0)
+          ? <>
+            <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'flex-end' }]}>{text} Results</Text>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text onPress={this.setNextResults(-25)} style={[Fonts.subHeading, { color: SECONDARY, paddingRight: 12 }]}>Back</Text>
+              <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingRight: 12 }]}>{numberOfResults.toString()} of {counter.toString()}</Text>
+              <Text onPress={this.setNextResults(25)} style={[Fonts.subHeading, { color: SECONDARY, }]}>Next</Text>
+            </View>
+          </>
+          : null}
+
       </View>
     )
   }
-
 
   renderSearch() {
     return (
       <View style={styles.searchBarContainer}>
         <SearchField
-          onChangeText={this.filterBySearch}
+          isTextFieldPopulated={(flag) => this.setState({ isSearchBarPopulated: flag })}
+          onChangeText={(text) => this.setState({ searchBarText: text })}
           showCancelButton={true}
           placeHolderText={'Search Here...'}
           textColor={BACKGROUND_LIGHT_GREY}
@@ -353,72 +281,100 @@ class ProductReferenceScreen extends Component {
     )
   }
 
-  render() {
-    const { isFilterModalVisible, items, isItemSelected } = this.state;
-    const leftContent = this.getLeftContent()
-    // const rightContent = this.getRightContent()
+  getBodyContents = () => {
+    const { items, isActivityIndicatorVisible, numberOfResults } = this.state
+    const FlatlistItemHeight = DeviceHeight * .1
+    const numberOfResultsDetail = this.getNumberOfResultsDetail()
+    const emptyFlatlistVeiw = this.getEmptyFlatlistView()
+
+    const contents = (
+      <View style={{ flex: 1, marginHorizontal: 16 }}>
+        <FlatList
+          style={{ paddingTop: 16 }}
+          ListHeaderComponent={numberOfResultsDetail}
+          ListFooterComponent={numberOfResultsDetail}
+          ListEmptyComponent={emptyFlatlistVeiw}
+          ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
+          getItemLayout={(data, index) => (
+            { length: FlatlistItemHeight, offset: FlatlistItemHeight * index, index }
+          )}
+          maxToRenderPerBatch={5}
+          data={(!isActivityIndicatorVisible) ? items.slice(numberOfResults, numberOfResults + 25) : null}
+          keyExtractor={item => item._id}
+          renderItem={({ item, index }) => (
+            <AnimatedTextBox
+              onSelectedItem={this.onSelectItem(item)}
+              data={item} />
+          )} />
+      </View>
+    )
+
+    return contents
+  }
+
+  getHeader = () => {
     const filterIconSize = (isScreenLarge) ? 32 : 28
+
+    const contents = (
+      <View style={{ height: HeaderHeight + 46, backgroundColor: SECONDARY, justifyContent: 'center' }}>
+        <Text style={{ ...Fonts.headline, color: 'white', textAlign: 'center', height: 32 }}>Products</Text>
+        <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
+          <IconButton
+            iconSource={require('../../assets/icons/X-icon-white.png')}
+            iconDimensions={filterIconSize}
+            primaryColor={SECONDARY}
+            secondaryColor={SECONDARY_DARK}
+            onPress={() => this.props.navigation.goBack()}
+          />
+        </View>
+        <View style={{ position: 'absolute', right: 16, top: (HeaderHeight / 4) }}>
+          <IconButton
+            iconSource={require('../../assets/icons/filter-icon.png')}
+            iconDimensions={filterIconSize}
+            primaryColor={SECONDARY}
+            secondaryColor={SECONDARY_DARK}
+            onPress={() => this.toggleFilterModal()} />
+        </View>
+      </View>
+    )
+
+    return contents
+  }
+
+  render() {
+    const { isFilterModalVisible, items, isSearchBarPopulated } = this.state;
+    const bodyContents = this.getBodyContents()
+    const header = this.getHeader()
+    const searchBar = this.renderSearch()
 
     return (
       <View style={styles.container} >
         <StatusBar hidden={true} />
 
-        <View style={{ height: HeaderHeight + 46, backgroundColor: SECONDARY, justifyContent: 'center' }}>
-          <Text style={{ ...Fonts.headline, color: 'white', textAlign: 'center', height: 32 }}>Products</Text>
-          <View style={{ position: 'absolute', left: 16, top: (HeaderHeight / 4) }}>
-            <IconButton
-              iconSource={require('../../assets/icons/X-icon-white.png')}
-              iconDimensions={filterIconSize}
-              primaryColor={SECONDARY}
-              secondaryColor={SECONDARY_DARK}
-              onPress={() => {
-                this.props.navigation.goBack()
-              }}
-            />
-          </View>
-          <View style={{ position: 'absolute', right: 16, top: (HeaderHeight / 4) }}>
-            <IconButton
-              iconSource={require('../../assets/icons/filter-icon.png')}
-              iconDimensions={filterIconSize}
-              primaryColor={SECONDARY}
-              secondaryColor={SECONDARY_DARK}
-              onPress={() => {
-                this.toggleFilterModal();
-              }}
-            />
-          </View>
+        {header}
+        {searchBar}
+        {bodyContents}
 
-        </View>
-
-        {!isItemSelected && this.renderSearch()}
-
-
-        {/* <AnimatedPositionAbsolute
-          duration={500}
-          inputRange={{ bottomInitial: 0, leftInitial: 0, rightInitial: 0, topInitial: HeaderHeight + 64 }}
-          outputRange={{ bottomFinal: 0, leftFinal: -DeviceWidth, rightFinal: -DeviceWidth, topFinal: HeaderHeight + 64 }}
-          isActive={false}>
-          <View style={{ flex: 1, width: DeviceWidth }}>{leftContent}</View>
-        </AnimatedPositionAbsolute> */}
-
-        {leftContent}
-
-        {/* <AnimatedPositionAbsolute
-          duration={500}
-          inputRange={{ bottomInitial: 0, leftInitial: DeviceWidth, rightInitial: DeviceWidth * 2, topInitial: HeaderHeight + 32 }}
-          outputRange={{ bottomFinal: 0, leftFinal: 0, rightFinal: DeviceWidth, topFinal: HeaderHeight + 32 }}
-          isActive={isItemSelected}>
-          <View style={{ flex: 1, width: DeviceWidth }}>{rightContent}</View>
-        </AnimatedPositionAbsolute> */}
-
+        <KeyboardAvoidingView style={styles.onSearchButtonContainer} behavior={'padding'}>
+          {(isSearchBarPopulated)
+            ? <TouchableOpacity
+              onPress={this.filterBySearch}
+              activeOpacity={.7}
+              style={styles.onSearchButton}>
+              <Text style={Fonts.subHeadingWhite}>Search</Text>
+            </TouchableOpacity>
+            : null
+          }
+        </KeyboardAvoidingView>
         <Modal
           animationType="slide"
           transparent={false}
           visible={isFilterModalVisible}>
           <FilterModal
-            data={items}
+            // brands={items}
+            categories={categories}
             onResetFilterOptions={this.resetDefaultData}
-            onFilterChanges={this.filterByOptions}
+            onFilterChanges={this.filterByCategories}
             onExitModal={this.toggleFilterModal}
           />
         </Modal>
@@ -434,15 +390,16 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     position: 'absolute',
-    top: HeaderHeight - 12, 
-    left: 16, 
+    top: HeaderHeight,
+    left: 16,
     right: 16,
     zIndex: 10008,
     backgroundColor: 'transparent'
   },
   emptyFlatlistContainer: {
-    height: DeviceHeight * .6,
-    width: DeviceWidth,
+    height: DeviceHeight * .4,
+    // width: DeviceWidth,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -461,7 +418,70 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     top: DeviceHeight * .78
+  },
+  onSearchButtonContainer: {
+    alignItems: 'flex-end',
+    paddingRight: 16,
+  },
+  onSearchButton: {
+    backgroundColor: SECONDARY,
+    width: 120,
+    borderRadius: 30,
+    paddingVertical: 8,
+    marginVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  numberOfResultsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 32,
+    paddingHorizontal: 16,
   }
 })
 
 export default ProductReferenceScreen;
+
+/*
+
+getRightContent = () => {
+  const { selectedItems } = this.state
+
+  return (
+    <View style={{ flex: 1, width: DeviceWidth }}>
+
+      <FlatList
+        ItemSeparatorComponent={() => <View style={{ flex: 1, height: .5, margin: 8, }} />}
+        ListHeaderComponent={() => <View style={{ flex: 1, height: 96, justifyContent: 'center' }}><Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'center', paddingTop: 16 }]}>Your Cart</Text></View>}
+        ListFooterComponent={() => <View style={{ flex: 1, height: 160 }} />}
+        data={selectedItems}
+        keyExtractor={item => item._id}
+        renderItem={({ item, index }) => (
+          <ItemSelector
+            item={item}
+            onIncrement={(count) => this.onIncrementItem(count, item)}
+            removeItem={() => this.removeItem(index)}
+          />
+        )} />
+
+      <View style={styles.orderItemsButtonContainer}>
+        <TouchableOpacity
+          activeOpacity={.7}
+          style={[styles.orderItemsButton, { backgroundColor: BLUE_LIGHT }]}
+          onPress={this.toggleScreenPosition}>
+          <Text style={[Fonts.subHeading, { color: 'white' }]}>Go Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={.7}
+          style={[styles.orderItemsButton, { backgroundColor: SECONDARY }]}
+          onPress={this.onSubmitOrder}>
+          <Text style={[Fonts.subHeading, { color: 'white' }]}>Submit Order</Text>
+        </TouchableOpacity>
+      </View>
+
+    </View>
+  )
+}
+
+*/

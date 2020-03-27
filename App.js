@@ -54,7 +54,7 @@ export default class App extends Component {
 
 
     Promise.all(promiseArray)
-    .then(value => {
+    .then((value) => {
       this.setState({ isAppReady: true });
     })
     .catch(err => console.log('Error: ', err)); 
