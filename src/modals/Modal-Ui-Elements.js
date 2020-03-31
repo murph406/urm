@@ -22,7 +22,7 @@ export function ModalContainer(props) {
                     secondaryColor={BACKGROUND_DARK_GREY}
                     onPress={leftOnPress}
                 />
-                <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>{headerText}</Text>
+                <Text style={[Fonts.headline, { fontSize: 32, color: BACKGROUND_LIGHT_GREY }]}>{headerText}</Text>
                 {(!isRightIconDisabled)
                     ? <IconButton
                         iconSource={rightIconSource}

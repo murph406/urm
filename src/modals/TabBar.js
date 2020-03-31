@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 8,
+    paddingBottom: 8, fontSize: 32
   },
   filterButton: {
     // width: (DeviceWidth - ((numberOfColumns + 2) * 32)) / numberOfColumns,
