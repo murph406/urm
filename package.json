@@ -7,7 +7,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "expo": "^34.0.3",
     "expo-file-system": "^5.0.1",
     "expo-font": "~6.0.1",
