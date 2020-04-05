@@ -27,6 +27,7 @@ class ProductReferenceScreen extends Component {
       items: [],
       masterItemList: [],
       selectedItems: [],
+      groupList: [],
       searchBarText: '',
       isFilterModalVisible: false,
       isItemSelected: false,
@@ -40,6 +41,7 @@ class ProductReferenceScreen extends Component {
 
   componentDidMount() {
     this.setNavigationParams()
+    this.setGroups()
   }
 
   setNavigationParams = () => {
@@ -51,8 +53,38 @@ class ProductReferenceScreen extends Component {
     // ^^^ Connects the toggleFilterModal function to react-navigation's header functionally. 
   }
 
-  getDataAsync = (category, text) => {
+  setGroups() {
+    let promiseArray = []
 
+    categories.forEach(async (category, index) => {
+      let groups = await this.getGroup(category)
+      promiseArray.push(groups)
+    })
+
+    Promise.all(promiseArray)
+      .then((data) => {
+        console.log("FINAL GROUPS", data.length, data)
+      }).catch(e => console.log(e))
+  }
+
+  getGroup(category) {
+    return new Promise(async (resolve, reject) => {
+      let { groupList } = this.state
+      let yes = groupList
+
+      AsyncStorage.getItem('groups_' + category)
+        .then(group => {
+          group = JSON.parse(group)
+
+          yes.push(...group)
+          this.setState({ groupList: yes })
+          resolve(group)
+
+        }).catch(e => reject(e))
+    }).catch(e => reject(e))
+  }
+
+  getDataAsync = (category, text) => {
     return new Promise(async (resolve, reject) => {
       await AsyncStorage.getItem(category, (err, value) => {
         if (!err) {
@@ -68,7 +100,6 @@ class ProductReferenceScreen extends Component {
     let promiseArray = []
     let itemsMatchingSearch = []
     let { searchBarText } = this.state
-
 
     this.setState({ isActivityIndicatorVisible: true })
 
@@ -95,7 +126,7 @@ class ProductReferenceScreen extends Component {
       const name = (x.item_description == null) ? '' : x.item_description
       const brand = (x.brand == null) ? '' : x.brand
       const code = (x.item_code == null) ? '' : x.item_code
-      const group = (x.category == null) ? '' : x.category
+      const group = (x.group_description == null) ? '' : x.group_description
 
       if (name.includes(text) === true || brand.includes(text) === true || group.includes(text) === true || code.toString().includes(text) === true) {
         return true;
@@ -125,14 +156,14 @@ class ProductReferenceScreen extends Component {
     })
 
     Promise.all(promiseArray)
-    .then((value) => {
-      value.forEach((data, e) => {
-        itemsMatchingSearch = itemsMatchingSearch.concat(data);
+      .then((value) => {
+        value.forEach((data, e) => {
+          itemsMatchingSearch = itemsMatchingSearch.concat(data);
+        })
+        itemsMatchingSearch.sort(this.alphabetize);
+        this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
       })
-      itemsMatchingSearch.sort(this.alphabetize);
-      this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
-    })
-    .catch(err => console.log('Error: ', err))
+      .catch(err => console.log('Error: ', err))
   }
 
   resetDefaultData = () => {
@@ -208,7 +239,6 @@ class ProductReferenceScreen extends Component {
   }
 
 
-
   getEmptyFlatlistView() {
     let { isActivityIndicatorVisible } = this.state
 
@@ -218,7 +248,7 @@ class ProductReferenceScreen extends Component {
           ? <ActivityIndicator size={'large'} color={BACKGROUND_LIGHT_GREY} />
           :
           <>
-            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY }]}>Start by Searching for Products</Text>
+            <Text style={[Fonts.headline, { color: BACKGROUND_LIGHT_GREY, textAlign: 'center' }]}>Start by Searching for Products</Text>
           </>
         }
       </View>
@@ -342,7 +372,7 @@ class ProductReferenceScreen extends Component {
   }
 
   render() {
-    const { isFilterModalVisible, items, isSearchBarPopulated } = this.state;
+    const { isFilterModalVisible, groupList, isSearchBarPopulated } = this.state;
     const bodyContents = this.getBodyContents()
     const header = this.getHeader()
     const searchBar = this.renderSearch()
@@ -371,7 +401,7 @@ class ProductReferenceScreen extends Component {
           transparent={false}
           visible={isFilterModalVisible}>
           <FilterModal
-            // brands={items}
+            groups={groupList}
             categories={categories}
             onResetFilterOptions={this.resetDefaultData}
             onFilterChanges={this.filterByCategories}

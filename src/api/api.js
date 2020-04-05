@@ -28,14 +28,34 @@ export function getByCategory(category) {
 
   return new Promise((resolve, reject) => {
     axios.get(BASE_URL + GET_BY_CATEGORY + category)
-      .then(({ data }) => {
-        // Put on asyncStorage
-        data = JSON.stringify(data);
-        AsyncStorage.setItem(category, data)
-          .then((value) => { resolve(value) })
-          .catch(reject)
+      .then(async ({ data }) => {
+        try {
+          let catagories = await filterDataByGroup(data)
+          let uniqueCatagories = [...new Set(catagories)]
+
+          uniqueCatagories = JSON.stringify(uniqueCatagories)
+          data = JSON.stringify(data)
+
+          await AsyncStorage.setItem('groups_' + category, uniqueCatagories)
+          let message = await AsyncStorage.setItem(category, data)
+
+          resolve(message)
+
+        } catch{ (e) => console.log(e) }
       })
-      .catch(reject)
+  })
+}
+
+
+function filterDataByGroup(data) {
+  return new Promise((resolve) => {
+    let initialData = []
+
+    data.forEach((item) => {
+      const { group_description } = item
+      initialData.push(group_description)
+    })
+    resolve(initialData)
   })
 }
 

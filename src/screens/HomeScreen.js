@@ -9,6 +9,7 @@ class HomeScreen extends Component {
 
   static navigationOptions = {
     title: 'Home',
+    headerLeft: null
   };
 
   constructor(props) {

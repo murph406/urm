@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, AsyncStorage } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import { BACKGROUND_GREY, BACKGROUND_LIGHT_GREY, SECONDARY_DARK, SECONDARY } from '../theme/colors';
@@ -11,8 +11,8 @@ class FilterModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            brandData: [],
             categoryData: [],
+            groupData: [],
             selectedFilterOptions: []
         }
     }
@@ -22,8 +22,8 @@ class FilterModal extends Component {
     }
 
     async setData() {
-        const { brands, categories } = this.props
-        console.log(categories, brands)
+        const { groups, categories } = this.props
+        console.log(categories, groups)
 
         // const categoryData = this.filterDataByGroup(categories)
         // const brandData = this.filterDataByBrand(brands)
@@ -31,7 +31,7 @@ class FilterModal extends Component {
         // const filteredCategoryData = await this.filterDuplicates(categoryData)
         // const filteredBrandData = await this.filterDuplicates(brandData)
 
-        this.setState({  categoryData: categories })
+        this.setState({ categoryData: categories, groupData: groups })
     }
 
     filterDataByBrand(data) {
@@ -108,7 +108,7 @@ class FilterModal extends Component {
 
     render() {
         const { onExitModal } = this.props
-        const { categoryData, brandData } = this.state
+        const { categoryData, groupData } = this.state
 
         return (
             <ModalContainer
@@ -119,16 +119,16 @@ class FilterModal extends Component {
                 headerText={'Filter'}>
 
                 <ScrollableTabView
-                    style={{ marginTop: 20, marginHorizontal: 32,  }}
+                    style={{ marginTop: 20, marginHorizontal: 32, }}
                     initialPage={0}
                     renderTabBar={() =>
                         <TabBar />
                     }>
-                    {/* <TabRoute
-                        tabLabel={'Brands'}
-                        data={brandData}
+                    <TabRoute
+                        tabLabel={'Groups'}
+                        data={groupData}
                         filterButtonOnPress={(filter) => this.setFilterOption({ label: 'brand', ...filter })}
-                    /> */}
+                    />
                     <TabRoute
                         tabLabel={'Categories'}
                         data={categoryData}
