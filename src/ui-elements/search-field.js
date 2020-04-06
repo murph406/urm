@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { SearchBar } from 'react-native-elements'
 
 import { Fonts } from '../theme/styling'
-
+import { BACKGROUND_GREY, BACKGROUND_DARK_GREY } from '../theme/colors';
+let icon = 28
 function TextField(props) {
 
     const [search, updateSearch] = useState(0)
@@ -20,11 +21,13 @@ function TextField(props) {
             <SearchBar
                 placeholder={placeHolderText}
                 round={true}
-                searchIcon={{
-                    color: textColor,
-                    marginLeft: 12,
-                    size: 32,
-                }}
+                // searchIcon={{
+                //     color: textColor,
+                //     marginLeft: 12,
+                //     size: 32,
+                // }}
+                searchIcon={() => <Image source={require('../../assets/icons/search.png')} style={{ height: icon, width: icon, marginLeft: 8, tintColor: BACKGROUND_DARK_GREY
+            }} />}
                 clearIcon={{
                     color: textColor,
                     marginRight: 32,

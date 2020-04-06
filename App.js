@@ -107,7 +107,8 @@ export default class App extends Component {
       require('./assets/icons/add.png'),
       require('./assets/icons/reset-icon-white.png'),
       require('./assets/icons/order.png'),
-      require('./assets/icons/cart-icon.png')
+      require('./assets/icons/cart-icon.png'),
+      require('./assets/icons/search.png')
     ]
 
     await Asset.loadAsync(icons);
