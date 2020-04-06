@@ -12,8 +12,8 @@ class FilterModal extends Component {
         super(props)
         this.state = {
             categoryData: [],
-            groupData: [],
-            selectedFilterOptions: []
+            selectedFilterGroups: [],
+            selectedFilterCategories: []
         }
     }
 
@@ -25,13 +25,7 @@ class FilterModal extends Component {
         const { groups, categories } = this.props
         console.log(categories, groups)
 
-        // const categoryData = this.filterDataByGroup(categories)
-        // const brandData = this.filterDataByBrand(brands)
-
-        // const filteredCategoryData = await this.filterDuplicates(categoryData)
-        // const filteredBrandData = await this.filterDuplicates(brandData)
-
-        this.setState({ categoryData: categories, groupData: groups })
+        this.setState({ categoryData: categories, selectedFilterGroups: groups })
     }
 
     filterDataByBrand(data) {
@@ -69,16 +63,34 @@ class FilterModal extends Component {
 
     setFilterCategories = async (item) => {
 
-        const { selectedFilterOptions } = this.state
-
+        const { selectedFilterCategories } = this.state
+        console.log("SELECTED OPTION",selectedFilterCategories)
         if (item.isSelected === true) {
-            selectedFilterOptions.push(item)
+            selectedFilterCategories.push(item)
 
         } else {
-            let array = await this.removeFilter(selectedFilterOptions, item)
+            let array = await this.removeFilter(selectedFilterCategories, item)
 
-            this.setState({ selectedFilterOptions: array })
+            this.setState({ selectedFilterCategories: array })
         }
+    }
+    setFilterGroups = async (item) => {
+
+        const { selectedFilterGroups } = this.state
+        console.log("SELECTED Groups",selectedFilterGroups)
+        if (item.isSelected === true) {
+            selectedFilterGroups.push(item)
+
+        } else {
+            let array = await this.removeFilterGroup(selectedFilterGroups, item)
+
+            this.setState({ selectedFilterGroups: array })
+        }
+    }
+    removeFilterGroup(array, item) {
+        return Promise.resolve(array.filter((x, index) => {
+            return (x.item === item.item) ? false : true
+        }))
     }
 
     removeFilter(array, item) {
@@ -89,12 +101,14 @@ class FilterModal extends Component {
 
     onApplyFilter = () => {
         const { onExitModal, onFilterChanges } = this.props
-        const { selectedFilterOptions } = this.state
+        const { selectedFilterCategories, selectedFilterGroups } = this.state
 
-        let filterOptionsLength = selectedFilterOptions.length
+        let filterCategoriesLength = selectedFilterCategories.length
+        let filterGroupsLength = selectedFilterGroups.length
 
-        if (filterOptionsLength != 0) {
-            onFilterChanges(selectedFilterOptions)
+        if (filterCategoriesLength != 0 || filterGroupsLength != 0) {
+            console.log("HIT", selectedFilterCategories)
+            onFilterChanges(selectedFilterCategories, selectedFilterGroups)
         }
         onExitModal()
     }
@@ -108,7 +122,7 @@ class FilterModal extends Component {
 
     render() {
         const { onExitModal } = this.props
-        const { categoryData, groupData } = this.state
+        const { categoryData, selectedFilterGroups } = this.state
 
         return (
             <ModalContainer
@@ -126,8 +140,8 @@ class FilterModal extends Component {
                     }>
                     <TabRoute
                         tabLabel={'Groups'}
-                        data={groupData}
-                        filterButtonOnPress={(filter) => this.setFilterOption({ label: 'brand', ...filter })}
+                        data={selectedFilterGroups}
+                        filterButtonOnPress={(filter) => this.setFilterGroups({ label: 'group_description', ...filter })}
                     />
                     <TabRoute
                         tabLabel={'Categories'}

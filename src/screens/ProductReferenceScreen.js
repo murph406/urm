@@ -28,6 +28,7 @@ class ProductReferenceScreen extends Component {
       masterItemList: [],
       selectedItems: [],
       groupList: [],
+      filterParameters: [],
       searchBarText: '',
       isFilterModalVisible: false,
       isItemSelected: false,
@@ -42,6 +43,7 @@ class ProductReferenceScreen extends Component {
   componentDidMount() {
     this.setNavigationParams()
     this.setGroups()
+    this.setData()
   }
 
   setNavigationParams = () => {
@@ -51,6 +53,10 @@ class ProductReferenceScreen extends Component {
       toggleFilterModal: this.toggleFilterModal
     })
     // ^^^ Connects the toggleFilterModal function to react-navigation's header functionally. 
+  }
+
+  setData() {
+
   }
 
   setGroups() {
@@ -63,7 +69,7 @@ class ProductReferenceScreen extends Component {
 
     Promise.all(promiseArray)
       .then((data) => {
-        console.log("FINAL GROUPS", data.length, data)
+        console.log("Success")
       }).catch(e => console.log(e))
   }
 
@@ -77,6 +83,7 @@ class ProductReferenceScreen extends Component {
           group = JSON.parse(group)
 
           yes.push(...group)
+
           this.setState({ groupList: yes })
           resolve(group)
 
@@ -96,15 +103,27 @@ class ProductReferenceScreen extends Component {
     })
   }
 
+  getDataByFilteredItems = (text) => {
+    let { items } = this.state
+    return new Promise(async (resolve, reject) => {
+      let updatedData = this.removeDuplicates(text, items)
+      resolve(updatedData)
+    })
+  }
+
   filterBySearch = () => {
     let promiseArray = []
     let itemsMatchingSearch = []
-    let { searchBarText } = this.state
+    let { searchBarText, items } = this.state
 
     this.setState({ isActivityIndicatorVisible: true })
 
     categories.forEach(category => {
-      promiseArray.push(this.getDataAsync(category, searchBarText));
+      if (items.length != 0) {
+        promiseArray.push(this.getDataByFilteredItems(searchBarText))
+      } else {
+        promiseArray.push(this.getDataAsync(category, searchBarText));
+      }
     });
 
     Promise.all(promiseArray)
@@ -112,8 +131,6 @@ class ProductReferenceScreen extends Component {
         value.forEach((data, e) => {
           itemsMatchingSearch = itemsMatchingSearch.concat(data);
         })
-
-        itemsMatchingSearch.sort(this.alphabetize);
         this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
       })
       .catch(err => console.log('Error: ', err))
@@ -146,21 +163,36 @@ class ProductReferenceScreen extends Component {
   }
 
 
-  filterByCategories = (filterItemsArray) => {
+  filterByCategories = (filterItemsArray, filterGroupsArray) => {
+    let groupLength = filterGroupsArray.length
     let itemsMatchingSearch = []
     let promiseArray = []
 
-    this.setState({ isActivityIndicatorVisible: true })
+    this.setState({ isActivityIndicatorVisible: true, filterParameters: [...filterItemsArray, ...filterGroupsArray] })
+    categories.forEach((category, index) => {
+      for (let i = 0; i < groupLength; i++) {
+        let item = filterGroupsArray[i].item
+        if (item != null) {
+          console.log(item)
+          promiseArray.push(this.getDataAsync(category, filterGroupsArray[i].item));
+        }
+      }
+    })
+
+
     filterItemsArray.forEach((category, index) => {
       promiseArray.push(this.getDataAsync(category.item, ''));
     })
 
+
+
     Promise.all(promiseArray)
       .then((value) => {
         value.forEach((data, e) => {
+          debugger
           itemsMatchingSearch = itemsMatchingSearch.concat(data);
         })
-        itemsMatchingSearch.sort(this.alphabetize);
+        // itemsMatchingSearch.sort(this.alphabetize);
         this.setState({ isActivityIndicatorVisible: false, items: itemsMatchingSearch })
       })
       .catch(err => console.log('Error: ', err))
@@ -266,7 +298,7 @@ class ProductReferenceScreen extends Component {
   }
 
   getNumberOfResultsDetail() {
-    const { items, numberOfResults } = this.state
+    const { items, numberOfResults, filterParameters } = this.state
     let counter = numberOfResults + 25
     let text = ''
 
@@ -279,15 +311,36 @@ class ProductReferenceScreen extends Component {
     }
 
     return (
-      <View style={styles.numberOfResultsContainer}>
+      <View >
         {(items.length != 0)
           ? <>
-            <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'flex-end' }]}>{text} Results</Text>
+            <View style={{}}>
+              <FlatList
+                style={{ paddingTop: 32, paddingHorizontal: 16 }}
+                data={filterParameters}
+                ListHeaderComponent={() =>
+                  <TouchableOpacity
+                    onPress={() => this.resetDefaultData()}
+                    activeOpacity={.7}
+                    style={{ backgroundColor: SECONDARY, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 }}>
+                    <Text style={[Fonts.subHeading, { color: 'white' }]}>Cancel</Text>
+                  </TouchableOpacity>
+                }
+                ItemSeparatorComponent={() => <View style={{ height: 2, paddingRight: .3 }} />}
+                horizontal={true}
+                keyExtractor={item => item.toString()}
+                renderItem={({ item, index }) => (
+                  <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, textTransform: 'capitalize' }]}>{item.item}</Text>
+                )} />
+            </View>
+            <View style={styles.numberOfResultsContainer}>
+              <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, alignSelf: 'flex-end' }]}>{text} Results</Text>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text onPress={this.setNextResults(-25)} style={[Fonts.subHeading, { color: SECONDARY, paddingRight: 12 }]}>Back</Text>
-              <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingRight: 12 }]}>{numberOfResults.toString()} of {counter.toString()}</Text>
-              <Text onPress={this.setNextResults(25)} style={[Fonts.subHeading, { color: SECONDARY, }]}>Next</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text onPress={this.setNextResults(-25)} style={[Fonts.subHeading, { color: SECONDARY, paddingRight: 12 }]}>Back</Text>
+                <Text style={[Fonts.subHeading, { color: BACKGROUND_LIGHT_GREY, paddingRight: 12 }]}>{numberOfResults.toString()} of {counter.toString()}</Text>
+                <Text onPress={this.setNextResults(25)} style={[Fonts.subHeading, { color: SECONDARY, }]}>Next</Text>
+              </View>
             </View>
           </>
           : null}
@@ -466,7 +519,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 32,
+    marginVertical: 16,
     paddingHorizontal: 16,
   }
 })
